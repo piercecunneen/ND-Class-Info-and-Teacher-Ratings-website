@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">;
-    <title>ND Student Site</title>    
-  </head>
-  <body>
-   
-    <header>
-      <div class="container">
-        <h1 class="logo">ND Student Site</h1>
-	<stong><nav>
-		<ul class="menu">
-			<li><a href="{{url_for('home') }}">Home</a></li>					<li><a href="{{url_for('about') }}">Test</a></li>
+	<head>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/mainCSS.css') }}">;
+	</head>
+	<body>
 
-      </div>
-    </header> 
-     
-    <div class="container">
-      {% block content %}
-      {% endblock %}
-    </div>
-     
-  </body>
+	<header>
+		<h1>Class Search</h1>
+	</header>
+
+
+	<nav>
+		Quick Links<br>
+		<a href="/">Home</a><br>
+		<a href="/class_search/">Search Classes</a><br>
+		</nav>
+
+
+	<div class="container">
+		{% block content%}
+		{% endblock %}
+	</div>
+
+	<footer>
+		Created by Pierce Cunneen and Zach Janicki 
+	</footer>
+
+	</body>
 </html>

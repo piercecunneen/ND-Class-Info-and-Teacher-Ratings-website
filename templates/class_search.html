@@ -1,35 +1,51 @@
 {% extends "layout.html" %}
   
 {% block content %}
-  <h2>Test</h2>
-  <p>This is a test page for connecting backend python scripts to frontend via Flask framework</p>
-
-<select>
+<select size = 3>
 {% for key, value in TermOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}
 </select>
-<select>
+&nbsp
+&nbsp
+&nbsp
+&nbsp
+
+<select size = 4>
 {% for key, value in DivisionOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}
 </select>
-<select>
+&nbsp
+&nbsp
+&nbsp
+&nbsp
+<select size = 4>
 {% for key, value in CampusOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}
 </select>
-<select>
+
+<br>
+<select size = 5>
 {% for key, value in SubjectOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}
 </select>
-<select>
+&nbsp
+&nbsp
+&nbsp
+&nbsp
+<select size = 4>
 {% for key, value in AttributeOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}
 </select>
-<select>
+&nbsp
+&nbsp
+&nbsp
+&nbsp
+<select size = 3>
 {% for key, value in CreditsOptions.items() %}
    <option value = value> {{key}} </option>
 {% endfor %}

@@ -9,10 +9,10 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route('/test')
-def about():
+@app.route('/class_search/')
+def test():
     Options = GetOptions()
-    return render_template('test.html', TermOptions = Options[0] , DivisionOptions = Options[1],
+    return render_template('class_search.html', TermOptions = Options[0] , DivisionOptions = Options[1],
     CampusOptions = Options[2], SubjectOptions =  Options[3], 
     AttributeOptions = Options[4], CreditsOptions = Options[5]  )
     

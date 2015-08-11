@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from class_search_web_scrapping import  GetOptions
 
@@ -16,6 +17,9 @@ def test():
     CampusOptions = Options[2], SubjectOptions =  Options[3], 
     AttributeOptions = Options[4], CreditsOptions = Options[5]  )
     
+@app.route('/instructor_eval/')
+def eval():
+    return render_template('instructor_eval.html')
     
 
 if __name__=='__main__':

@@ -21,7 +21,7 @@ def GetOptions():
     #
     url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet'
     response = requests.get(url)
-    soup = BeautifulSoup(response.content)
+    soup = BeautifulSoup(response.content, "lxml")
     data = soup.find_all('select')
     
     # Dictionaries used to store both option description and the form data value required for post requests
@@ -70,7 +70,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     FormData = {'TERM': term, 'SUBJ': subj, 'CREDIT':credit, 'ATTR':Attr, 'DIVS':divs, 'CAMPUS' : campus}
     
     response = requests.post(url, data = FormData)
-    soup = BeautifulSoup(response.content)
+    soup = BeautifulSoup(response.content, "lxml")
     
     ClassTable = soup.find_all('table', {'id':'resulttable'})[0].find_all('tr')
     
@@ -141,7 +141,7 @@ def GetClassDescriptionAndAll(url):
     """
     
     response = requests.get(url)
-    soup = BeautifulSoup(response.content)
+    soup = BeautifulSoup(response.content, "lxml")
     
     
     DataText = soup.find_all('td')[2].text.split('Restrictions:')[0]

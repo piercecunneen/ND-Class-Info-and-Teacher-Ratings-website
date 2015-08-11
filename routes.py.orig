@@ -23,7 +23,14 @@ def test():
 @app.route('/instructor_eval/')
 def eval():
     return render_template('instructor_eval.html')
+<<<<<<< HEAD
+
+@app.route('/class_info/')
+def info():
+    return render_template('class_info.html')
+=======
     
+>>>>>>> upstream/master
 
 
 if __name__=='__main__':

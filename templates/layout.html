@@ -1,12 +1,27 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/mainCSS.css') }}">;
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/mainCSS.css') }}">	
+	<script> function DefaultSelect(element_ID,value){
+			var option = document.getElementById(element_ID);
+			for (var i = 0; i < option.options.length; i = i + 1){
+				if (option.item(i).value == value){
+					option.selectedIndex = i;
+				}
+			}
+		}
+	</script>
+	<script> function GetClasses(){
+			alert('Place Holder alert')
+		}
+	
+	</script>
 	</head>
 	<body>
 
 	<header>
 		<h1>Class Search</h1>
+	
 	</header>
 
 

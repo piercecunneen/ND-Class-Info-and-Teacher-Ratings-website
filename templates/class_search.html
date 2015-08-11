@@ -1,56 +1,74 @@
 {% extends "layout.html" %}
   
 {% block content %}
-<select size = 3>
-{% for key, value in TermOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
-&nbsp
-&nbsp
-&nbsp
-&nbsp
+<div id="ClassSearchInput">
+<table>
+	<tr> 
+		<td> Term:
+			<select id = "TermOptions">
+			{% for key in TermOptionKeys %}
+   				<option value = {{TermOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			<script>
+			document.getElementById('TermOptions').options[0].selected = true;
+			</script>
+			</select>
+		</td>	
+		<td> Division: 
+			<select>
+			{% for key in DivisionOptionKeys %}
+   				<option value = {{DivisionOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			</select>
+		</td>
+		<td > Campus: 
+			<select id = "CampusOptions">
+			{% for key in CampusOptionKeys %}
+   				<option value = {{CampusOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			<script>
+			DefaultSelect("CampusOptions", "M");
+			
+			</script>
+			</select>
+		</td>
+	</tr>
+	<tr> 
+		<td> Subjects: 
+			<select size = 5 multiple = "True" id = "SubjectOptions" >
+			{% for key in SubjectOptionKeys %}
+   				<option value = {{SubjectOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			<script>
+			document.getElementById('SubjectOptions').options[0].selected = true;
+			</script>
+			</select>
+			
+		</td>
+		<td>Attributes:
+			<select>
+			{% for key in AttributeOptionKeys %}
+   				<option value = {{AttributeOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			
+			</select>
+		</td>
+		<td> Credits: 
+			<select id = "CreditsOptions">
+			{% for key in CreditsOptionKeys %}
+   				<option value = {{CreditsOptions[key]}}> {{key}} </option>
+			{% endfor %}
+			<script>
+			DefaultSelect("CreditsOptions", "A");
+			
+			</script>
+			</select>
+			
+		</td>
+	</tr>
 
-<select size = 4>
-{% for key, value in DivisionOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
-&nbsp
-&nbsp
-&nbsp
-&nbsp
-<select size = 4>
-{% for key, value in CampusOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
-
-<br>
-<select size = 5>
-{% for key, value in SubjectOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
-&nbsp
-&nbsp
-&nbsp
-&nbsp
-<select size = 4>
-{% for key, value in AttributeOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
-&nbsp
-&nbsp
-&nbsp
-&nbsp
-<select size = 3>
-{% for key, value in CreditsOptions.items() %}
-   <option value = value> {{key}} </option>
-{% endfor %}
-</select>
 </table>
+<<<<<<< HEAD
 
 <table border="1">
 {% for key, value in SubjectOptions.items() %}
@@ -61,4 +79,8 @@
 {% endfor %}
 </table>
 
+=======
+<button class = "GetClasses" onclick = "GetClasses()"> Get Classes </button>
+</div>
+>>>>>>> upstream/master
 {% endblock %}

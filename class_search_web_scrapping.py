@@ -165,9 +165,10 @@ def GetClassDescriptionAndAll(url):
     else:
         return [Course_Description, 'Neither']
 
-def Sort_by_value(data):
+def Sort_by_value(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
-    the keys in an ordered list"""
+    the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
     keys = sorted(data, key=data.get)
-    keys.reverse()
+    if isTerms:
+        keys.reverse()
     return keys

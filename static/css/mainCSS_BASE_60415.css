@@ -1,5 +1,5 @@
 header {
-    background:gold;
+    background-color:gold;
     color:blue;
     text-align:center;
     padding:5px;	 
@@ -10,8 +10,7 @@ nav {
     height:300px;
     width:100px;
     float:left;
-    padding:5px;
-    font-size:70%;	      
+    padding:5px;	      
 }
 section {
     width:80%;
@@ -30,28 +29,8 @@ table {
 margin:10px
 
 }
-
-
 .Greeting{
 	text-align:center;
 	color: black;
 
-}
-
-select {
-<<<<<<< HEAD
-=======
-	background-color: #dbe4f4;
-}
-button.GetClasses{
-	color: green;
-	width: 100px;
-	padding: 10px;
-	outline: black double;
-}	
-
-select {
->>>>>>> upstream/master
-	padding: 10px;
-	height:inherit
 }

@@ -1,5 +1,5 @@
 header {
-    background:gold;
+    background-color:gold;
     color:blue;
     text-align:center;
     padding:5px;	 
@@ -30,8 +30,6 @@ table {
 margin:10px
 
 }
-
-
 .Greeting{
 	text-align:center;
 	color: black;
@@ -39,19 +37,6 @@ margin:10px
 }
 
 select {
-<<<<<<< HEAD
-=======
-	background-color: #dbe4f4;
-}
-button.GetClasses{
-	color: green;
-	width: 100px;
-	padding: 10px;
-	outline: black double;
-}	
-
-select {
->>>>>>> upstream/master
 	padding: 10px;
 	height:inherit
 }

@@ -37,7 +37,12 @@ def GetOptions():
     for i, category in zip(data, OptionCategories):
         options = i.find_all('option')
         for option in options:
-            category[CleanUpString(str(option.text))] = str(option).split('"')[1]
+            # check if option is selected. If so, then use 4th item in list
+            option_split = str(option).split('"')
+            if 'selected' in option_split[0]:
+                category[CleanUpString(str(option.text))] = str(option).split('"')[3]
+            else:
+                category[CleanUpString(str(option.text))] = str(option).split('"')[1]
         
     return OptionCategories
         
@@ -131,7 +136,7 @@ def GetClassDescriptionAndAll(url):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
     returns: A list with the course description, a string that reveals the contents of the rest of the list, 
-            the prerequisites (if any), and corequisites (if any)
+            the prerequisites (if any), and corequisites (if a
             String options: 'Both', 'Neither', 'Prerequisote Only', or 'Corequisite Only'
     """
     
@@ -160,5 +165,9 @@ def GetClassDescriptionAndAll(url):
     else:
         return [Course_Description, 'Neither']
 
-
-  
+def Sort_by_value(data):
+    """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
+    the keys in an ordered list"""
+    keys = sorted(data, key=data.get)
+    keys.reverse()
+    return keys

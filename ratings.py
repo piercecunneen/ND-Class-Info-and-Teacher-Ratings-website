@@ -97,13 +97,13 @@ class Rating(object):
 
 
 class TeacherRating(Rating):
-    def __init__(self, author, date, course, grading,workload, quality, syllabus, text = None):
+    def __init__(self, author, date, course, grading,workload, quality, syllabus,accessibility, text = None):
         super(TeacherRating, self).__init__(author,date,course, text)
         self.grading = grading
         self.workload = workload
         self.quality = quality
         self.syllabus = syllabus # 0 == throw syllabus out; 1 == syllabus is useful; 2 == syllabus is your lifeline
-        
+        self.accessibility = accessibility
         
 class CourseRating(Rating):
     def __init__(self,author, date, course, toughness_rating,interest_rating, text = None):

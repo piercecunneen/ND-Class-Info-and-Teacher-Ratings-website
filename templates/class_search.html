@@ -51,4 +51,14 @@
 {% endfor %}
 </select>
 </table>
+
+<table border="1">
+{% for key, value in SubjectOptions.items() %}
+   <tr>
+        <th><a href="/">{{ key }}</a> </th>
+        <td> {{ value }} </td>
+   </tr>
+{% endfor %}
+</table>
+
 {% endblock %}

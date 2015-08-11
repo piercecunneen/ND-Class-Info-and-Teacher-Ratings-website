@@ -20,7 +20,10 @@ def test():
 @app.route('/instructor_eval/')
 def eval():
     return render_template('instructor_eval.html')
-    
+
+@app.route('/class_info/')
+def info():
+    return render_template('class_info.html')
 
 if __name__=='__main__':
     app.run(debug=True)

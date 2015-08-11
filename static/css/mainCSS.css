@@ -39,8 +39,7 @@ margin:10px
 }
 
 select {
-<<<<<<< HEAD
-=======
+
 	background-color: #dbe4f4;
 }
 button.GetClasses{
@@ -51,7 +50,6 @@ button.GetClasses{
 }	
 
 select {
->>>>>>> upstream/master
 	padding: 10px;
 	height:inherit
 }

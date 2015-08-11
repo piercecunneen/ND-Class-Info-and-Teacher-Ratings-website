@@ -10,7 +10,8 @@ nav {
     height:300px;
     width:100px;
     float:left;
-    padding:5px;	      
+    padding:5px;
+    font-size:70%;	      
 }
 section {
     width:80%;
@@ -33,4 +34,9 @@ margin:10px
 	text-align:center;
 	color: black;
 
+}
+
+select {
+	padding: 10px;
+	height:inherit
 }

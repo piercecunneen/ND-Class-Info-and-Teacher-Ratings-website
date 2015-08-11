@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from class_search_web_scrapping import  GetOptions, Sort_by_value
 
@@ -18,6 +19,10 @@ def test():
     SubjectOptionKeys = Sort_by_value(Options[3], False), SubjectOptions =  Options[3], 
     AttributeOptionKeys = Sort_by_value(Options[4], False), AttributeOptions = Options[4],
     CreditsOptionKeys = Sort_by_value(Options[5], False), CreditsOptions = Options[5]  )
+    
+@app.route('/instructor_eval/')
+def eval():
+    return render_template('instructor_eval.html')
     
 
 

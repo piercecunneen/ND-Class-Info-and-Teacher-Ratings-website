@@ -1,5 +1,5 @@
 header {
-    background-color:gold;
+    background:gold;
     color:blue;
     text-align:center;
     padding:5px;	 
@@ -29,8 +29,19 @@ table {
 margin:10px
 
 }
+
+
 .Greeting{
 	text-align:center;
 	color: black;
 
 }
+select {
+	background-color: #dbe4f4;
+}
+button.GetClasses{
+	color: green;
+	width: 100px;
+	padding: 10px;
+	outline: black double;
+}	

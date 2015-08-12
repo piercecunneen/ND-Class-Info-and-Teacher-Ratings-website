@@ -53,3 +53,11 @@ select {
 	padding: 10px;
 	height:inherit
 }
+
+
+.ClassData tr:nth-child(even) {
+	background: #999966;
+}	
+.ClassData tr:nth-child(odd) {
+	background: #99CCFF;
+}

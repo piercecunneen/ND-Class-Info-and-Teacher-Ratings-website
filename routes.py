@@ -27,7 +27,7 @@ def classInfo():
  
 @app.route('/instructor_eval/')
 def eval():
-    return render_template('instructor_eval.html', DepartmentKeys=Sort_by_value(GetOptions()[3], False), DepartmentOptions =  GetOptions()[3])
+    return render_template('instructor_eval.html', DepartmentKeys= Sort_dict(GetOptions()[3], False), DepartmentOptions =  GetOptions()[3])
     
 
 

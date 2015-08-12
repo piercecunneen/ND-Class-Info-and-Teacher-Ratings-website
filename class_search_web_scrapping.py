@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from codecs import encode
 
+# coding: latin1
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
     Input: string
@@ -76,9 +78,14 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     
     response = requests.post(url, data = FormData)
     soup = BeautifulSoup(response.content, "lxml")
-    try:
-        ClassTable = soup.find_all('table', {'id':'resulttable'})[0].find_all('tr')
+    ClassTable = soup.find_all('table', {'id':'resulttable'})
     
+    # If no classes listed on class search, return an empty []
+    if len(ClassTable) == 0:
+        return []
+    else:
+        ClassTable = ClassTable[0].find_all('tr')
+
         Headers = ClassTable[0].find_all('th')
         
         # Class_Headers stores the column headers for the class data
@@ -103,9 +110,11 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
                 url = i.find_all('a')
                 if url:
                     URLS[Num_Classes].append(url)
-                Classlist[Num_Classes][head] = CleanUpString(str(i.text).replace('\t', ''))
+                try:
+                    Classlist[Num_Classes][head] = CleanUpString(str(i.text).replace('\t', ''))
+                except UnicodeEncodeError:
+                    Classlist[Num_Classes][head] = CleanUpString(i.text.replace('\t', ''))
             Num_Classes += 1
-        
         
         # Reassign temporary counting variable
         Num_Classes = 0
@@ -134,9 +143,6 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
     
         return Classlist
-    except:
-        return []
-
 
 
 def GetClassDescriptionAndAll(url):

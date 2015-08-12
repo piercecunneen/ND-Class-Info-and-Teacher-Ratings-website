@@ -126,7 +126,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     
     # Clean up Course - sec in Classlist
     for i in Classlist:
-        i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '')
+        i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
 
     return Classlist
 
@@ -165,10 +165,13 @@ def GetClassDescriptionAndAll(url):
     else:
         return [Course_Description, 'Neither']
 
-def Sort_by_value(data, isTerms):
+def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
     the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
-    keys = sorted(data, key=data.get)
+    
     if isTerms:
+        keys = sorted(data, key=data.get)
         keys.reverse()
-    return keys
+        return keys
+    else:
+        return sorted(data)

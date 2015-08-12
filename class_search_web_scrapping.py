@@ -43,7 +43,12 @@ def GetOptions():
                 category[CleanUpString(str(option.text))] = str(option).split('"')[3]
             else:
                 category[CleanUpString(str(option.text))] = str(option).split('"')[1]
-        
+    
+    # Get rid of all Year entries for TermOptions
+    New_Term_Options = OptionCategories[0].copy()
+    for entry in New_Term_Options:
+        if 'Year' in entry:
+            del OptionCategories[0][entry]
     return OptionCategories
         
 
@@ -71,64 +76,66 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     
     response = requests.post(url, data = FormData)
     soup = BeautifulSoup(response.content, "lxml")
+    try:
+        ClassTable = soup.find_all('table', {'id':'resulttable'})[0].find_all('tr')
     
-    ClassTable = soup.find_all('table', {'id':'resulttable'})[0].find_all('tr')
-    
-    Headers = ClassTable[0].find_all('th')
-    
-    # Class_Headers stores the column headers for the class data
-    Class_Headers = []
-    for header in Headers:
-        Class_Headers.append(str(header.text))
-    
-    
-    Classes = ClassTable[1:]
-    
-    Classlist = []
-    
-    # Temporary counting variable
-    Num_Classes = 0
-    URLS = []
-    for Class in Classes:
-        Classlist.append({})
-        Info = Class.find_all('td')
-        URLS.append([])
-        for i, head in zip(Info,Class_Headers):
-            url = ''
-            url = i.find_all('a')
-            if url:
-                URLS[Num_Classes].append(url)
-            Classlist[Num_Classes][head] = CleanUpString(str(i.text).replace('\t', ''))
-        Num_Classes += 1
-    
-    
-    # Reassign temporary counting variable
-    Num_Classes = 0
-    for url in URLS:
-        ClassUrlData = url[0]
-        ClassDescriptionUrl = ClassUrlData[0].get('href')
-        BookStoreUrlData = ClassUrlData[1]
-        BookStoreUrl = BookStoreUrlData.get('href')
-        ClassUrlExtension = CleanUpString(ClassDescriptionUrl.split("'")[1])
+        Headers = ClassTable[0].find_all('th')
         
-        Classlist[Num_Classes]['Course_Info'] = 'https://class-search.nd.edu/reg/srch/' + ClassUrlExtension
-        Classlist[Num_Classes]['View_Books'] =  BookStoreUrl
+        # Class_Headers stores the column headers for the class data
+        Class_Headers = []
+        for header in Headers:
+            Class_Headers.append(str(header.text))
         
-        # Some classes have no teacher yet announced. If they do not have a teacher, then len(url) == 1. 
-        # If the teacher is announced, len(url) == 2
-        if len(url) == 2:
-            InstructorUrlData = url[1][0].get('href')
-            TeacherUrlExtension = CleanUpString(InstructorUrlData.split("'")[1])
-            Classlist[Num_Classes]['Teacher_Info'] = 'https://class-search.nd.edu/reg/srch/' + TeacherUrlExtension
-        else:
-            Classlist[Num_Classes]['Teacher_Info'] = 'NONE'
-        Num_Classes += 1
+        
+        Classes = ClassTable[1:]
+        
+        Classlist = []
+        
+        # Temporary counting variable
+        Num_Classes = 0
+        URLS = []
+        for Class in Classes:
+            Classlist.append({})
+            Info = Class.find_all('td')
+            URLS.append([])
+            for i, head in zip(Info,Class_Headers):
+                url = ''
+                url = i.find_all('a')
+                if url:
+                    URLS[Num_Classes].append(url)
+                Classlist[Num_Classes][head] = CleanUpString(str(i.text).replace('\t', ''))
+            Num_Classes += 1
+        
+        
+        # Reassign temporary counting variable
+        Num_Classes = 0
+        for url in URLS:
+            ClassUrlData = url[0]
+            ClassDescriptionUrl = ClassUrlData[0].get('href')
+            BookStoreUrlData = ClassUrlData[1]
+            BookStoreUrl = BookStoreUrlData.get('href')
+            ClassUrlExtension = CleanUpString(ClassDescriptionUrl.split("'")[1])
+            
+            Classlist[Num_Classes]['Course_Info'] = 'https://class-search.nd.edu/reg/srch/' + ClassUrlExtension
+            Classlist[Num_Classes]['View_Books'] =  BookStoreUrl
+            
+            # Some classes have no teacher yet announced. If they do not have a teacher, then len(url) == 1. 
+            # If the teacher is announced, len(url) == 2
+            if len(url) == 2:
+                InstructorUrlData = url[1][0].get('href')
+                TeacherUrlExtension = CleanUpString(InstructorUrlData.split("'")[1])
+                Classlist[Num_Classes]['Teacher_Info'] = 'https://class-search.nd.edu/reg/srch/' + TeacherUrlExtension
+            else:
+                Classlist[Num_Classes]['Teacher_Info'] = 'NONE'
+            Num_Classes += 1
+        
+        # Clean up Course - sec in Classlist
+        for i in Classlist:
+            i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
     
-    # Clean up Course - sec in Classlist
-    for i in Classlist:
-        i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '')
-
-    return Classlist
+        return Classlist
+    except:
+        return []
 
 
 
@@ -165,10 +172,13 @@ def GetClassDescriptionAndAll(url):
     else:
         return [Course_Description, 'Neither']
 
-def Sort_by_value(data, isTerms):
+def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
     the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
-    keys = sorted(data, key=data.get)
+    
     if isTerms:
+        keys = sorted(data, key=data.get)
         keys.reverse()
-    return keys
+        return keys
+    else:
+        return sorted(data)

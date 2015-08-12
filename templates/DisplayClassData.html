@@ -1,33 +1,31 @@
 {% extends "layout.html" %}
-  
 {% block content %}
-<div id="ClassSearchInput">
 <table>
 	<tr> 
 		<td> Term:
-			<select id = "TermOptions">
+			<select id = "TermOptionsTwo">
 			{% for key in TermOptionKeys %}
    				<option value = {{TermOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			document.getElementById('TermOptions').options[0].selected = true;
+			document.getElementById('TermOptionsTwo').options[0].selected = true;
 			</script>
 			</select>
 		</td>	
 		<td> Division: 
-			<select id = "DivisionOptions">
+			<select id = "DivisionOptionsTwo">
 			{% for key in DivisionOptionKeys %}
    				<option value = {{DivisionOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			</select>
 		</td>
 		<td > Campus: 
-			<select id = "CampusOptions">
+			<select id = "CampusOptionsTwo">
 			{% for key in CampusOptionKeys %}
    				<option value = {{CampusOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			DefaultSelect("CampusOptions", "M");
+			DefaultSelect("CampusOptionsTwo", "M");
 			
 			</script>
 			</select>
@@ -35,18 +33,18 @@
 	</tr>
 	<tr> 
 		<td> Subjects: 
-			<select size = 5 multiple = "True" id = "SubjectOptions" >
+			<select size = 5 multiple = "True" id = "SubjectOptionsTwo" >
 			{% for key in SubjectOptionKeys %}
    				<option value = {{SubjectOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			document.getElementById('SubjectOptions').options[0].selected = true;
+			document.getElementById('SubjectOptionsTwo').options[0].selected = true;
 			</script>
 			</select>
 			
 		</td>
 		<td>Attributes:
-			<select id = "AttributeOptions">
+			<select id = "AttributeOptionsTwo">
 			{% for key in AttributeOptionKeys %}
    				<option value = {{AttributeOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -54,12 +52,12 @@
 			</select>
 		</td>
 		<td> Credits: 
-			<select id = "CreditsOptions" name = "CreditsOption">
+			<select id = "CreditsOptionsTwo" name = "CreditsOption">
 			{% for key in CreditsOptionKeys %}
    				<option value = {{CreditsOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			DefaultSelect("CreditsOptions", "A");
+			DefaultSelect("CreditsOptionsTwo", "A");
 			
 			</script>
 			</select>
@@ -68,6 +66,26 @@
 	</tr>
 
 </table>
-<button onclick="SearchClassesUrl(false );"> Search Classes </button>
-</div>
+<button onclick="SearchClassesUrl(true);"> Search Classes </button>
+
+  
+<table border = "1">
+		<tr>
+			{% for key in Keys %}
+				<td> {{key}} </td>
+			{% endfor %}
+		</tr>
+	{% for class in ClassList %}
+		<tr> 
+			{% for i in Keys %}
+				{% if i == 'Title' %}
+					<td>  <a href ="/class_info/{{class[i]}}"> {{class[i
+]}} </a> </td>
+				{% else %}
+					<td> {{class[i]}} </td>
+				{% endif %}
+			{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
 {% endblock %}

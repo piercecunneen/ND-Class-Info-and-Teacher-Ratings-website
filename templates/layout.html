@@ -11,11 +11,54 @@
 			}
 		}
 	</script>
-	<script> function GetClasses(){
-			alert('Place Holder alert')
-		}
+	<script> function SearchClassesUrl(DataPresent){
+			if (DataPresent){
+				var term_element = document.getElementById('TermOptionsTwo');
+				var term = term_element.options[term_element.selectedIndex].value;
+				var subject_element = document.getElementById('SubjectOptionsTwo');
+				var subject = subject_element.options[subject_element.selectedIndex].value;
+
+				var credit_element = document.getElementById('CreditsOptionsTwo');
+				var credit = credit_element[credit_element.selectedIndex].value;		
 	
-	</script>
+				var attribute_element = document.getElementById('AttributeOptionsTwo');
+				var attribute = attribute_element.options[attribute_element.selectedIndex].value;		
+
+
+				var division_element = document.getElementById('DivisionOptionsTwo');
+				var division = division_element.options[division_element.selectedIndex].value;		
+
+				var campus_element = document.getElementById('CampusOptionsTwo');
+				var campus = campus_element.options[campus_element.selectedIndex].value;
+				var url = ''.concat('http://localhost:5000/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
+				location.replace(url)
+			}
+			else {
+				var term_element = document.getElementById('TermOptions');
+				var term = term_element.options[term_element.selectedIndex].value;
+
+				var subject_element = document.getElementById('SubjectOptions');
+				var subject = subject_element.options[subject_element.selectedIndex].value;
+
+				var credit_element = document.getElementById('CreditsOptions');
+				var credit = credit_element[credit_element.selectedIndex].value;		
+	
+				var attribute_element = document.getElementById('AttributeOptions');
+				var attribute = attribute_element.options[attribute_element.selectedIndex].value;		
+
+
+				var division_element = document.getElementById('DivisionOptions');
+				var division = division_element.options[division_element.selectedIndex].value;		
+
+				var campus_element = document.getElementById('CampusOptions');
+				var campus = campus_element.options[campus_element.selectedIndex].value;
+				var url = ''.concat('http://localhost:5000/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
+				location.replace(url)
+			}
+			
+			
+		}
+	</script>  
 	</head>
 	<body>
 

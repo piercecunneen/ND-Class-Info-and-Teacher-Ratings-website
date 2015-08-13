@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+
+<input type="button" value="Go Back" onclick="history.back()"></input>
+<input type="button" value="Go Forward" onclick="history.forward()"></input>
+<h2 align = "middle"> {{Department}} </h2>
+<table> 
+	<tr id = "TitleRow" align = "middle">
+		<td> Teacher Search </td>
+		<td> Best Teachers </td>
+		<td> Easiest Teachers </td>
+		<td> Most Interesting Classes </td>
+		<td> Easiest Classes </td>
+	</tr>
+	<tr align = "middle">
+		<td > 	
+			<select size = "10" Id = "ProfessorList"> 
+				{% for teacher in Teachers %}
+					<option value = "{{teacher}}"> {{teacher}} </option>
+				{% endfor %}
+			</select> 
+		</td>
+		<td> 
+			<select size = "10" Id = "BestProfessorsList"> 
+				{% for teacher in BestTeachers %}
+					<option value = "{{teacher}}"> {{teacher}} </option>
+				{% endfor %}
+			</select> 
+		</td>
+		<td> 
+			<select size = "10" Id = "EasiestProfessorsList"> 
+				{% for teacher in BestTeachers %}
+					<option value = "{{teacher}}"> {{teacher}} </option>
+				{% endfor %}
+			</select> 
+		</td>
+		<td> 
+			<select size = "10" Id = "InterestingClassList"> 
+				{% for teacher in BestTeachers %}
+					<option value = "{{teacher}}"> {{teacher}} </option>
+				{% endfor %}
+			</select> 
+		</td>
+		<td> 
+			<select size = "10" Id = "EasiestClassList"> 
+				{% for teacher in BestTeachers %}
+					<option value = "{{teacher}}"> {{teacher}} </option>
+				{% endfor %}
+			</select> 
+		</td>
+	
+	</tr>
+	<tr>
+		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('ProfessorList'));"> Search for Teacher </button></td>
+		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('BestProfessorsList'));"> Search for Teacher </button></td>
+		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('EasiestProfessorsList'));"> Search for Teacher </button></td>
+		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('InterestingClassList'));"> Search for Teacher </button></td>
+		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('EasiestClassList'));"> Search for Teacher </button></td>
+
+	
+	</tr>
+</table>
+{% endblock %}

@@ -60,17 +60,29 @@
 		}
 	</script>
 	
-	<script> function SearchInstructorUrl() {
-		var instr_element = document.getElementById('Department');
-		var instr = instr_element.options[instr_element.selectedIndex].value;
-		var url = ''.concat('http://localhost:5000/InstructorByCollege/', instr);
-		document.getElementById('TeacherInfoFrame').src = url
-		//location.replace(url);
+	<script> function SearchInstructorByCollege() {
+			var instr_element = document.getElementById('College');
+			var instr = instr_element.options[instr_element.selectedIndex].value;
+			var url = ''.concat('http://localhost:5000/InstructorByCollege/', instr);
+			document.getElementById('TeacherInfoFrame').src = url
+	}
+		function SearchInstructorByDepartment(){
+			var instr_element = document.getElementById('Department');
+			var instr = instr_element.options[instr_element.selectedIndex].value;
+			var url = ''.concat('http://localhost:5000/Department/', instr);
+			document.getElementById('TeacherInfoFrame').src = url
+
+
 		
 	}
+	
 		
-		
-	</script>  
+	</script> 
+	<script> function IframeTeacherSearch(element){
+			var teacher = element.options[element.selectedIndex].value;
+			location.href = "".concat("../instructor_info/", teacher);
+		}
+	</script>
 	</head>
 	<body>
 

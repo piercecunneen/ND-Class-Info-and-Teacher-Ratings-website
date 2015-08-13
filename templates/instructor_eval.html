@@ -6,29 +6,27 @@
 <p align="center">Select an instructor from the list or search by deptartment</p>
 <br>
 </div>
-			<div style="float: left">
-			Department:
-			<select id = "Department">
-			{% for key in DepartmentKeys %}
-   				<option value = {{DepartmentOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			<script>
-			document.getElementById('Department').options[0].selected = true;
-			</script>
-			</select>
-<script>
-function setURL(url){
-    document.getElementById('iframe').src = url;
-}
-</script>
-<a href="home.html" target="iframe">button</a>
-<button type="button" onclick="setURL(http://google.com/html)">Search
-	<a href="home.html" target="iframe">button</a>
+		<div style="float: left">Department:
+		<select id = "Department">
+		<option value="ARCH">Architecture</option>
+		<option value="AL">Arts and Letters</option>
+		<option value="EG">Engineering</option>
+		<option value="LAW">Law</option>
+		<option value="BUS">Mendoza</option>
+		<option value="SCI">Science</option>
+		<script>
+		document.getElementById('Department').options[0].selected = true;
+		</script>
+		</select>
+	<script>
+		var x = SearchInstructorUrl();
+	</script>
+	<button type="button" onclick="SearchInstructorUrl();"> <a href="x;" target="iframe" >Search</a> 
 	</button>
+			target="iframe"
+</div>
 			
-			</div>
-			
-<iframe name="iframe" height="500px" width="800px"></iframe>
+<iframe id="iframe" height="500px" width="800px" title="SearchInstructorURL()" frameborder="2"></iframe>
 
 
 {% endblock %}

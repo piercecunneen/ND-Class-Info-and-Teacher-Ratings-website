@@ -33,7 +33,7 @@ def eval():
 @app.route('/class_search/Term=<term>/Subject=<subject>/Credit=<credit>/Attr=<attr>/Division=<divs>/Campus=<campus>')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
-    #
+    
     # Keys specifies what exactly we want to show up on our class search
     Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
@@ -51,6 +51,11 @@ def DisplayClassPage(Class):
 @app.route('/departments/')
 def DepartmentsMainPage():
     return render_template('departments.html')
+
+
+@app.route('/InstructorByCollege/<College>')
+def InstructorSearchCollege(College):
+    return render_template('InstructorByCollege.html', College = College)
 
 if __name__=='__main__':
     app.run(debug=True)

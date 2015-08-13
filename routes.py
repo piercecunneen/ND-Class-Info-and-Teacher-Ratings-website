@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Flask, render_template
 from class_search_web_scrapping import  GetOptions, Sort_dict, GetClasses, GetClassDescriptionAndAll
 
@@ -34,7 +33,9 @@ def eval():
 @app.route('/class_search/Term=<term>/Subject=<subject>/Credit=<credit>/Attr=<attr>/Division=<divs>/Campus=<campus>')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
-    Keys = ['Title', 'Course - Sec', 'Cr', 'Max', 'Opn', 'CRN', 'Instructor', 'When','Begin','Where']
+    #
+    # Keys specifies what exactly we want to show up on our class search
+    Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
     DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
     CampusOptionKeys = Sort_dict(Options[2], False), CampusOptions = Options[2], 
@@ -47,6 +48,9 @@ def DisplayClassPage(Class):
     ClassInformation = Class
     return render_template('class_info.html', ClassInfo = ClassInformation)
     
+@app.route('/departments/')
+def DepartmentsMainPage():
+    return render_template('departments.html')
 
 if __name__=='__main__':
     app.run(debug=True)

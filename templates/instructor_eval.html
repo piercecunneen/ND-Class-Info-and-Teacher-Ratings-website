@@ -6,27 +6,32 @@
 <p align="center">Select an instructor from the list or search by deptartment</p>
 <br>
 </div>
-		<div style="float: left">Department:
-		<select id = "Department">
-		<option value="ARCH">Architecture</option>
-		<option value="AL">Arts and Letters</option>
-		<option value="EG">Engineering</option>
-		<option value="LAW">Law</option>
-		<option value="BUS">Mendoza</option>
-		<option value="SCI">Science</option>
+	<div style="float: left">
+		<select id = "College">
+			<option value="ARCH">Architecture</option>
+			<option value="AL">Arts and Letters</option>
+			<option value="EG">Engineering</option>
+			<option value="LAW">Law</option>
+			<option value="BUS">Mendoza</option>
+			<option value="SCI">Science</option>
 		<script>
-		document.getElementById('Department').options[0].selected = true;
+			document.getElementById('College').options[0].selected = true;
 		</script>
 		</select>
-	<script>
-		//var x = SearchInstructorUrl();
-	</script>
-	<button type="button" onclick="SearchInstructorUrl();"> Search 
-	</button>
-			target="iframe"
-</div>
+		 
+		<button type="button" onclick="SearchInstructorByCollege();"> Search by College </button>
+		
+		<select id = "Department">
+			{% for key in DepartmentKeys %}
+				<option value = "{{DepartmentOptions[key]}}" > {{key}} </option>
+			{% endfor %}
+		</select>
+		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>
+		Search by Name: <input> </input>
+
+	</div>
 			
-<iframe id="TeacherInfoFrame" height="500px" width="800px" frameborder="2"> </iframe>
+<iframe id="TeacherInfoFrame" height="500px" width="900px" frameborder="2">  </iframe>
 
 
 {% endblock %}

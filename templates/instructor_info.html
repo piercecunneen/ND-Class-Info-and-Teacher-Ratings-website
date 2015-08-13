@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+<h2 id = "ProfessorName"> {{ProfessorName}} </h2> <button id = "SubmitProfessorReview"> Submit review for this Professor </button>
+
+<div id="Sections">
+	<div id="left" >
+		<h3 align = "center"> Courses Taught </h3>
+		<table border = "1" id = "ClassesTaughtTable">
+				<tr>
+					<td> Course Name </td>
+					<td> Semester Taught </td>
+				</tr>
+			{% for course in Courses %}
+				<tr> 
+					<td> {{course}} </td> 
+					<td> Semester </td>
+				</tr>
+			{% endfor %}
+		</table>
+			
+   	</div>
+    	<div id="right">
+		<h3 align = "center"> Evaluations </h3>
+		<table id = "EvaluationsTable" border = "1"> 
+			<tr>
+					<td align = "center"> Rating Category </td>
+					<td align = "center"> Score </td>
+			</tr>
+			<tr>
+				<td align = "center"> Grading </td>
+				<td align = "center"> Grading score </td>
+			</tr>
+			<tr>
+				<td align = "center"> Quality </td>
+				<td align = "center"> Quality score </td>
+
+			</tr>
+			<tr>
+				<td align = "center"> Workload </td>
+				<td align = "center"> Workload score </td>
+
+			</tr>
+			<tr>
+				<td align = "center"> Overall </td>
+				<td align = "center"> Overall score </td>
+
+			</tr>
+		</table>
+		
+		
+    	</div>
+</div>
+
+{% endblock %}

@@ -54,8 +54,23 @@ def DepartmentsMainPage():
 
 
 @app.route('/InstructorByCollege/<College>')
-def InstructorSearchCollege(College):
+def InstructorByCollege(College):
     return render_template('InstructorByCollege.html', College = College)
+    
+@app.route('/Department/<Department>')
+def InstructorByDepartment(Department):
+    Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
+    BestTeachers = ['Best Teacher 1', 'Best Teacher 2', 'Best Teacher 3','Best Teacher 4', 'Best Teacher 5']
+    DepartmentOptions = Options[3]
+    for option in DepartmentOptions:
+        if DepartmentOptions[option] == Department:
+            Department = option
+    return render_template('Department.html', Department = Department,Teachers = Teachers, BestTeachers = BestTeachers)
+
+@app.route('/instructor_info/<ProfessorName>')
+def Instructor(ProfessorName):
+    Courses = ['Course 1', 'Course 2', 'Course 2']
+    return render_template('instructor_info.html', Courses = Courses, ProfessorName = ProfessorName)
 
 if __name__=='__main__':
     app.run(debug=True)

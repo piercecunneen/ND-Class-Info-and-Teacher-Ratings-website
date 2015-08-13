@@ -58,7 +58,19 @@
 			
 			
 		}
-	</script>  
+	</script>
+	
+	<script> function SearchInstructorUrl() {
+		var instr_element = document.getElementById('Department');
+		var instr = instr_element.options[instr_element.selectedIndex].value;
+		var url = ''.concat('http://localhost:5000/instructor_info.html/Department=', instr);
+		return url;
+		location.replacae(url);
+		
+	}
+		
+		
+	></script>  
 	</head>
 	<body>
 

@@ -72,15 +72,22 @@
 <table border = "1" class = "ClassData">
 		<tr>
 			{% for key in Keys %}
-				<td> {{key}} </td>
+				{% if key != 'Teacher_Info'%}
+					<td> {{key}} </td>
+				{% endif %}
 			{% endfor %}
 		</tr>
 	{% for class in ClassList %}
 		<tr> 
 			{% for i in Keys %}
 				{% if i == 'Title' %}
-					<td>  <a href ="/class_info/{{class[i]}}"> {{class[i
-]}} </a> </td>
+					<td>  <a href ="/class_info/{{class[i]}}" target="_blank"> {{class[i]}} </a> </td>
+				{% elif i == 'View_Books' %}
+					<td> <a href = "{{class[i]}}" target="_blank" > View Books </a> </td>
+				{% elif i == 'Instructor' %}
+					<td> <a href = "{{class['Teacher_Info']}}" target="_blank" > {{class[i]}} </a> </td>
+				{% elif i  == 'Teacher_Info' %}
+					
 				{% else %}
 					<td> {{class[i]}} </td>
 				{% endif %}

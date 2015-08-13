@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-from codecs import encode
 
 # coding: latin1
 def CleanUpString(string):
@@ -145,14 +144,14 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         return Classlist
 
 
-def GetClassDescriptionAndAll(url):
+def GetClassDescriptionAndAll(url_extension):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
     returns: A list with the course description, a string that reveals the contents of the rest of the list, 
             the prerequisites (if any), and corequisites (if a
             String options: 'Both', 'Neither', 'Prerequisote Only', or 'Corequisite Only'
     """
-    
+    url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet?' + url_extension
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
     

@@ -50,7 +50,7 @@ def DisplayClassPage(Class):
     
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
-    return render_template('DepartmentsMain.html')
+    return render_template('DepartmentsMain.html’)
 
 
 @app.route('/InstructorByCollege/<College>')

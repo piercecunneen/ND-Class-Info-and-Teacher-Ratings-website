@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from class_search_web_scrapping import  GetOptions, Sort_dict, GetClasses, GetClassDescriptionAndAll
+from class_search_web_scrapping import  GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments
 
 
 app = Flask(__name__)
@@ -50,7 +50,10 @@ def DisplayClassPage(Class):
     
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
-    return render_template('DepartmentsMain.html')
+    DepartmentsByCollege = GetSubjectsInDepartments()
+    Colleges = ['School of Architecture', 'College of Arts & Letters', 'College of Engineering','First Year of Studies', 'The Law School','Mendoza College of Business', 'College of Science', "St. Mary's College",'Other']
+
+    return render_template('DepartmentsMain.html', DepartmentsByCollege = DepartmentsByCollege)
 
 
 @app.route('/InstructorByCollege/<College>')
@@ -59,6 +62,7 @@ def InstructorByCollege(College):
     
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
+    # Place holder lists
     Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
     BestTeachers = ['Best Teacher 1', 'Best Teacher 2', 'Best Teacher 3','Best Teacher 4', 'Best Teacher 5']
     DepartmentOptions = Options[3]

@@ -48,9 +48,9 @@ def DisplayClassPage(Class):
     ClassInformation = Class
     return render_template('class_info.html', ClassInfo = ClassInformation)
     
-@app.route('/departments/')
+@app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
-    return render_template('departments.html')
+    return render_template('DepartmentsMain.html')
 
 
 @app.route('/InstructorByCollege/<College>')

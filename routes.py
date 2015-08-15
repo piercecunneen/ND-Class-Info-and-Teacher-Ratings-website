@@ -51,8 +51,6 @@ def DisplayClassPage(Class):
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
     DepartmentsByCollege = GetSubjectsInDepartments()
-    Colleges = ['School of Architecture', 'College of Arts & Letters', 'College of Engineering','First Year of Studies', 'The Law School','Mendoza College of Business', 'College of Science', "St. Mary's College",'Other']
-
     return render_template('DepartmentsMain.html', DepartmentsByCollege = DepartmentsByCollege)
 
 
@@ -76,6 +74,20 @@ def Instructor(ProfessorName):
     Courses = ['Course 1', 'Course 2', 'Course 2']
     return render_template('instructor_info.html', Courses = Courses, ProfessorName = ProfessorName)
 
+@app.route('/BestClassesFor/')
+def BestClassesFor():
+    # Dummy list until we can access classes from database
+    X = ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6']
+    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'Phil2', 'Social Science': 'SOSC', 'University Seminars':'USEM', 'Natural Science (req)': 'NASC','Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
+    SubjectsSorted = ['2nd Theology', '2nd Philosophy', 'Social Science', 'University Seminars', 'Natural Science (req)','Fine Arts', 'Literature', 'History']
+
+    return render_template('BestClassesFor.html', Subjects = Attributes, SubjectsSorted = SubjectsSorted, Courses = X)
+
+
+@app.route('/ProfessorReviewForm/<ProfessorName>')
+def ProfessorReview(ProfessorName = None):
+    CoursesTaught = ["Course 1", "Course2", "Course 3", "Course3"]
+    return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = CoursesTaught)
 if __name__=='__main__':
     app.run(debug=True)
 

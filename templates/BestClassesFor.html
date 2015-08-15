@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 align = "middle"> Best Classes for ....</h2>
+<table>
+	<tr> 
+		{% for i in SubjectsSorted%}
+			<td><button onclick = "GoToURL(getElementById('BestClassesFor{{i}}'))"> {{i}} </button> </td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{% for i in SubjectsSorted %}
+			<td>
+			<select size = "5" id = "BestClassesFor{{i}}"> 
+			{% for course in Courses %}
+				<option> {{course}} </option> 
+			{% endfor %}
+			</select>
+			</td>
+		{% endfor %}	
+	</tr>
+
+</table>
+
+{% endblock %}

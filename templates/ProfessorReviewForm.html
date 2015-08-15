@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 align = "middle"> Review for {{ProfessorName}} </h2>
+<table style = "border-spacing: 70px 10px;">
+	<tr>
+		<td> Choose a course to review: 
+			<select>   
+				{% for course in CoursesTaught %}
+					<option> {{course}} </option>
+				{% endfor %}
+			</select>
+		</td>
+		<td> Course ratings: </td>
+		<td> Professor ratings: </td>
+	</tr>
+	<tr>
+		<td> </td>
+		<td> Toughness <script> <select id = ToughnessID </td>
+	</tr>
+</table>
+
+{% endblock %}

@@ -1,7 +1,42 @@
 {% extends "layout.html" %}
   
 {% block content %}
-<h2 align = "middle"> Search Departments </h2>
-
-
+<h2 align = "middle"> Search Departments for Class and Professor Information </h2>
+<table>
+	<tr>
+		{% for college in DepartmentsByCollege[0:5] %}
+			<td> <button onclick = "GoToDepartment(document.getElementById('{{college[0]}}'))"> {{college[0]}} </button> </td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{% for college in DepartmentsByCollege[0:5] %}
+			<td style = "align: left;">
+			<select size = "5" id = "{{college[0]}}" style = "width:200px;"> 
+				{% for department in college[1:] %}
+					<option> {{department}} </option>
+				{% endfor %}
+			</select>
+			</td>
+		{% endfor %}
+				
+	</tr>
+	<tr>
+		{% for college in DepartmentsByCollege[5:] %}
+			<td><button onclick = "GoToDepartment(document.getElementById('{{college[0]}}'))"> {{college[0]}} </button> </td>
+		{% endfor %}
+	</tr>
+	<tr>
+		{% for college in DepartmentsByCollege[5:] %}
+			<td style = "align: left;">
+			<select id = "{{college[0]}}" size = "5" style = "width:200px;"> 
+				{% for department in college[1:] %}
+					<option> {{department}} </option>
+				{% endfor %}
+			</select>
+			</td>
+		{% endfor %}
+				
+	</tr>
+	
+</table>
 {% endblock %}

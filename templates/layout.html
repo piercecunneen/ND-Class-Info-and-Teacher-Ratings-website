@@ -76,7 +76,11 @@
 
 		
 	}
-	
+	</script>
+	<script> function GoToDepartment(element) {
+			var department = element.options[element.selectedIndex].value;
+			location.href = "".concat("../Department/" + department);
+		}
 		
 	</script> 
 	<script> function IframeTeacherSearch(element){

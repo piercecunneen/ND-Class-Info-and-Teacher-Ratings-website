@@ -187,3 +187,42 @@ def Sort_dict(data, isTerms):
         return keys
     else:
         return sorted(data)
+
+
+#CollegeDepartments = []
+#for i in Colleges:
+#    CollegeDepartments.append([])
+#Subjects = GetOptions()[3]
+#for subject in Subjects:
+#    index = 0
+#    for i in Colleges:
+#        print i + ': ' + str(index)
+#        index += 1
+#    print subject
+#    Department = input("Department = ")
+#    print ' '
+#    print ' ----------------------'
+#    CollegeDepartments[Department].append(subject)
+def GetSubjectsInDepartments():
+    Colleges = ['School of Architecture', 'College of Arts & Letters', 'College of Engineering','First Year of Studies', 'The Law School','Mendoza College of Business', 'College of Science', "St. Mary's College",'Other']
+    Colleges_with_deparments = []
+    for i in Colleges:
+        Colleges_with_deparments.append([])
+    f = open('SubjectsInColleges.txt', 'r')
+    department_index = 0
+    for line in f.read().split('\n'):
+        if line == '-----':
+            department_index += 1
+        else:
+            if line == '':
+                continue
+            else:
+                Colleges_with_deparments[department_index].append(line)
+    sorted_Colleges_with_deparments = []
+    for college in Colleges_with_deparments:
+        new_college = [college[0]] + sorted(college[1:])
+        sorted_Colleges_with_deparments.append(new_college)
+    f.close()
+    return sorted_Colleges_with_deparments
+    
+    

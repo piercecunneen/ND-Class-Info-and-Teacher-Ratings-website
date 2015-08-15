@@ -1,17 +1,17 @@
 import sqlite3
 import os.path
 
-
+#/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/ local path
 sqlite_file = 'review.sqlite'
 x = os.path.isfile(sqlite_file);
 print x
-x = True
+
 
 reviewData = 'reviewData'
 columnOne = 'Last Name'
 type = 'TEXT'
 
-if x == True:
+if x == False:
     # connect to database file
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
@@ -29,7 +29,7 @@ if x == True:
             .format(tn=reviewData, cn=listItem, ct=type))
 
 
-    print 'database created successfully exists' 
+    print 'database created successfully' 
     # Committing changes and closing the connection to the database file
     conn.commit()
     conn.close()

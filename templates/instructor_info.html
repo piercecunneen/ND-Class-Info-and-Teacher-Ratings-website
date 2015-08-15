@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
   
 {% block content %}
-<h2 id = "ProfessorName"> {{ProfessorName}} </h2> <button id = "SubmitProfessorReview"> Submit review for this Professor </button>
+<h2 id = "ProfessorName"> {{ProfessorName}} </h2> <button id = "SubmitProfessorReview" onclick = " location.href = '/ProfessorReviewForm/{{ProfessorName}}'" > Submit review for this Professor </button>
 
 <div id="Sections">
 	<div id="left" >

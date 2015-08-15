@@ -87,6 +87,23 @@
 			location.href = "".concat("../instructor_info/", teacher);
 		}
 	</script>
+	<script> function GoToURL(element){
+			var course = element.options[element.selectedIndex].value;
+			location.href = "".concat("../class_info/", course);
+	}
+	</script>
+	<script>
+		function CreateRatingsSelect(elementID){
+			alert('Test')
+			document.createElement("")
+			for (var i = 0; i<=10; i++){
+    				var opt = document.createElement('option');
+   				opt.value = i;
+  				opt.innerHTML = i;
+  				select.appendChild(opt);
+}
+		}
+	</script>
 	</head>
 	<body>
 
@@ -98,10 +115,12 @@
 
 	<nav>
 		Quick Links<br><br />
-		<a href="/">Home</a><br><br>
-		<a href="/class_search/">Search Classes</a><br><br />
-		<a href="/instructor_eval/">Instructor Evaluations</a><br><br />
-		<a href="/DepartmentsMain/">Departments </a><br><br />
+		<a href="/">Home</a><br>
+		<a href ="http://giphy.com/gifs/jon-stewart-the-daily-show-with-Cb30tFby1yCTm"> Submit a review </a> <br>
+		<a href="/class_search/">Search Classes</a><br>
+		<a href="/instructor_eval/">Instructor Evaluations</a><br>
+		<a href="/DepartmentsMain/">Departments </a><br>
+		<a href = "/BestClassesFor/"> Best Classes For ... </a>
 		</nav>
 
 

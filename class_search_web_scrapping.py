@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-
+from time import sleep
 # coding: latin1
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
@@ -104,15 +104,18 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             Classlist.append({})
             Info = Class.find_all('td')
             URLS.append([])
-            for i, head in zip(Info,Class_Headers):
+            for i, header in zip(Info,Class_Headers):
                 url = ''
                 url = i.find_all('a')
                 if url:
                     URLS[Num_Classes].append(url)
                 try:
-                    Classlist[Num_Classes][head] = CleanUpString(str(i.text).replace('\t', ''))
+                    Classlist[Num_Classes][header] = CleanUpString(str(i.text).replace('\t', ''))
                 except UnicodeEncodeError:
-                    Classlist[Num_Classes][head] = CleanUpString(i.text.replace('\t', ''))
+                    Classlist[Num_Classes][header] = CleanUpString(i.text.replace('\t', ''))
+            Classlist[Num_Classes]['Campus'] = campus
+            Classlist[Num_Classes]['Term'] = term
+            Classlist[Num_Classes]['Attribute'] = Attr
             Num_Classes += 1
         
         # Reassign temporary counting variable
@@ -224,5 +227,27 @@ def GetSubjectsInDepartments():
         sorted_Colleges_with_deparments.append(new_college)
     f.close()
     return sorted_Colleges_with_deparments
+    
+
+
+def GetAllClassSearchData():
+    Options = GetOptions()
+    TermOptions = Options[0]
+    DivisionOptions = Options[1]
+    CampusOptions = Options[2]
+    SubjectOptions = Options[3]
+    AttributeOptions = Options[4]
+    SubjectValues = SubjectOptions.values()
+    
+    CoursesList = []
+    for term in TermOptions.values():
+        for campus in CampusOptions.values():
+            for attribute in AttributeOptions.values():
+                Courses = GetClasses(term, SubjectValues, 'A', attribute, 'A', campus)
+                for course in Courses:
+                    CoursesList.append(course)
+                print len(CoursesList)
+        print str(TermOptions[term])
+    return CoursesList
     
     

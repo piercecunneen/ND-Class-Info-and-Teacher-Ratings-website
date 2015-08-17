@@ -95,14 +95,51 @@
 	</script>
 	<script>
 		function CreateRatingsSelect(elementID){
-			alert('Test')
-			document.createElement("")
+			element = document.getElementById(elementID);
+			var opt = document.createElement('option')
+			opt.value = '-- select an option --';
+			opt.innerHTML = '-- select an option --';
+			element.appendChild(opt);
 			for (var i = 0; i<=10; i++){
     				var opt = document.createElement('option');
    				opt.value = i;
   				opt.innerHTML = i;
-  				select.appendChild(opt);
-}
+  				element.appendChild(opt);
+			}
+		}
+	</script>
+	<script>
+		function CheckBeforeSubmitting(){
+			var form = document.getElementById('formID'); 
+			
+			var ToughnessElement = document.getElementById('ToughnessID');
+			var Toughness = ToughnessElement.options[ToughnessElement.selectedIndex].value;
+
+			var GradingElement = document.getElementById('GradingID');
+			var Grading = GradingElement.options[GradingElement.selectedIndex].value;
+
+			var InterestLevelElement = document.getElementById('InterestID');
+			var InterestLevel = InterestLevelElement.options[InterestLevelElement.selectedIndex].value;
+
+			var WorkloadElement = document.getElementById('WorkloadID');
+			var Workload = WorkloadElement.options[WorkloadElement.selectedIndex].value;
+
+			var QualityElement = document.getElementById('QualityID');
+			var Quality = QualityElement.options[QualityElement.selectedIndex].value;
+			
+			var TextbookElement = document.getElementById('TextbookNeeded');
+			var Textbook = TextbookElement.options[TextbookElement.selectedIndex].value;
+			
+			var CourseElement = document.getElementById('CoursesTaughtID');
+			var Course = CourseElement.options[CourseElement.selectedIndex].value;
+        		if (Textbook === '-- select an option --' || Workload === '-- select an option --' || 
+			Quality === '-- select an option --' ||InterestLevel === '-- select an option --' ||
+			Grading === '-- select an option --' || Toughness == '-- select an option --' 
+			|| Course == '-- select an option --') {
+            			alert('Please fill out all required forms'); // error message
+				return true;
+       			}
+			return false;
 		}
 	</script>
 	</head>

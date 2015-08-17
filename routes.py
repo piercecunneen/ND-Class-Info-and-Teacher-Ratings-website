@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 from class_search_web_scrapping import  GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments
 
 
@@ -45,8 +45,8 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 
 @app.route('/class_info/<Class>')
 def DisplayClassPage(Class):
-    ClassInformation = Class
-    return render_template('class_info.html', ClassInfo = ClassInformation)
+    CourseName = Class
+    return render_template('class_info.html', CourseName = CourseName)
     
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
@@ -84,10 +84,31 @@ def BestClassesFor():
     return render_template('BestClassesFor.html', Subjects = Attributes, SubjectsSorted = SubjectsSorted, Courses = X)
 
 
-@app.route('/ProfessorReviewForm/<ProfessorName>')
+
+
+
+
+
+
+
+@app.route('/ProfessorReviewForm/<ProfessorName>', methods = ['GET', 'POST'])
 def ProfessorReview(ProfessorName = None):
+    if request.method == 'POST':
+        CourseName = request.form['CoursesTaughtID']
+        Grading = request.form['GradingID']
+        Quality = request.form['QualityID']
+        Workload = request.form['WorkloadID']
+        CourseToughness = request.form['ToughnessID']
+        CourseInterest = request.form['InterestID']
+        TextbookNeeded =  request.form['TextbookNeeded']
+        OptionalDescription = request.form['OptionalResponse']
+        return render_template('PostSubmissionForm.html', test = Grading + 5)        
+         
     CoursesTaught = ["Course 1", "Course2", "Course 3", "Course3"]
     return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = CoursesTaught)
+
+
+
 if __name__=='__main__':
     app.run(debug=True)
 

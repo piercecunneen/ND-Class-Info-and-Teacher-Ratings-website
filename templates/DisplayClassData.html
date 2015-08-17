@@ -33,7 +33,7 @@
 	</tr>
 	<tr> 
 		<td> Subjects: 
-			<select size = 5 multiple = "True" id = "SubjectOptionsTwo" >
+			<select size = 5 multiple = "true" id = "SubjectOptionsTwo" >
 			{% for key in SubjectOptionKeys %}
    				<option value = {{SubjectOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -66,8 +66,12 @@
 	</tr>
 
 </table>
-<button onclick="SearchClassesUrl(true);"> Search Classes </button>
-
+<table>
+	<tr>
+		<td>  <button onclick="SearchClassesUrl(true);"> Search Classes </button> </td<
+		<td> Click on a course or professor for info and past reviews </td>
+	</tr>
+</table>
   
 <table border = "1" class = "ClassData">
 		<tr>

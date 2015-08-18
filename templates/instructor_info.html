@@ -2,19 +2,22 @@
   
 {% block content %}
 <h2 id = "ProfessorName"> {{ProfessorName}} </h2> <button id = "SubmitProfessorReview" onclick = " location.href = '/ProfessorReviewForm/{{ProfessorName}}'" > Submit review for this Professor </button>
+<p> {{ID}} </p>
 
 <div id="Sections">
 	<div id="left" >
 		<h3 align = "center"> Courses Taught </h3>
 		<table border = "1" id = "ClassesTaughtTable">
 				<tr>
-					<td> Course Name </td>
+					<td> Course </td>
 					<td> Semester Taught </td>
+					<td> Title </td>
 				</tr>
 			{% for course in Courses %}
 				<tr> 
-					<td> {{course}} </td> 
-					<td> Semester </td>
+					<td><a href = "/class_info/{{course[2]}}/{{course[3]}}/{{course[4]}}"> {{course[0]}}</a> </td> 
+					<td> {{course[1]}} </td>
+					<td> {{course[2]}} </td>
 				</tr>
 			{% endfor %}
 		</table>

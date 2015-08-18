@@ -3,7 +3,7 @@
 <form onsubmit = "if (CheckBeforeSubmitting()){return false;};" id = "formID" method = "post">
 
 <h2 align = "middle"> Review for {{ProfessorName}} </h2>
-<table style = "border-spacing: 70px 10px;">
+<table>
 	<tr>
 		<td> Choose a course to review: 
 		</td>
@@ -19,32 +19,53 @@
 				{% endfor %}
 			</select> 
 		</td>
-		<td> Toughness <select id = "ToughnessID" name = "ToughnessID"><script> CreateRatingsSelect('ToughnessID'); </script> </select> </td>
-		<td> Grading  <select id = "GradingID" name = "GradingID"><script> CreateRatingsSelect('GradingID'); </script> </select> </td>
+		<td> Toughness <br> <select id = "ToughnessID" name = "ToughnessID"><script> CreateRatingsSelect('ToughnessID'); </script> </select> </td>
+		<td> Grading <br>  <select id = "GradingID" name = "GradingID"><script> CreateRatingsSelect('GradingID'); </script> </select> </td>
 
 	</tr>
 	<tr>
 		<td> </td>
 		<td> Interest Level<br> <select id = "InterestID" name = "InterestID" ><script> CreateRatingsSelect('InterestID'); </script> </select> </td>
-		<td> Workload  <select id = "WorkloadID" name = "WorkloadID"><script> CreateRatingsSelect('WorkloadID'); </script> </select> </td>
+		<td> Workload  <br> <select id = "WorkloadID" name = "WorkloadID"><script> CreateRatingsSelect('WorkloadID'); </script> </select> </td>
 
 	</tr>
 	<tr>
 		<td> </td>
-		<td> Was the Textbook necessary?
+		<td> Was the Textbook necessary? <br>
 			<select id = "TextbookNeeded" name = "TextbookNeeded"> 
 				<option value = '-- select an option --'> -- select an option -- </option>
 				<option value = 'Yes'> Yes </option>
 				<option value = 'No'> No </option>
 			</select>
  		</td>
-		<td> Quality  <select style = "float: top;" id = "QualityID" name = "QualityID"><script> CreateRatingsSelect('QualityID'); </script> </select> </td>
+		<td> Quality <br> <select style = "float: top;" id = "QualityID" name = "QualityID"><script> CreateRatingsSelect('QualityID'); </script> </select> </td>
 	</tr>
+	<tr>
+		<td> </td>
+		<td> </td>
+		<td> Accessibility <br> 
+			<select id = "AccessibilityID" name = "AccessibilityID">
+				<script> CreateRatingsSelect('AccessibilityID'); </script>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td> </td>
+		<td> </td>
+		<td> Was the Syllabus useful? <br> 
+			<select id = "SyllabusID" name = "SyllabusID">
+				<option> -- select an option -- </option>
+				<option> Never used it </option>
+				<option> It came in handy at times </option>
+				<option> It's your lifeline </option>
+			</select>
+		</td>
+	</tr>
+
 	<tr> 
 		<td> </td>
-		<td> </td>
-		<td> </td>
-		<td> Description of Course and Teacher (optional) <textarea  style = "height: 100px; width: 300px;" id = "OptionalResponse" name = "OptionalResponse" > </textarea> </td>
+		<td>Description of Course (optional) <textarea  style = "height: 100px; width: 270px;" id = "OptionalResponseCourse" name = "OptionalResponseCourse" > </textarea> </td>
+		<td> Description of Professor (optional) <textarea  style = "height: 100px; width: 270px;" id = "OptionalResponseProfessor" name = "OptionalResponseProfessor" > </textarea> </td>
 	</tr>
 </table>
 	<input type='submit' required>

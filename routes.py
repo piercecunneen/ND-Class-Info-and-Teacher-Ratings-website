@@ -45,7 +45,7 @@ def eval():
 def DisplayClasses(term, subject, credit, attr, divs, campus):
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
     # Keys specifies what exactly we want to show up on our class search
-    Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','Where']
+    Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
     DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
     CampusOptionKeys = Sort_dict(Options[2], False), CampusOptions = Options[2], 
@@ -78,7 +78,10 @@ def DepartmentsMainPage():
 
 @app.route('/InstructorByCollege/<College>')
 def InstructorByCollege(College):
-    return render_template('InstructorByCollege.html', College = College)
+    Departments = [i for i in GetSubjectsInDepartments() if College in i[0]][0][1:]
+    Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
+
+    return render_template('InstructorByCollege.html', College = College ,Departments = Departments, Teachers = Teachers)
     
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
@@ -127,18 +130,16 @@ def ProfessorReview(ProfessorName = None):
         Workload = request.form['WorkloadID']
         #Accessibility = request.form['AccessibilityID']
         #Syllabus = request.form['Syllabus']
-        OptionalDescriptionProfessor = request.form['OptionalResponseProfessor']
-
+        OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor'])
         # Course Evaluation
         CourseToughness = request.form['ToughnessID']
         CourseInterest = request.form['InterestID']
         TextbookNeeded =  request.form['TextbookNeeded']
-        OptionalDescriptionCourse = request.form['OptionalResponseCourse']
-        
+        OptionalDescriptionCourse = str(request.form['OptionalResponseCourse'])
         # Add to database
         
         
-        return render_template('PostSubmissionForm.html', test = CourseToughness)        
+        return render_template('PostSubmissionForm.html', test = CourseName)        
          
     CoursesTaught = ["Course 1", "Course2", "Course 3", "Course3"]
     return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = CoursesTaught)

@@ -34,8 +34,8 @@
 		<td> Was the Textbook necessary? <br>
 			<select id = "TextbookNeeded" name = "TextbookNeeded"> 
 				<option value = '-- select an option --'> -- select an option -- </option>
-				<option value = 'Yes'> Yes </option>
-				<option value = 'No'> No </option>
+				<option value = "1"> Yes </option>
+				<option value = "0"> No </option>
 			</select>
  		</td>
 		<td> Quality <br> <select style = "float: top;" id = "QualityID" name = "QualityID"><script> CreateRatingsSelect('QualityID'); </script> </select> </td>
@@ -55,9 +55,9 @@
 		<td> Was the Syllabus useful? <br> 
 			<select id = "SyllabusID" name = "SyllabusID">
 				<option> -- select an option -- </option>
-				<option> Never used it </option>
-				<option> It came in handy at times </option>
-				<option> It's your lifeline </option>
+				<option value = "0"> Never used it </option>
+				<option value = "1"> It came in handy at times </option>
+				<option value = "2"> It's your lifeline </option>
 			</select>
 		</td>
 	</tr>

@@ -286,7 +286,10 @@ def GetCoursesTaught(Prof_ID):
     rows = soup.find_all('tr')[2:]
     CoursesTaught = []
     for course in rows:
-        CoursesTaught.append(course.text.split('\n')[1:-1])
+        # gives string that specifies url extension for each course
+        url_data = str(course.find_all('a')[0]).split("'")[1].split('P=')[0].replace('&amp;', '')
+        url_data = url_data.split('CRN=')[1].split('TERM=')
+        CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
     return CoursesTaught
     
 

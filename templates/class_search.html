@@ -2,10 +2,11 @@
   
 {% block content %}
 <div id="ClassSearchInput">
+<form id = "ClassSearchForm" method = "post">
 <table>
 	<tr> 
 		<td> Term:
-			<select id = "TermOptions">
+			<select id = "TermOptions" name = "TermOptions">
 			{% for key in TermOptionKeys %}
    				<option value = {{TermOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -15,14 +16,14 @@
 			</select>
 		</td>	
 		<td> Division: 
-			<select id = "DivisionOptions">
+			<select id = "DivisionOptions" name = "DivisionOptions">
 			{% for key in DivisionOptionKeys %}
    				<option value = {{DivisionOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			</select>
 		</td>
 		<td > Campus: 
-			<select id = "CampusOptions">
+			<select id = "CampusOptions" name = "CampusOptions">
 			{% for key in CampusOptionKeys %}
    				<option value = {{CampusOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -35,7 +36,7 @@
 	</tr>
 	<tr> 
 		<td> Subjects: 
-			<select size = 5 multiple = "True" id = "SubjectOptions" >
+			<select size = 5 multiple = "true" id = "SubjectOptions" name = "SubjectOptions" >
 			{% for key in SubjectOptionKeys %}
    				<option value = {{SubjectOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -46,7 +47,7 @@
 			
 		</td>
 		<td>Attributes:
-			<select id = "AttributeOptions">
+			<select id = "AttributeOptions" name = "AttributeOptions">
 			{% for key in AttributeOptionKeys %}
    				<option value = {{AttributeOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -54,13 +55,12 @@
 			</select>
 		</td>
 		<td> Credits: 
-			<select id = "CreditsOptions" name = "CreditsOption">
+			<select id = "CreditsOptions" name = "CreditsOptions">
 			{% for key in CreditsOptionKeys %}
    				<option value = {{CreditsOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
 			DefaultSelect("CreditsOptions", "A");
-			
 			</script>
 			</select>
 			
@@ -68,6 +68,7 @@
 	</tr>
 
 </table>
-<button onclick="SearchClassesUrl(false );"> Search Classes </button>
+	<input type = "submit" value = "Search Classes"> </input>
+</form>
 </div>
 {% endblock %}

@@ -68,12 +68,13 @@ select {
 }	
 #left {
     	width:25%;
-    	height:200px;
     	float:left;
+	padding-left: .3cm;
+
 }
 #right {
     	width:55%;
-   	height:200px;
+	padding-left: 1cm;
    	float:left;
   	border-left: 5px double black;
 }

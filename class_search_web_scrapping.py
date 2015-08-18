@@ -108,9 +108,29 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
                 url = ''
                 url = i.find_all('a')
                 if url:
+                    #print 'New'
+                    #print len(url)
+                    #print '-------------------------------'
+                    #print url
+                    #print ' '
+                    #print ' '
+                    #print ' '
+                    #print ' '
+                    #print ' '
+                    #print ' '
                     URLS[Num_Classes].append(url)
                 try:
-                    Classlist[Num_Classes][header] = CleanUpString(str(i.text).replace('\t', ''))
+                    if header == 'Instructor':
+                        names = i.find_all('a')
+                        professors = []
+                        for name in names:
+                            try:
+                                professors.append(CleanUpString(str(name.text).replace('\t', '')))
+                            except:
+                                professors.append(CleanUpString(name.text.replace('\t', '')))
+                            Classlist[Num_Classes][header]  = professors
+                    else:
+                        Classlist[Num_Classes][header] = CleanUpString(str(i.text).replace('\t', ''))
                 except UnicodeEncodeError:
                     Classlist[Num_Classes][header] = CleanUpString(i.text.replace('\t', ''))
             Classlist[Num_Classes]['Campus'] = campus
@@ -147,14 +167,14 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         return Classlist
 
 
-def GetClassDescriptionAndAll(url_extension):
+def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
     returns: A list with the course description, a string that reveals the contents of the rest of the list, 
             the prerequisites (if any), and corequisites (if a
             String options: 'Both', 'Neither', 'Prerequisote Only', or 'Corequisite Only'
     """
-    url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet?' + url_extension
+    url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet?CRN=' + str(CRN) + '&TERM=' + str(Term)
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
     
@@ -230,24 +250,47 @@ def GetSubjectsInDepartments():
     
 
 
-def GetAllClassSearchData():
-    Options = GetOptions()
-    TermOptions = Options[0]
-    DivisionOptions = Options[1]
-    CampusOptions = Options[2]
-    SubjectOptions = Options[3]
-    AttributeOptions = Options[4]
-    SubjectValues = SubjectOptions.values()
+
+
+def GetAllProfessors():
+    f = open('TeacherList.txt', 'r')
+    Professors = {}
     
-    CoursesList = []
-    for term in TermOptions.values():
-        for campus in CampusOptions.values():
-            for attribute in AttributeOptions.values():
-                Courses = GetClasses(term, SubjectValues, 'A', attribute, 'A', campus)
-                for course in Courses:
-                    CoursesList.append(course)
-                print len(CoursesList)
-        print str(TermOptions[term])
-    return CoursesList
+    line = f.readline()
+    while line != '':
+        name = line.split('>')[-1].replace('\n', '')
+        
+        # get rid of any trailing spaces
+        while name[-1] == ' ':
+            name = name[:-1]
+        # get last name
+        last_name = name.split(',')[0]
+        
+        # get list of all middle and first names
+        surname = [string for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
+        surname_combinations = []
+        for i in range(1,len(surname)+1):
+            surname_combinations.append(' '.join(surname[0:i]))
+        name_combinations = [last_name + ', ' + surname_option for surname_option in surname_combinations]
+        ID = line.split('"')[1]
+        for i in name_combinations:
+            Professors[i] = ID
+        line = f.readline()
+    return Professors
+
+
+def GetCoursesTaught(Prof_ID):
+    url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=201510&P=' + str(Prof_ID)
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content)
+    rows = soup.find_all('tr')[2:]
+    CoursesTaught = []
+    for course in rows:
+        # gives string that specifies url extension for each course
+        url_data = str(course.find_all('a')[0]).split("'")[1].split('P=')[0].replace('&amp;', '')
+        url_data = url_data.split('CRN=')[1].split('TERM=')
+        CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
+    return CoursesTaught
     
+
     

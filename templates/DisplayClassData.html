@@ -1,31 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
+<form id = "ClassSearchForm" method = "post">
 <table>
 	<tr> 
 		<td> Term:
-			<select id = "TermOptionsTwo">
+			<select id = "TermOptions" name = "TermOptions">
 			{% for key in TermOptionKeys %}
    				<option value = {{TermOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			document.getElementById('TermOptionsTwo').options[0].selected = true;
+			document.getElementById('TermOptions').options[0].selected = true;
 			</script>
 			</select>
 		</td>	
 		<td> Division: 
-			<select id = "DivisionOptionsTwo">
+			<select id = "DivisionOptions" name = "DivisionOptions">
 			{% for key in DivisionOptionKeys %}
    				<option value = {{DivisionOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			</select>
 		</td>
 		<td > Campus: 
-			<select id = "CampusOptionsTwo">
+			<select id = "CampusOptions" name = "CampusOptions">
 			{% for key in CampusOptionKeys %}
    				<option value = {{CampusOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			DefaultSelect("CampusOptionsTwo", "M");
+			DefaultSelect("CampusOptions", "M");
 			
 			</script>
 			</select>
@@ -33,18 +34,18 @@
 	</tr>
 	<tr> 
 		<td> Subjects: 
-			<select size = 5 multiple = "true" id = "SubjectOptionsTwo" >
+			<select size = 5 multiple = "true" id = "SubjectOptions"  name = "SubjectOptions">
 			{% for key in SubjectOptionKeys %}
    				<option value = {{SubjectOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			document.getElementById('SubjectOptionsTwo').options[0].selected = true;
+			document.getElementById('SubjectOptions').options[0].selected = true;
 			</script>
 			</select>
 			
 		</td>
 		<td>Attributes:
-			<select id = "AttributeOptionsTwo">
+			<select id = "AttributeOptions" name = "AttributeOptions">
 			{% for key in AttributeOptionKeys %}
    				<option value = {{AttributeOptions[key]}}> {{key}} </option>
 			{% endfor %}
@@ -52,12 +53,12 @@
 			</select>
 		</td>
 		<td> Credits: 
-			<select id = "CreditsOptionsTwo" name = "CreditsOption">
+			<select id = "CreditsOptions" name = "CreditsOptions">
 			{% for key in CreditsOptionKeys %}
    				<option value = {{CreditsOptions[key]}}> {{key}} </option>
 			{% endfor %}
 			<script>
-			DefaultSelect("CreditsOptionsTwo", "A");
+			DefaultSelect("CreditsOptions", "A");
 			
 			</script>
 			</select>
@@ -68,7 +69,7 @@
 </table>
 <table>
 	<tr>
-		<td>  <button onclick="SearchClassesUrl(true);"> Search Classes </button> </td<
+		<td>  <button> Search Classes </button> </td<
 		<td> Click on a course or professor for info and past reviews </td>
 	</tr>
 </table>
@@ -85,11 +86,19 @@
 		<tr> 
 			{% for i in Keys %}
 				{% if i == 'Title' %}
-					<td>  <a href ="/class_info/{{class[i]}}" target="_blank"> {{class[i]}} </a> </td>
+					<td>  <a href ="/class_info/{{class[i]}}/{{class['CRN']}}/{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
 				{% elif i == 'View_Books' %}
 					<td> <a href = "{{class[i]}}" target="_blank" > View Books </a> </td>
 				{% elif i == 'Instructor' %}
-					<td> <a href ="/instructor_info/{{class[i]}}" target="_blank"> {{class[i]}} </a> </td>
+					<td> 
+					{% if class[i] %}
+						{% for name in class[i] %}
+							<a href ="/instructor_info/{{name}}" target="_blank"> {{name}} </a> <br>
+						{% endfor %}
+					{% else %}
+						<p> TBA </p>
+					{% endif %}
+					</td>
 				{% elif i  == 'Teacher_Info' %}
 					
 				{% else %}
@@ -99,4 +108,5 @@
 		</tr>
 	{% endfor %}
 </table>
+</form>
 {% endblock %}

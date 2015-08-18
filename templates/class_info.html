@@ -3,10 +3,22 @@
 {% block content %}
 
 <h1 style="text-align: center"> {{CourseName}}</h1>
-<div>
-
+<div id = "Sections">
+	<div id = "left">
+		<h4> Professor:  </h4>
+		<table> 
+			<tr> 
+			</tr>
+		</table>
+	</div>
+	<div id = "right">
+		<h3> Course Description: </h3>
+		<p> {{CourseDescription}} </p><br> <br>
+		<h3> Prerequisites: </h3>
+		<p> {{Prerequisites}} </p><br> <br>
+		<h3> Corequisites </h3>
+		<p> {{Corequisites}} </p><br> <br>
+	</div>
 </div>
-
-
 
 {% endblock %}

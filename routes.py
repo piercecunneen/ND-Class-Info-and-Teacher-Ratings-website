@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll
-
+from database_functions import getClassReview, getProfReviews, addClassReview, addProfReview, calculateProfRatings
 
 app = Flask(__name__)
 
@@ -100,8 +100,18 @@ def Instructor(ProfessorName):
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])
     except KeyError:
         CoursesTaught =  []
-    Courses = ['Course 1', 'Course 2', 'Course 2']
-    return render_template('instructor_info.html', Courses = CoursesTaught, ProfessorName = ProfessorName)
+    last_name = str(ProfessorName.split(',')[0])
+    first_name = str(ProfessorName.split(',')[1])
+    OverallRatings = calculateProfRatings(getProfReviews(last_name, first_name, '', '')) 
+    #orkloadt, gradingt, qualityt, accessiblityt, syllabust]
+    workload = OverallRatings[3]
+    grading = OverallRatings[4]
+    quality = OverallRatings[5]
+    accessibility = OverallRatings[6]
+    syllabus = OverallRatings[7]
+    
+    ProfReviews = OverallRatings[2]
+    return render_template('instructor_info.html',ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, Courses = CoursesTaught, ProfessorName = ProfessorName)
 
 @app.route('/BestClassesFor/')
 def BestClassesFor():
@@ -121,27 +131,32 @@ def BestClassesFor():
 
 
 @app.route('/ProfessorReviewForm/<ProfessorName>', methods = ['GET', 'POST'])
-def ProfessorReview(ProfessorName = None):
+def ProfessorReview(ProfessorName):
     if request.method == 'POST':
         # Instructor evaluation
-        CourseName = request.form['CoursesTaughtID']
-        Grading = request.form['GradingID']
-        Quality = request.form['QualityID']
-        Workload = request.form['WorkloadID']
-        #Accessibility = request.form['AccessibilityID']
-        #Syllabus = request.form['Syllabus']
+        CourseName = str(request.form['CoursesTaughtID'])
+        Grading = int(request.form['GradingID'])
+        Quality = int(request.form['QualityID'])
+        Workload = int(request.form['WorkloadID'])
+        Accessibility = request.form['AccessibilityID']
+        Syllabus = int(request.form['SyllabusID'])
         OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor'])
         # Course Evaluation
-        CourseToughness = request.form['ToughnessID']
-        CourseInterest = request.form['InterestID']
-        TextbookNeeded =  request.form['TextbookNeeded']
+        CourseToughness = int(request.form['ToughnessID'])
+        CourseInterest = int(request.form['InterestID'])
+        TextbookNeeded =  int(request.form['TextbookNeeded'])
         OptionalDescriptionCourse = str(request.form['OptionalResponseCourse'])
+        
         # Add to database
-        
-        
-        return render_template('PostSubmissionForm.html', test = CourseName)        
+        last_name = str(ProfessorName.split(',')[0])
+        first_name = str(ProfessorName.split(',')[1])
+    
+        department = "ACMS"
+        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department)
+        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, Syllabus, department)
+        return render_template('PostSubmissionForm.html', test = first_name)        
          
-    CoursesTaught = ["Course 1", "Course2", "Course 3", "Course3"]
+    CoursesTaught = ["Course 1", "Course 2", "Course 3", "Course 4"]
     return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = CoursesTaught)
 
 

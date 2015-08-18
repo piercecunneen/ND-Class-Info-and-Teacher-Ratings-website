@@ -7,14 +7,14 @@ import sys
 
 database = 'reviews.sqlite'
 
-def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility, department):
-    data = [lastName, firstName, review, workload, grading, quality, accessibility, department]
+def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
+    data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
     
     conn = lite.connect(database)
     with conn:
     
         c = conn.cursor()
-        c.executemany('INSERT INTO reviewTable VALUES(?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
         #conn.close()
         
 def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, syllabus, department):
@@ -22,7 +22,7 @@ def addClassReview(lastName, firstName, title, review, toughness, interest, text
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReviewTable VALUES(?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?, ?)',(data,))
 
 def getProfReviews(lastName, firstName, department, college):
     if lastName != "":
@@ -61,7 +61,6 @@ def getClassReview(department):
     
 def calculateProfRatings(profReviews): 
     i = len(profReviews)
-    print i
     workload = [0] * i
     grading = [0] * i
     quality = [0] * i
@@ -86,12 +85,12 @@ def calculateProfRatings(profReviews):
         qualityt += quality[k]
         accessiblityt += accessiblity[k]
         syllabust += syllabus[k]
-        
-    workloadt /= i
-    gradingt /= i
-    qualityt /= i
-    accessiblityt /= i
-    syllabust /= i
+    
+    workloadt /= float(i)
+    gradingt /= float(i)
+    qualityt /= float(i)
+    accessiblityt /= float(i)
+    syllabust /= float(i)
     
     review = [profReviews[0][0], profReviews[0][1], profReviews[0][2], workloadt, gradingt, qualityt, accessiblityt, syllabust]
     return review

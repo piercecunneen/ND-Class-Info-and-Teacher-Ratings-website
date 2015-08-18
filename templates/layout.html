@@ -12,12 +12,18 @@
 		}
 	</script>
 	
-	<script> function SearchClassesUrl(DataPresent){
+	<script> function SearchClasses(DataPresent){
 			if (DataPresent){
 				var term_element = document.getElementById('TermOptionsTwo');
 				var term = term_element.options[term_element.selectedIndex].value;
+
 				var subject_element = document.getElementById('SubjectOptionsTwo');
 				var subject = subject_element.options[subject_element.selectedIndex].value;
+				for (var i = 0; i < subject_element.options.length; i++){
+					if (subject_element.options[i].selected == true){
+						alert(subject_element.options[i].value)
+					}
+				}
 
 				var credit_element = document.getElementById('CreditsOptionsTwo');
 				var credit = credit_element[credit_element.selectedIndex].value;		
@@ -132,10 +138,19 @@
 			
 			var CourseElement = document.getElementById('CoursesTaughtID');
 			var Course = CourseElement.options[CourseElement.selectedIndex].value;
-        		if (Textbook === '-- select an option --' || Workload === '-- select an option --' || 
-			Quality === '-- select an option --' ||InterestLevel === '-- select an option --' ||
-			Grading === '-- select an option --' || Toughness == '-- select an option --' 
-			|| Course == '-- select an option --') {
+			
+			var SyllabusElement = document.getElementById('SyllabusID');
+			var Syllabus = SyllabusElement.options[SyllabusElement.selectedIndex].value;		
+	
+			var AccessibilityElement = document.getElementById('AccessibilityID');
+			var Accessibility = AccessibilityElement.options[AccessibilityElement.selectedIndex].value;
+			
+			var defaultstring = '-- select an option --';
+
+
+
+        		if (Textbook === defaultstring || Workload === defaultstring || Quality === defaultstring ||InterestLevel === defaultstring ||
+			Grading === defaultstring || Toughness == defaultstring  || Course == defaultstring || Accessibility == defaultstring || Syllabus == defaultstring) {
             			alert('Please fill out all required forms'); // error message
 				return true;
        			}

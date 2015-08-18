@@ -1,6 +1,32 @@
+{% extends "layout.html" %}
+
 {% block content %}
 <input type="button" value="Go Back" onclick="history.back()"></input>
 <input type="button" value="Go Forward" onclick="history.forward()"></input>
-<p> {{College}} </p>
+<h2 align = "middle"> {{College}} </h2>
+<table>
+	<tr>
+		<td> Departments: </td>
+		<td> TeacherList: </td>
+	</tr>
+	<tr>
+		<td> <select id = "AllDepartments">
+			{% for department in Departments %}
+				<option> {{department}} </option>
+			{% endfor %}
+		
+		</select>  <br><button onclick = 'GoToDepartment(document.getElementById("AllDepartments"));'> Search </button></td>
+		<td> <select id = "AllTeachers">
+			{% for teacher in Teachers %}
+				<option> {{teacher}} </option>
+			{% endfor %}
+		
+		</select>  <br><button onclick = 'IframeTeacherSearch(document.getElementById("AllTeachers"));'> Search </button></td> 
+	</tr>
+	<tr>
+	</tr>
+	<tr>
+	</tr>
+</table>
 
 {% endblock %}

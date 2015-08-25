@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2 align = "middle"> Best Classes for ....</h2>
+<h2 align = "middle"> Best Classes for ....</h2> 
 <table>
 	<tr> 
 		{% for i in SubjectsSorted%}
@@ -8,11 +8,11 @@
 		{% endfor %}
 	</tr>
 	<tr>
-		{% for i in SubjectsSorted %}
+		{% for i in Indexs %}
 			<td>
-			<select size = "5" id = "BestClassesFor{{i}}"> 
-			{% for course in Courses %}
-				<option> {{course}} </option> 
+			<select size = "5" id = "BestClassesFor{{SubjectsSorted[i]}}"> 
+			{% for course in Courses[i] %}
+				<option value = "{{course[0]}}/{{course[1]}}/{{course[2]}}"> {{course[0]}} </option> 
 			{% endfor %}
 			</select>
 			</td>

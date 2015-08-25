@@ -22,7 +22,7 @@ def addClassReview(lastName, firstName, title, review, toughness, interest, text
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?, ?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
 
 def getProfReviews(lastName, firstName, department, college):
     if lastName != "":
@@ -61,69 +61,75 @@ def getClassReview(department):
     
 def calculateProfRatings(profReviews): 
     i = len(profReviews)
-    workload = [0] * i
-    grading = [0] * i
-    quality = [0] * i
-    accessiblity = [0] * i
-    syllabus = [0] * i
-    for j in range(0,i):
-        workload[j] = profReviews[j][3]
-        grading[j] = profReviews[j][4]
-        quality[j] = profReviews[j][5]
-        accessiblity[j] = profReviews[j][6]
-        syllabus[j] = profReviews[j][7]
+    if (i == 0):
+        return ["","","","","","","",""] #change if number of categories change
+    else: 
+        workload = [0] * i
+        grading = [0] * i
+        quality = [0] * i
+        accessiblity = [0] * i
+        syllabus = [0] * i
+        for j in range(0,i):
+            workload[j] = profReviews[j][3]
+            grading[j] = profReviews[j][4]
+            quality[j] = profReviews[j][5]
+            accessiblity[j] = profReviews[j][6]
+            syllabus[j] = profReviews[j][7]
+        
+        workloadTotal = 0
+        gradingTotal = 0 
+        qualityTotal = 0
+        accessiblityTotal = 0
+        syllabusTotal = 0
+        
+        for k in range(0,i):
+            workloadTotal += workload[k]
+            gradingTotal += grading[k]
+            qualityTotal += quality[k]
+            accessiblityTotal += accessiblity[k]
+            syllabusTotal += syllabus[k]
     
-    workloadt = 0
-    gradingt = 0 
-    qualityt = 0
-    accessiblityt = 0
-    syllabust = 0
+        workloadTotal /= float(i)
+        gradingTotal /= float(i)
+        qualityTotal /= float(i)
+        accessiblityTotal /= float(i)
+        syllabusTotal /= float(i)
     
-    for k in range(0,i):
-        workloadt += workload[k]
-        gradingt += grading[k]
-        qualityt += quality[k]
-        accessiblityt += accessiblity[k]
-        syllabust += syllabus[k]
-    
-    workloadt /= float(i)
-    gradingt /= float(i)
-    qualityt /= float(i)
-    accessiblityt /= float(i)
-    syllabust /= float(i)
-    
-    review = [profReviews[0][0], profReviews[0][1], profReviews[0][2], workloadt, gradingt, qualityt, accessiblityt, syllabust]
-    return review
+        review = [profReviews[0][0], profReviews[0][1], profReviews[0][2], workloadTotal, gradingTotal, qualityTotal, accessiblityTotal, syllabusTotal]
+        return review
     
 def calculateClassRatings(classReviews):
     i = len(classReviews)
-    toughness = [0] * i
-    interest = [0] * i
-    textbook = [0] * i
-    syllabus = [0] * i
-    for j in range(0,i):
-        toughness[j] = classReviews[j][3]
-        interest[j] = classReviews[j][4]
-        textbook[j] = classReviews[j][5]
-        syllabus[j] = syllabus[j][6]
+    if (i == 0):
+        return ["","","","","","",""] #change if number of categories change
+    else:
+        toughness = [0] * i
+        interest = [0] * i
+        textbook = [0] * i
+        syllabus = [0] * i
+        for j in range(0,i):
+            toughness[j] = classReviews[j][3]
+            interest[j] = classReviews[j][4]
+            textbook[j] = classReviews[j][5]
+            syllabus[j] = syllabus[j][6]
+            
+        toughnessTotal = 0
+        interestTotal = 0
+        textbookTotal = 0
+        syllabusTotal = 0
         
-    toughnesst = 0
-    interestt = 0
-    textbookt = 0
-    syllabust = 0
-    
-    for k in range(0,i):
-        toughnesst += toughness[k]
-        interestt += interest[k]
-        textbookt += textbook[k]
-        syllabust += syllabus[k]
-        
-    toughnesst /= i
-    interestt /= i
-    textbookt /= i
-    syllabust /= i
-    review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnesst, interestt, textbookt, syllabust]
-    return review
+        for k in range(0,i):
+            toughnessTotal += toughness[k]
+            interestTotal += interest[k]
+            textbookTotal += textbook[k]
+            syllabusTotal += syllabus[k]
+            
+        toughnessTotal /= i
+        interestTotal /= i
+        textbookTotal /= i
+        syllabusTotal /= i
+        review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnessTotal, interestTotal, textbookTotal, syllabusTotal]
+        return review
     
 def bestProf(department):
     #a = calculateProfRatings(getProfReviews("", "", department, ""))

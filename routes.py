@@ -5,9 +5,14 @@ from database_functions import getClassReview, getProfReviews, addClassReview, a
 app = Flask(__name__)
 
 
+
 Options = GetOptions()
 
 Professors = GetAllProfessors()
+
+
+def GetCurrentSemester():
+    return '201510' 
 
 @app.route('/')
 def home():
@@ -17,12 +22,11 @@ def home():
 def ClassSearch():
     if request.method == 'POST':
         Term = request.form['TermOptions']
-        Subject = request.form['SubjectOptions']
+        Subject = request.form.getlist('SubjectOptions')
         Credit = request.form['CreditsOptions']
         Attribute = request.form['AttributeOptions']
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
-
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
         #return render_template('home.html', Term = Term, Subject = Subject, Attribute = Attribute, Division = Division, Campus = Campus, Credit = Credit)
     return render_template('class_search.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
@@ -43,7 +47,26 @@ def eval():
 
 @app.route('/class_search/')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
+    global Professors 
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
+    didChange = False
+    for course in ClassList:
+        try:
+            profs = course['Instructor']
+            
+            P = [course['Teacher_Info'][i].split('P=')[-1] for i in range(len(course['Teacher_Info']))]
+            for i in range(len(profs)):
+                if profs[i] not in Professors:
+                    f  = open('TeacherList.txt', 'a')
+                    f.write('<OPTION VALUE="' + str(P[i]) + '">' + str(profs[i]) + '\n')
+                    f.close()
+                    didChange = True
+
+        except KeyError:
+            pass
+    if didChange:
+        Professors = GetAllProfessors()
+        didChange = False
     # Keys specifies what exactly we want to show up on our class search
     Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
@@ -87,6 +110,8 @@ def InstructorByCollege(College):
 def InstructorByDepartment(Department):
     # Place holder lists
     Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
+    #Data = GetClasses('2)
+    
     BestTeachers = ['Best Teacher 1', 'Best Teacher 2', 'Best Teacher 3','Best Teacher 4', 'Best Teacher 5']
     DepartmentOptions = Options[3]
     for option in DepartmentOptions:
@@ -111,16 +136,30 @@ def Instructor(ProfessorName):
     syllabus = OverallRatings[7]
     
     ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html',ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, Courses = CoursesTaught, ProfessorName = ProfessorName)
+    return render_template('instructor_info.html',Courses = CoursesTaught, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility)
 
-@app.route('/BestClassesFor/')
-def BestClassesFor():
+@app.route('/BestClassesFor/', methods = ['GET', 'POST'])
+def BestClassesFor(page = 1):
     # Dummy list until we can access classes from database
-    DummyClassList= ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6']
-    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'Phil2', 'Social Science': 'SOSC', 'University Seminars':'USEM', 'Natural Science (req)': 'NASC','Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
-    SubjectsSorted = ['2nd Theology', '2nd Philosophy', 'Social Science', 'University Seminars', 'Natural Science (req)','Fine Arts', 'Literature', 'History']
+    if page == 1:
+        Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'University Seminars':'USEM', 'Natural Science (req)': 'NASC'}
+    elif page == 2:
+        Attributes = {'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
+    ClassList = []
+    if page == 1:
+        SubjectsSorted = ['2nd Theology', '2nd Philosophy', 'Social Science', 'University Seminars', 'Natural Science (req)']
+    elif page == 2:
+        SubjectsSorted = ['Fine Arts', 'Literature', 'History']
+    Indexs = range(len(SubjectsSorted))
+    for attr in SubjectsSorted:
+        courses = GetClasses('201510', Options[3].values(), 'A', Attributes[attr],'A', 'M')
+        course_container = []
+        for i in courses:
+            course_container.append([i['Title'], i['CRN'], i['Term']])
+        ClassList.append(course_container)
+    
 
-    return render_template('BestClassesFor.html', Subjects = Attributes, SubjectsSorted = SubjectsSorted, Courses = DummyClassList)
+    return render_template('BestClassesFor.html', Subjects = Attributes, SubjectsSorted = SubjectsSorted, Courses = ClassList, Indexs = Indexs)
 
 
 

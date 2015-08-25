@@ -104,20 +104,10 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             Classlist.append({})
             Info = Class.find_all('td')
             URLS.append([])
-            for i, header in zip(Info,Class_Headers):
+            for i, header in zip(Info,Class_Headers):                
                 url = ''
                 url = i.find_all('a')
                 if url:
-                    #print 'New'
-                    #print len(url)
-                    #print '-------------------------------'
-                    #print url
-                    #print ' '
-                    #print ' '
-                    #print ' '
-                    #print ' '
-                    #print ' '
-                    #print ' '
                     URLS[Num_Classes].append(url)
                 try:
                     if header == 'Instructor':
@@ -125,9 +115,15 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
                         professors = []
                         for name in names:
                             try:
-                                professors.append(CleanUpString(str(name.text).replace('\t', '')))
+                                x = CleanUpString(str(name.text).replace('\t', ''))
+                                if x[-1] == ' ':
+                                    x = x[:-1]
+                                professors.append(x)
                             except:
-                                professors.append(CleanUpString(name.text.replace('\t', '')))
+                                x = CleanUpString(name.text.replace('\t', ''))
+                                if x[-1] == ' ':
+                                    x = x[:-1]
+                                professors.append(x)
                             Classlist[Num_Classes][header]  = professors
                     else:
                         Classlist[Num_Classes][header] = CleanUpString(str(i.text).replace('\t', ''))
@@ -153,9 +149,12 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             # Some classes have no teacher yet announced. If they do not have a teacher, then len(url) == 1. 
             # If the teacher is announced, len(url) == 2
             if len(url) == 2:
-                InstructorUrlData = url[1][0].get('href')
-                TeacherUrlExtension = CleanUpString(InstructorUrlData.split("'")[1])
-                Classlist[Num_Classes]['Teacher_Info'] = 'https://class-search.nd.edu/reg/srch/' + TeacherUrlExtension
+                url_data = []
+                for i in range(len(url[1])):
+                    InstructorUrlData = url[1][i].get('href')
+                    TeacherUrlExtension = CleanUpString(InstructorUrlData.split("'")[1])
+                    url_data.append(TeacherUrlExtension)
+                Classlist[Num_Classes]['Teacher_Info'] = [ ('https://class-search.nd.edu/reg/srch/' + i) for i in url_data]           
             else:
                 Classlist[Num_Classes]['Teacher_Info'] = 'NONE'
             Num_Classes += 1

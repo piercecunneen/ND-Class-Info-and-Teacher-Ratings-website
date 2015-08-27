@@ -1,5 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request
-from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll
+from flask import Flask, render_template, request
+from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
 from database_functions import getClassReview, getProfReviews, addClassReview, addProfReview, calculateProfRatings
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app = Flask(__name__)
 Options = GetOptions()
 
 Professors = GetAllProfessors()
-
+ProfDepartments = GetAllProfessorDepartments()
 
 def GetCurrentSemester():
     return '201510' 
@@ -48,25 +48,47 @@ def eval():
 @app.route('/class_search/')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
     global Professors 
+    global ProfDepartments
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
-    didChange = False
+    didAddProf = False
+    didAddDept = False
+    
+    # Checks to see if every instructor is is Professors dictionary. If they
+    # are not, we add their names to the text file, and recalculate the Professors dictionary
+    ProfsAdded = []
     for course in ClassList:
         try:
             profs = course['Instructor']
-            
+            Department = ''.join([char for char in course['Course - Sec'].split(' ')[0] if char.isalpha()])
             P = [course['Teacher_Info'][i].split('P=')[-1] for i in range(len(course['Teacher_Info']))]
             for i in range(len(profs)):
                 if profs[i] not in Professors:
                     f  = open('TeacherList.txt', 'a')
                     f.write('<OPTION VALUE="' + str(P[i]) + '">' + str(profs[i]) + '\n')
                     f.close()
-                    didChange = True
+                    didAddProf = True
+                if profs[i] not in ProfDepartments and (profs[i], Department) not in ProfsAdded :
+                    f = open('ProfessorDepartments.txt', 'a')
+                    f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    f.close()
+                    didAddDept = True
+                    ProfsAdded.append((profs[i], Department))
+                if Department not in ProfDepartments[profs[i]] and (profs[i], Department) not in ProfsAdded:
+                    f = open('ProfessorDepartments.txt', 'a')
+                    f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    f.close()
+                    didAddDept = True
+                    ProfsAdded.append((profs[i], Department))
+
 
         except KeyError:
             pass
-    if didChange:
+    if didAddProf:
         Professors = GetAllProfessors()
-        didChange = False
+        didAddProf = False
+    if didAddDept:
+        ProfDepartments = GetAllProfessorDepartments()
+        didAddDept = False
     # Keys specifies what exactly we want to show up on our class search
     Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
@@ -142,12 +164,12 @@ def Instructor(ProfessorName):
 def BestClassesFor(page = 1):
     # Dummy list until we can access classes from database
     if page == 1:
-        Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'University Seminars':'USEM', 'Natural Science (req)': 'NASC'}
+        Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC'}
     elif page == 2:
         Attributes = {'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
     ClassList = []
     if page == 1:
-        SubjectsSorted = ['2nd Theology', '2nd Philosophy', 'Social Science', 'University Seminars', 'Natural Science (req)']
+        SubjectsSorted = ['2nd Theology', '2nd Philosophy', 'Social Science', 'Natural Science (req)']
     elif page == 2:
         SubjectsSorted = ['Fine Arts', 'Literature', 'History']
     Indexs = range(len(SubjectsSorted))

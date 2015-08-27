@@ -277,7 +277,20 @@ def GetAllProfessors():
         line = f.readline()
     return Professors
 
-
+def GetAllProfessorDepartments():
+    f = open('ProfessorDepartments.txt', 'r')
+    line  = f.readline()
+    ProfDepartments = {}
+    while line != '':
+        name = line.split('; Departments:')[0]
+        Department = line.split('; Departments:')[1].replace('\n', '')
+        if name in ProfDepartments:
+            ProfDepartments[name].append(Department)
+        else:
+            ProfDepartments[name] = [Department]
+        line = f.readline()
+    f.close()
+    return ProfDepartments
 def GetCoursesTaught(Prof_ID):
     url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=201510&P=' + str(Prof_ID)
     response = requests.get(url)

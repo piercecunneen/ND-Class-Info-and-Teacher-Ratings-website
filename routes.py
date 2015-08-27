@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
-from database_functions import getClassReview, getProfReviews, addClassReview, addProfReview, calculateProfRatings
+from database_functions import getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings
 
 app = Flask(__name__)
 

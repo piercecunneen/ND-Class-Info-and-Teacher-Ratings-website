@@ -3,7 +3,7 @@
 
 import sqlite3 as lite
 import sys
-
+from class_search_web_scrapping import Sort_dict
 
 database = 'reviews.sqlite'
 
@@ -49,17 +49,25 @@ def getProfReviews(lastName, firstName, department, college):
         x = 1  
         
         
-def getClassReview(department):
+def getClassReviews(department, title):
     #pull reviews by department
-    conn = lite.connect(database)
-    with conn:
-        c = conn.cursor()
-        c.execute("SELECT * FROM classReview WHERE Department=:dept", {"dept":department})
-        classList = c.fetchall()
-        return classList
+    if department != "":
+        conn = lite.connect(database)
+        with conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM classReview WHERE Department=:dept", {"dept":department})
+            classList = c.fetchall()
+            return classList
+    else:
+        conn = lite.connect(database)
+        with conn:
+            c = conn.cursor()
+            c.execute("SELECT * FROM classReview WHERE Title=:title", {"title":title})
+            classList = c.fetchall()
+            return classList
     
     
-def calculateProfRatings(profReviews): 
+def calculateProfRatings(profReviews): #must pull profReviews by name, not department or college 
     i = len(profReviews)
     if (i == 0):
         return ["","","","","","","",""] #change if number of categories change
@@ -134,13 +142,96 @@ def calculateClassRatings(classReviews):
 def bestProf(department):
     #a = calculateProfRatings(getProfReviews("", "", department, ""))
     #return a
-    x = 1  
-def easiestProf(review):
-    x=1
+    profList = getProfReviews("","", department, "")
+    profs = []
+    for prof in profList:
+        if prof not in profs:
+            # change to add only names
+            profs.append(prof)
+    
+    
+    # get each prof overall rating into dictionary, with key being the name
+    profDict = {}
+    num_profs = len(profs)
+    profRating = [] * num_profs
+    for j in range(0, num_profs):
+        profFirst = profs[j][1]
+        profLast = profs[j][0]
+        profName = profFirst + profLast
+        profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
+        profRating = profRatingList[3]
+        profDict[profName] = profRating
+    profDictSorted = Sort_dict(profDict, 1)
+   
+    return profDict, profDictSorted
+   
+def easiestProf(department):
+    #a = calculateProfRatings(getProfReviews("", "", department, ""))
+    #return a
+    profList = getProfReviews("","", department, "")
+    profs = []
+    for prof in profList:
+        if prof not in profs:
+            # change to add only names
+            profs.append(prof)
+    
+    workload_index = 3
+    # get each prof overall rating into dictionary, with key being the name
+    profDict = {}
+    num_profs = len(profs)
+    profRating = [] * num_profs
+    for j in range(0, num_profs):
+        profFirst = profs[j][1]
+        profLast = profs[j][0]
+        profName = profFirst + profLast
+        profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
+        profRating = profRatingList[workload_index]
+        profDict[profName] = profRating
+    profDictSorted = Sort_dict(profDict, 1)
+   
+    return profDict, profDictSorted
    
     
-def bestClass(review):
-    x = 1
+def bestClass(department):
+    courseList = getClassReviews("","", department, "")
+    courses = []
+    for course in courseList:
+        if course not in courses:
+            # change to add only names
+            courses.append(course)
     
-def easiestClass(review):
-    x =1
+    rating_index = 3
+    # get each prof overall rating into dictionary, with key being the name
+    courseDict = {}
+    num_courses = len(courses)
+    courseRating = [] * num_courses
+    for j in range(0, num_courses):
+        courseName = courses[j][2]
+        courseRatingList = calculateClassRatings(getClassReviews((department,"")))
+        courseRating = courseRatingList[rating_index]
+        courseDict[courseName] = courseRating
+    courseDictSorted = Sort_dict(courseDict, 1)
+   
+    return courseDict, courseDictSorted
+    
+def easiestClass(department):
+    courseList = getClassReviews("","", department, "")
+    courses = []
+    for course in courseList:
+        if course not in courses:
+            # change to add only names
+            courses.append(course)
+    
+    workload_index = 3
+    # get each prof overall rating into dictionary, with key being the name
+    courseDict = {}
+    num_courses = len(courses)
+    courseRating = [] * num_courses
+    for j in range(0, num_courses):
+        courseName = courses[j][2]
+        courseRatingList = calculateClassRatings(getClassReviews((department,"")))
+        courseRating = courseRatingList[workload_index]
+        courseDict[courseName] = courseRating
+    courseDictSorted = Sort_dict(courseDict, 1)
+   
+    return courseDict, courseDictSorted

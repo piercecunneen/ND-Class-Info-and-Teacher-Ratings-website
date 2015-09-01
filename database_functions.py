@@ -17,12 +17,12 @@ def addProfReview(lastName, firstName, review, workload, grading, quality, acces
         c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
         #conn.close()
         
-def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, syllabus, department):
-    data = [lastName, firstName, title, review, toughness, interest, textbook, syllabus, department]
+def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department):
+    data = [lastName, firstName, title, review, toughness, interest, textbook, department]
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?)',(data,))
 
 def getProfReviews(lastName, firstName, department, college):
     if lastName != "":
@@ -116,27 +116,21 @@ def calculateClassRatings(classReviews):
         textbook = [0] * i
         syllabus = [0] * i
         for j in range(0,i):
-            toughness[j] = classReviews[j][3]
-            interest[j] = classReviews[j][4]
-            textbook[j] = classReviews[j][5]
-            syllabus[j] = syllabus[j][6]
-            
+            toughness[j] = classReviews[j][4]
+            interest[j] = classReviews[j][5]
+            textbook[j] = classReviews[j][6]
         toughnessTotal = 0
         interestTotal = 0
         textbookTotal = 0
-        syllabusTotal = 0
-        
         for k in range(0,i):
             toughnessTotal += toughness[k]
             interestTotal += interest[k]
             textbookTotal += textbook[k]
-            syllabusTotal += syllabus[k]
             
         toughnessTotal /= i
         interestTotal /= i
         textbookTotal /= i
-        syllabusTotal /= i
-        review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnessTotal, interestTotal, textbookTotal, syllabusTotal]
+        review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnessTotal, interestTotal, textbookTotal]
         return review
     
 def bestProf(department):

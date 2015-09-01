@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+<div>
+<h1 align="center">Search for a Professor to Review</h1>
+<p align="center">Select an instructor by department or name</p>
+<br>
+</div>
+	<div style="float: left">		
+		<select id = "Department">
+			{% for key in DepartmentKeys %}
+				<option value = "{{DepartmentOptions[key]}}" > {{key}} </option>
+			{% endfor %}
+		</select>
+		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>
+		Search by Name: 
+		<select id = "Professors">
+			{% for key in Professors %}
+				<option > {{key}} </option>
+			{% endfor %}
+		</select>
+
+	</div>
+			
+<iframe id="TeacherInfoFrame" height="500px" width="900px" frameborder="2">  </iframe>
+
+
+{% endblock %}

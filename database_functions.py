@@ -116,17 +116,14 @@ def calculateClassRatings(classReviews):
         textbook = [0] * i
         syllabus = [0] * i
         for j in range(0,i):
-<<<<<<< HEAD
             toughness[j] = classReviews[j][4]
             interest[j] = classReviews[j][5]
             textbook[j] = classReviews[j][6]
-=======
             toughness[j] = classReviews[j][3]
             interest[j] = classReviews[j][4]
             textbook[j] = classReviews[j][5]
             syllabus[j] = classReviews[j][6]
             
->>>>>>> upstream/master
         toughnessTotal = 0
         interestTotal = 0
         textbookTotal = 0

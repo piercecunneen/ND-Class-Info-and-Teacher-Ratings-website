@@ -4512,7 +4512,6 @@
 <OPTION VALUE="1080640">Glaser, Sam
 <OPTION VALUE="307735">Buraczewski, Peggy
 <OPTION VALUE="1184782">Wang, Yonglei
-<<<<<<< HEAD
 <OPTION VALUE="1081768">Fontenot, Garrett
 <OPTION VALUE="910535">Benchaar, Judith
 <OPTION VALUE="1131033">Foster, Ashley
@@ -4533,14 +4532,11 @@
 <OPTION VALUE="1139501">Leithart, Tara
 <OPTION VALUE="1131033">Foster, Ashley
 <OPTION VALUE="326921">Johnson-O'Brien, Felicia
-=======
->>>>>>> upstream/master
 <OPTION VALUE="1181511">Shi, Yiyu
 <OPTION VALUE="1181511">Shi, Yiyu
 <OPTION VALUE="1181511">Shi, Yiyu
 <OPTION VALUE="1181511">Shi, Yiyu
 <OPTION VALUE="1181511">Shi, Yiyu
-<<<<<<< HEAD
 <OPTION VALUE="1186161">Hu, Xiaoyang
 <OPTION VALUE="1186161">Hu, Xiaoyang
 <OPTION VALUE="1186011">Song, Hongnan
@@ -4654,5 +4650,3 @@
 <OPTION VALUE="326921">Johnson-O'Brien, Felicia
 <OPTION VALUE="396152">DeLorenzo, Leonard
 <OPTION VALUE="396152">DeLorenzo, Leonard
-=======
->>>>>>> upstream/master

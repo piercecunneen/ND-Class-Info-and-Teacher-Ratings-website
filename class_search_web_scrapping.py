@@ -1,13 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-from time import sleep
-# coding: latin1
+
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
     Input: string
     Returns: String
     """
-    return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '')
+    return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '').replace('\0xc3', '').replace('\0xc3', '').replace('\0x93', '').replace('\0xa9', '')
+
+
     
     
     
@@ -263,15 +264,15 @@ def GetAllProfessors():
         while name[-1] == ' ':
             name = name[:-1]
         # get last name
-        last_name = name.split(',')[0]
+        last_name = CleanUpString(name.split(',')[0])
         
         # get list of all middle and first names
-        surname = [string for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
+        surname = [CleanUpString(string) for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
         surname_combinations = []
         for i in range(1,len(surname)+1):
             surname_combinations.append(' '.join(surname[0:i]))
         name_combinations = [last_name + ', ' + surname_option for surname_option in surname_combinations]
-        ID = line.split('"')[1]
+        ID = CleanUpString(line.split('"')[1])
         for i in name_combinations:
             Professors[i] = ID
         line = f.readline()
@@ -282,7 +283,7 @@ def GetAllProfessorDepartments():
     line  = f.readline()
     ProfDepartments = {}
     while line != '':
-        name = line.split('; Departments:')[0]
+        name = CleanUpString(line.split('; Departments:')[0])
         Department = line.split('; Departments:')[1].replace('\n', '')
         if name in ProfDepartments:
             ProfDepartments[name].append(Department)

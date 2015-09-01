@@ -119,7 +119,7 @@ def calculateClassRatings(classReviews):
             toughness[j] = classReviews[j][3]
             interest[j] = classReviews[j][4]
             textbook[j] = classReviews[j][5]
-            syllabus[j] = syllabus[j][6]
+            syllabus[j] = classReviews[j][6]
             
         toughnessTotal = 0
         interestTotal = 0
@@ -157,7 +157,7 @@ def bestProf(department):
     for j in range(0, num_profs):
         profFirst = profs[j][1]
         profLast = profs[j][0]
-        profName = profFirst + profLast
+        profName = profLast +  profFirst
         profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
         profRating = profRatingList[3]
         profDict[profName] = profRating
@@ -183,7 +183,7 @@ def easiestProf(department):
     for j in range(0, num_profs):
         profFirst = profs[j][1]
         profLast = profs[j][0]
-        profName = profFirst + profLast
+        profName = profLast +  profFirst
         profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
         profRating = profRatingList[workload_index]
         profDict[profName] = profRating
@@ -193,7 +193,7 @@ def easiestProf(department):
    
     
 def bestClass(department):
-    courseList = getClassReviews("","", department, "")
+    courseList = getClassReviews(department, "")
     courses = []
     for course in courseList:
         if course not in courses:
@@ -207,7 +207,7 @@ def bestClass(department):
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j][2]
-        courseRatingList = calculateClassRatings(getClassReviews((department,"")))
+        courseRatingList = calculateClassRatings(getClassReviews(department,""))
         courseRating = courseRatingList[rating_index]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)
@@ -215,7 +215,7 @@ def bestClass(department):
     return courseDict, courseDictSorted
     
 def easiestClass(department):
-    courseList = getClassReviews("","", department, "")
+    courseList = getClassReviews(department, "")
     courses = []
     for course in courseList:
         if course not in courses:
@@ -229,7 +229,7 @@ def easiestClass(department):
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j][2]
-        courseRatingList = calculateClassRatings(getClassReviews((department,"")))
+        courseRatingList = calculateClassRatings(getClassReviews(department,""))
         courseRating = courseRatingList[workload_index]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)

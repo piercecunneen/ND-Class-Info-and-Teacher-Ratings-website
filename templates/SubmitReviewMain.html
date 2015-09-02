@@ -9,7 +9,7 @@
 	<div style="float: left">		
 		<select id = "Department">
 			{% for key in DepartmentKeys %}
-				<option value = "{{DepartmentOptions[key]}}" > {{key}} </option>
+				<option value = "{{key}}" > {{key}} </option>
 			{% endfor %}
 		</select>
 		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>

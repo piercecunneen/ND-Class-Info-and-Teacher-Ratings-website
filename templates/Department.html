@@ -24,28 +24,28 @@
 		<td> 
 			<select size = "10" Id = "BestProfessorsList"> 
 				{% for teacher in Best_Teachers_Sorted %}
-					<option value = "Best_Teachers{{teacher}}"> {{teacher}} </option>
+					<option value = "{{teacher}}"> {{teacher}}: {{Best_Teachers[teacher]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
 		<td> 
 			<select size = "10" Id = "EasiestProfessorsList"> 
 				{% for teacher in Easiest_Teachers_Sorted %}
-					<option value = "Easiest_Teachers{{teacher}}"> {{teacher}} </option>
+					<option value = "{{teacher}}"> {{teacher}}: {{Easiest_Teachers[teacher]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
 		<td> 
 			<select size = "10" Id = "InterestingClassList"> 
 				{% for teacher in Best_Classes_Sorted %}
-					<option value = "Best_Classes{{teacher}}"> {{teacher}} </option>
+					<option value = "{{teacher}}"> {{teacher}}: {{Best_Classes[teacher]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
 		<td> 
 			<select size = "10" Id = "EasiestClassList"> 
 				{% for teacher in Easiest_Classes_Sorted %}
-					<option value = "Easiest_Classes{{teacher}}"> {{teacher}} </option>
+					<option value = "{{teacher}}"> {{teacher}}: {{Easiest_Classes[teacher]}} </option>
 				{% endfor %}
 			</select> 
 		</td>

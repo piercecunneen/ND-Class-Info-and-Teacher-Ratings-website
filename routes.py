@@ -205,7 +205,9 @@ def BestClassesFor(page = 1):
 def ProfessorReview(ProfessorName):
     if request.method == 'POST':
         # Instructor evaluation
-        CourseName = ' '.join(request.form['CoursesTaughtID'].split(' ')[:-3])
+        CourseName = ' '.join(request.form['CoursesTaughtID'].split(' ')[:-2])
+        CRN = ' '.join(request.form['CoursesTaughtID'].split(' ')[-2])
+        Term = ' '.join(request.form['CoursesTaughtID'].split(' ')[-1])
         Grading = int(request.form['GradingID'])
         Quality = int(request.form['QualityID'])
         Workload = int(request.form['WorkloadID'])
@@ -221,11 +223,14 @@ def ProfessorReview(ProfessorName):
         # Add to database
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
-    
-        department = "ACMS"
+        try:
+            department = str(ProfDepartments[ProfessorName][0])
+        except:
+            department = "Unknown"
+        
         addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department)
-        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, Syllabus, department)
-        return render_template('PostSubmissionForm.html', test = first_name)        
+        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department)
+        return render_template('PostSubmissionForm.html', test =' ' )        
          
     try:
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])

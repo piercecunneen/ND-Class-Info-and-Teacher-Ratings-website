@@ -15,7 +15,7 @@
 			<select id = "CoursesTaughtID" name = "CoursesTaughtID" >   
 				<option value = '-- select an option --'> -- select an option -- </option>
 				{% for course in CoursesTaught %}
-					<option > {{course[2]}} {{course[1]}} </option>
+					<option value = "{{course[2]}} {{course[3]}} {{course[4]}}" > {{course[2]}} {{course[1]}} </option>
 				{% endfor %}
 			</select> 
 		</td>

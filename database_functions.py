@@ -4,12 +4,11 @@
 import sqlite3 as lite
 import sys
 from class_search_web_scrapping import Sort_dict
-
-database = 'reviews.sqlite'
+database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
+database = database_path #'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
-    
     conn = lite.connect(database)
     with conn:
     
@@ -17,12 +16,12 @@ def addProfReview(lastName, firstName, review, workload, grading, quality, acces
         c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
         #conn.close()
         
-def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department):
-    data = [lastName, firstName, title, review, toughness, interest, textbook, department]
+def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date):
+    data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date]
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?)',(data,))
 
 def getProfReviews(lastName, firstName, department, college):
     if lastName != "":
@@ -114,15 +113,10 @@ def calculateClassRatings(classReviews):
         toughness = [0] * i
         interest = [0] * i
         textbook = [0] * i
-        syllabus = [0] * i
         for j in range(0,i):
             toughness[j] = classReviews[j][4]
             interest[j] = classReviews[j][5]
             textbook[j] = classReviews[j][6]
-            toughness[j] = classReviews[j][3]
-            interest[j] = classReviews[j][4]
-            textbook[j] = classReviews[j][5]
-            syllabus[j] = classReviews[j][6]
             
         toughnessTotal = 0
         interestTotal = 0
@@ -132,9 +126,9 @@ def calculateClassRatings(classReviews):
             interestTotal += interest[k]
             textbookTotal += textbook[k]
             
-        toughnessTotal /= i
-        interestTotal /= i
-        textbookTotal /= i
+        toughnessTotal /= float(i)
+        interestTotal /= float(i)
+        textbookTotal /= float(i)
         review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnessTotal, interestTotal, textbookTotal]
         return review
     
@@ -199,14 +193,14 @@ def bestClass(department):
             # change to add only names
             courses.append(course)
     
-    rating_index = 3
+    rating_index = 4
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
     num_courses = len(courses)
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j][2]
-        courseRatingList = calculateClassRatings(getClassReviews(department,""))
+        courseRatingList = calculateClassRatings(getClassReviews("",courseName))
         courseRating = courseRatingList[rating_index]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)
@@ -221,14 +215,14 @@ def easiestClass(department):
             # change to add only names
             courses.append(course)
     
-    workload_index = 3
+    workload_index = 4
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
     num_courses = len(courses)
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j][2]
-        courseRatingList = calculateClassRatings(getClassReviews(department,""))
+        courseRatingList = calculateClassRatings(getClassReviews("", courseName))
         courseRating = courseRatingList[workload_index]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)

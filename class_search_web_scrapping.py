@@ -6,8 +6,7 @@ def CleanUpString(string):
     Input: string
     Returns: String
     """
-    return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '').replace('\0xc3', '').replace('\0xc3', '').replace('\0x93', '').replace('\0xa9', '')
-
+    return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '')
 
     
     
@@ -284,7 +283,7 @@ def GetAllProfessorDepartments():
     ProfDepartments = {}
     while line != '':
         name = CleanUpString(line.split('; Departments:')[0])
-        Department = line.split('; Departments:')[1].replace('\n', '')
+        Department = CleanUpString(line.split('; Departments:')[1].replace('\n', ''))
         if name in ProfDepartments:
             ProfDepartments[name].append(Department)
         else:

@@ -137,19 +137,25 @@ def InstructorByCollege(College):
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
     # Place holder lists
-    Teachers = set([''.join([i[0], i[1]]) for i in getClassReviews(Options[3][Department], '')])
-         
+    Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
+    Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
+    Crn_and_Term = {}
+    for course in Best_Classes_Sorted:
+        Course = getClassReviews('', course)[0]
+        Crn_and_Term[Course[2]] = ((Course[-2], Course[-1]))
+    
     Easiest_Classes,Easiest_Classes_Sorted  = easiestClass(Options[3][Department])
     DepartmentOptions = Options[3]
     for option in DepartmentOptions:
         if DepartmentOptions[option] == Department:
             Department = option
-    return render_template('Department.html',Best_Teachers_Sorted = Best_Teachers_Sorted,Best_Teachers = Best_Teachers, 
+    return render_template('Department.html',Teachers_Sorted = Teachers_Sorted,Best_Teachers_Sorted = Best_Teachers_Sorted,Best_Teachers = Best_Teachers, 
     Easiest_Teachers = Easiest_Teachers,Easiest_Teachers_Sorted = Easiest_Teachers_Sorted, Department = Department,Teachers = Teachers,
-    Best_Classes = Best_Classes,Best_Classes_Sorted = Best_Classes_Sorted,Easiest_Classes = Easiest_Classes, Easiest_Classes_Sorted = Easiest_Classes_Sorted)
+    Best_Classes = Best_Classes,Best_Classes_Sorted = Best_Classes_Sorted,Easiest_Classes = Easiest_Classes, Easiest_Classes_Sorted = Easiest_Classes_Sorted
+    ,Crn_and_Term = Crn_and_Term)
 
 @app.route('/instructor_info/<ProfessorName>')
 def Instructor(ProfessorName):
@@ -206,8 +212,8 @@ def ProfessorReview(ProfessorName):
     if request.method == 'POST':
         # Instructor evaluation
         CourseName = ' '.join(request.form['CoursesTaughtID'].split(' ')[:-2])
-        CRN = ' '.join(request.form['CoursesTaughtID'].split(' ')[-2])
-        Term = ' '.join(request.form['CoursesTaughtID'].split(' ')[-1])
+        CRN = ''.join(request.form['CoursesTaughtID'].split(' ')[-2])
+        Term = ''.join(request.form['CoursesTaughtID'].split(' ')[-1])
         Grading = int(request.form['GradingID'])
         Quality = int(request.form['QualityID'])
         Workload = int(request.form['WorkloadID'])
@@ -229,7 +235,7 @@ def ProfessorReview(ProfessorName):
             department = "Unknown"
         
         addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department)
-        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department)
+        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term)
         return render_template('PostSubmissionForm.html', test =' ' )        
          
     try:
@@ -242,7 +248,9 @@ def ProfessorReview(ProfessorName):
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():
     global Professors
-    return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = Sort_dict(Professors, False) )
+    ProfessorKeys = Sort_dict(Professors, False) 
+    ProfessorKeys = [i.decode('utf-8') for i in ProfessorKeys]
+    return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 
 if __name__=='__main__':
     app.run(debug=True)

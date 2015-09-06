@@ -13,13 +13,13 @@
 			{% endfor %}
 		</select>
 		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>
-		Search by Name: 
+		
 		<select id = "Professors">
-			{% for key in Professors %}
+			{% for key in ProfessorKeys %}
 				<option > {{key}} </option>
 			{% endfor %}
 		</select>
-
+		<button type="button" onclick = "IframeTeacherSearch(document.getElementById('Professors'))" > Search by Last Name </button>
 	</div>
 			
 <iframe id="TeacherInfoFrame" height="500px" width="900px" frameborder="2">  </iframe>

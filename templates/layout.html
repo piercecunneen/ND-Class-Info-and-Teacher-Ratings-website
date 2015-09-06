@@ -83,6 +83,11 @@
 			location.href = "".concat("../instructor_info/", teacher);
 		}
 	</script>
+	<script> function IframeClassSearch(element){
+			var course = element.options[element.selectedIndex].value;
+			location.href = "".concat("../class_info/", course);
+		}
+	</script>
 	<script> function GoToURL(element){
 			var course = element.options[element.selectedIndex].value;
 			location.href = "".concat("../class_info/", course);

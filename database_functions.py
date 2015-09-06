@@ -4,8 +4,8 @@
 import sqlite3 as lite
 import sys
 from class_search_web_scrapping import Sort_dict
-database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
-database = database_path #'reviews.sqlite'
+#database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
+database = 'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]

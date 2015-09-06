@@ -16,7 +16,7 @@
 	<tr align = "middle">
 		<td > 	
 			<select size = "10" Id = "ProfessorList"> 
-				{% for teacher in Teachers %}
+				{% for teacher in Teachers_Sorted %}
 					<option value = "{{teacher}}"> {{teacher}} </option>
 				{% endfor %}
 			</select> 
@@ -37,15 +37,15 @@
 		</td>
 		<td> 
 			<select size = "10" Id = "InterestingClassList"> 
-				{% for teacher in Best_Classes_Sorted %}
-					<option value = "{{teacher}}"> {{teacher}}: {{Best_Classes[teacher]}} </option>
+				{% for course in Best_Classes_Sorted %}
+					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Best_Classes[course]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
 		<td> 
 			<select size = "10" Id = "EasiestClassList"> 
-				{% for teacher in Easiest_Classes_Sorted %}
-					<option value = "{{teacher}}"> {{teacher}}: {{Easiest_Classes[teacher]}} </option>
+				{% for course in Easiest_Classes_Sorted %}
+					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Easiest_Classes[course]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
@@ -55,8 +55,8 @@
 		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('ProfessorList'));"> Search for Teacher </button></td>
 		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('BestProfessorsList'));"> Search for Teacher </button></td>
 		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('EasiestProfessorsList'));"> Search for Teacher </button></td>
-		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('InterestingClassList'));"> Search for Course </button></td>
-		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('EasiestClassList'));"> Search for Course </button></td>
+		<td><button width = "20px" onclick = "IframeClassSearch(document.getElementById('InterestingClassList'));"> Search for Course </button></td>
+		<td><button width = "20px" onclick = "IframeClassSearch(document.getElementById('EasiestClassList'));"> Search for Course </button></td>
 
 	
 	</tr>

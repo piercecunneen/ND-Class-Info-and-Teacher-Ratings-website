@@ -56,14 +56,14 @@ def getClassReviews(department, title):
             c = conn.cursor()
             c.execute("SELECT * FROM classReview WHERE Department=:dept", {"dept":department})
             classList = c.fetchall()
-            return classList
+            return [classList, "department"]
     else:
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
             c.execute("SELECT * FROM classReview WHERE Title=:title", {"title":title})
             classList = c.fetchall()
-            return classList
+            return [classList, "title"]
     
     
 def calculateProfRatings(profReviews): #must pull profReviews by name, not department or college 
@@ -109,50 +109,72 @@ def calculateClassRatings(classReviews):
     i = len(classReviews)
     if (i == 0):
         return ["","","","","","",""] #change if number of categories change
-    else:
-        toughness = [0] * i
-        interest = [0] * i
-        textbook = [0] * i
-        for j in range(0,i):
-            toughness[j] = classReviews[j][4]
-            interest[j] = classReviews[j][5]
-            textbook[j] = classReviews[j][6]
-            
-        toughnessTotal = 0
-        interestTotal = 0
-        textbookTotal = 0
-        for k in range(0,i):
-            toughnessTotal += toughness[k]
-            interestTotal += interest[k]
-            textbookTotal += textbook[k]
-            
-        toughnessTotal /= float(i)
-        interestTotal /= float(i)
-        textbookTotal /= float(i)
-        review = [classReviews[0][0], classReviews[0][1], classReviews[0][2],  toughnessTotal, interestTotal, textbookTotal]
-        return review
+    elif classReviews[1]=="title":
+        #TODO - rewrite code for the case that classReviews[1] == "department"
+        if len(classReviews[0]) == 1:
+            return [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2], classReviews[0][0][4], classReviews[0][0][5], classReviews[0][0][6]]
+        else:
+            print classReviews
+            toughness = [0] * i
+            interest = [0] * i
+            textbook = [0] * i
+            for j in range(0,i):
+                toughness[j] = classReviews[0][j][4]
+                interest[j] = classReviews[0][j][5]
+                textbook[j] = classReviews[0][j][6]   
+            toughnessTotal = 0
+            interestTotal = 0
+            textbookTotal = 0
+            for k in range(0,i):
+                toughnessTotal += toughness[k]
+                interestTotal += interest[k]
+                textbookTotal += textbook[k]
+                
+            toughnessTotal /= float(i)
+            interestTotal /= float(i)
+            textbookTotal /= float(i)
+            review = [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2],  toughnessTotal, interestTotal, textbookTotal]
+            return review
+        
+    elif classReviews[1] == "department": 
+        # get number of different courses then run calculateClassRatings() for each different course title
+        course_title_list = [] #* len(classReviews[0])
+        for i in range(0,len(classReviews) + 1):
+            title = classReviews[0][i][2]
+            if title not in course_title_list:
+                course_title_list.append(title)
+        classReviews = [] #* len(course_title_list)
+        for i in range(0, len(course_title_list)):
+            print course_title_list[i]
+            classReviews.append(calculateClassRatings(getClassReviews("",course_title_list[i])))
+            print classReviews
+        print classReviews    
+        return classReviews
     
 def bestProf(department):
     #a = calculateProfRatings(getProfReviews("", "", department, ""))
     #return a
     profList = getProfReviews("","", department, "")
+    print profList
     profs = []
     for prof in profList:
         if prof not in profs:
             # change to add only names
             profs.append(prof)
+            print profs
     
-    
+    interest_index = 5
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
     num_profs = len(profs)
+    print num_profs
     profRating = [] * num_profs
     for j in range(0, num_profs):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
         profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
-        profRating = profRatingList[3]
+        profRating = profRatingList[interest_index]
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
    
@@ -187,6 +209,7 @@ def easiestProf(department):
     
 def bestClass(department):
     courseList = getClassReviews(department, "")
+    print courseList
     courses = []
     for course in courseList:
         if course not in courses:

@@ -223,7 +223,7 @@ def bestClass(department):
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j][2]
-        courseRatingList = calculateClassRatings(getClassReviews("",courseName))
+        courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
         courseRating = courseRatingList[rating_index]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)

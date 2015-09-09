@@ -4,8 +4,7 @@
 import sqlite3 as lite
 import sys
 from class_search_web_scrapping import Sort_dict
-database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
-database = database_path #'reviews.sqlite'
+database = 'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
@@ -211,9 +210,7 @@ def bestClass(department):
     num_courses = len(courses)
     courseRating = [] * num_courses
     for j in range(0, num_courses):
-        courseName = courses[j][2]
         courseName = courses[j]
-        print courseName
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
         courseRating = courseRatingList[rating_index]
         courseDict[courseName] = courseRating
@@ -235,7 +232,7 @@ def easiestClass(department):
     num_courses = len(courses)
     courseRating = [] * num_courses
     for j in range(0, num_courses):
-        courseName = courses[j][2]
+        courseName = courses[j]
         courseRatingList = calculateClassRatings(getClassReviews("", courseName))
         courseRating = courseRatingList[workload_index]
         courseDict[courseName] = courseRating

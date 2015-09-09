@@ -4,8 +4,8 @@
 import sqlite3 as lite
 import sys
 from class_search_web_scrapping import Sort_dict
-#database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
-database = 'reviews.sqlite'
+database_path = '/Users/zachjanicki/git/ND-Class-Info-and-Teacher-Ratings-website/reviews.sqlite'
+database = database_path #'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
@@ -114,7 +114,6 @@ def calculateClassRatings(classReviews):
         if len(classReviews[0]) == 1:
             return [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2], classReviews[0][0][4], classReviews[0][0][5], classReviews[0][0][6]]
         else:
-            print classReviews
             toughness = [0] * i
             interest = [0] * i
             textbook = [0] * i
@@ -145,29 +144,23 @@ def calculateClassRatings(classReviews):
                 course_title_list.append(title)
         classReviews = [] #* len(course_title_list)
         for i in range(0, len(course_title_list)):
-            print course_title_list[i]
-            classReviews.append(calculateClassRatings(getClassReviews("",course_title_list[i])))
-            print classReviews
-        print classReviews    
+            classReviews.append(calculateClassRatings(getClassReviews("",course_title_list[i])))    
         return classReviews
     
 def bestProf(department):
     #a = calculateProfRatings(getProfReviews("", "", department, ""))
     #return a
     profList = getProfReviews("","", department, "")
-    print profList
     profs = []
     for prof in profList:
         if prof not in profs:
             # change to add only names
             profs.append(prof)
-            print profs
     
     interest_index = 5
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
     num_profs = len(profs)
-    print num_profs
     profRating = [] * num_profs
     for j in range(0, num_profs):
         profFirst = profs[j][1]
@@ -209,12 +202,8 @@ def easiestProf(department):
     
 def bestClass(department):
     courseList = getClassReviews(department, "")
-    print courseList
-    courses = []
-    for course in courseList:
-        if course not in courses:
-            # change to add only names
-            courses.append(course)
+    courses = set([course[2] for course in courseList[0]])
+    courses = list(courses)
     
     rating_index = 4
     # get each prof overall rating into dictionary, with key being the name
@@ -222,7 +211,12 @@ def bestClass(department):
     num_courses = len(courses)
     courseRating = [] * num_courses
     for j in range(0, num_courses):
+<<<<<<< HEAD
         courseName = courses[j][2]
+=======
+        courseName = courses[j]
+        print courseName
+>>>>>>> 96a83975bcd1d9d92dd4f7997cff3e366864f9b9
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
         courseRating = courseRatingList[rating_index]
         courseDict[courseName] = courseRating

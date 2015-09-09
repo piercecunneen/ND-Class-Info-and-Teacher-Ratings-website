@@ -144,7 +144,7 @@ def InstructorByDepartment(Department):
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
-        Course = getClassReviews('', course)[0]
+        Course = getClassReviews('', course)[0][0]
         Crn_and_Term[Course[2]] = ((Course[-2], Course[-1]))
     
     Easiest_Classes,Easiest_Classes_Sorted  = easiestClass(Options[3][Department])

@@ -38,14 +38,14 @@
 		<td> 
 			<select size = "10" Id = "InterestingClassList"> 
 				{% for course in Best_Classes_Sorted %}
-					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Best_Classes[course]}} </option>
+					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Best_Classes[course][0]}} </option>
 				{% endfor %}
 			</select> 
 		</td>
 		<td> 
 			<select size = "10" Id = "EasiestClassList"> 
 				{% for course in Easiest_Classes_Sorted %}
-					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Easiest_Classes[course]}} </option>
+					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Easiest_Classes[course][0]}} </option>
 				{% endfor %}
 			</select> 
 		</td>

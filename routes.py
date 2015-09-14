@@ -5,7 +5,6 @@ from database_functions import easiestClass, bestClass, easiestProf,bestProf,get
 app = Flask(__name__)
 
 
-
 Options = GetOptions()
 
 Professors = GetAllProfessors()
@@ -262,5 +261,5 @@ def SubmitReviewMain():
     return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(host = "0.0.0.0")
 

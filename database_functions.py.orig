@@ -4,6 +4,10 @@
 import sqlite3 as lite
 import sys
 from class_search_web_scrapping import Sort_dict
+<<<<<<< HEAD
+
+=======
+>>>>>>> upstream/master
 database = 'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):

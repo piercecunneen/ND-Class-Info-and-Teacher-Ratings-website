@@ -33,7 +33,7 @@
 				var division = division_element.options[division_element.selectedIndex].value;		
 				var campus_element = document.getElementById('CampusOptionsTwo');
 				var campus = campus_element.options[campus_element.selectedIndex].value;
-				var url = ''.concat('http://localhost:5000/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
+				var url = ''.concat('www.ndreviews.com/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
 				location.replace(url)
 			}
 			else {
@@ -50,7 +50,7 @@
 				var division = division_element.options[division_element.selectedIndex].value;		
 				var campus_element = document.getElementById('CampusOptions');
 				var campus = campus_element.options[campus_element.selectedIndex].value;
-				var url = ''.concat('http://localhost:5000/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
+				var url = ''.concat('www.ndreviews.com/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
 				location.replace(url)
 			}
 			
@@ -61,13 +61,13 @@
 	<script> function SearchInstructorByCollege() {
 			var instr_element = document.getElementById('College');
 			var instr = instr_element.options[instr_element.selectedIndex].value;
-			var url = ''.concat('http://localhost:5000/InstructorByCollege/', instr);
+			var url = ''.concat('www.ndreviews.com/InstructorByCollege/', instr);
 			document.getElementById('TeacherInfoFrame').src = url
 	}
 		function SearchInstructorByDepartment(){
 			var instr_element = document.getElementById('Department');
 			var instr = instr_element.options[instr_element.selectedIndex].value;
-			var url = ''.concat('http://localhost:5000/Department/', instr);
+			var url = ''.concat('www.ndreviews.com/Department/', instr);
 			document.getElementById('TeacherInfoFrame').src = url
 		
 	}

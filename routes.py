@@ -43,8 +43,7 @@ def classInfo(class_info):
     toughness = str(CourseRatings[4])
     interest = str(CourseRatings[5])
     Textbook = str(CourseRatings[6])
-    k = len(toughness)
-    return render_template('class_info.html', k = k,Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
+    return render_template('class_info.html', Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
  
 @app.route('/instructor_eval/')
 def eval():
@@ -109,6 +108,15 @@ def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
     CourseDescription = Descriptions[0]
+    CourseRatings = calculateClassRatings(getClassReviews('', Class))
+    toughness = CourseRatings[3]  
+    interest = CourseRatings[4]
+    Textbook = CourseRatings[5]
+    if type(toughness) == str:
+        Overall_Rating = ''
+    else:
+        Overall_Rating = (toughness + interest) / 2.0
+    Course_text_review = 'sdfds'
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -118,7 +126,7 @@ def DisplayClassPage(Class, CRN, Term):
         Corequisites = Descriptions[3]
     elif  Descriptions[1] == 'Prerequisite Only':
         Prerequisites = Descriptions[2]
-    return render_template('class_info.html', Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription)
+    return render_template('class_info.html', Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
 
 
 @app.route('/DepartmentsMain/')
@@ -137,7 +145,8 @@ def InstructorByCollege(College):
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
     # Place holder lists
-    Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
+    #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
+    Teachers = [prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]]
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])

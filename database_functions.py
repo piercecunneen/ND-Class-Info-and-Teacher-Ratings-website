@@ -105,7 +105,7 @@ def calculateProfRatings(profReviews): #must pull profReviews by name, not depar
         return review
     
 def calculateClassRatings(classReviews):
-    i = len(classReviews)
+    i = len(classReviews[0])
     if (i == 0):
         return ["","","","","","",""] #change if number of categories change
     elif classReviews[1]=="title":

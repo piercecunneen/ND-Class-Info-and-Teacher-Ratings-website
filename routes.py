@@ -120,12 +120,18 @@ def DisplayClassPage(Class, CRN, Term):
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
         Corequisites = Descriptions[2]
+        Attributes = Descriptions[3]
     elif Descriptions[1] == "Both":
         Prerequisites = Descriptions[2]
         Corequisites = Descriptions[3]
+        Attributes = Descriptions[4]
     elif  Descriptions[1] == 'Prerequisite Only':
         Prerequisites = Descriptions[2]
-    return render_template('class_info.html', Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
+        Attributes = Descriptions[3]
+    else:
+        Attributes = Descriptions[2]
+    
+    return render_template('class_info.html', Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review, Attributes = Attributes )
 
 
 @app.route('/DepartmentsMain/')

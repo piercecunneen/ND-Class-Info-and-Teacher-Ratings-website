@@ -147,7 +147,11 @@ def InstructorByDepartment(Department):
     #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
     Teachers = [prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]]
     Teachers_Sorted = Sort_dict(Teachers, False)
-    Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])
+    Best_Professors = bestProf(Options[3][Department])
+    Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
+    print Best_Teachers
+    print '\n\n\n'
+    print Best_Teachers_Sorted
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
     Crn_and_Term = {}
@@ -173,8 +177,11 @@ def Instructor(ProfessorName):
         CoursesTaught =  []
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])
-    OverallRatings = calculateProfRatings(getProfReviews(last_name, first_name, '', '')) 
-    #orkloadt, gradingt, qualityt, accessiblityt, syllabust]
+    Reviews = getProfReviews(last_name, first_name, '', '')
+    OverallRatings = calculateProfRatings(Reviews) 
+
+    ProfessorDescriptions = [review[2] for review in Reviews]
+    
     workload = OverallRatings[3]
     grading = OverallRatings[4]
     quality = OverallRatings[5]
@@ -182,7 +189,7 @@ def Instructor(ProfessorName):
     syllabus = OverallRatings[7]
     
     ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html',Courses = CoursesTaught, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility)
+    return render_template('instructor_info.html',Courses = CoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility)
 
 @app.route('/BestClassesFor/', methods = ['GET', 'POST'])
 def BestClassesFor(page = 1):
@@ -261,5 +268,5 @@ def SubmitReviewMain():
     return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 
 if __name__=='__main__':
-    app.run(host = "0.0.0.0")
+    app.run()
 

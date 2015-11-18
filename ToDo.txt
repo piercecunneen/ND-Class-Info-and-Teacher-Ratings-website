@@ -1,0 +1,43 @@
+Short term:
+
+Fix Layout of Instructor_info page
+	Weird bar
+Fix Bug on DepartmentsMain (Search Departments)
+	forward slash in Bus Admin - Accounting/Bus Law screws up url
+Cross Listed Courses
+	Combine courses of the same name across departments and within departments
+	List into database call, list out of database call from routes.py
+Add course attributes to class info page
+
+Fix ratings
+	Overall rating calculation
+	Textbook needed
+	Rating descriptions
+
+Fix URL display on new pages
+
+
+Add mystite/ to any text file calls from routes.py up on servers
+
+
+After Class Search post requests, keep search info in tables
+
+MAKE LAYOUT BETTER
+
+-------------------------------------
+
+Long Term:
+
+For View Books:
+	show Amazon options 
+
+User authentication
+
+Connecting textbook sellers with buyers
+
+Message board for class/prof info
+
+Voting on reviews
+
+Coreq and Prereq links/titles
+	

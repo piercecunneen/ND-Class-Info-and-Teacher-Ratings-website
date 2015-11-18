@@ -5,7 +5,7 @@
 <table>
 	<tr>
 		{% for college in DepartmentsByCollege[0:5] %}
-			<td> <button onclick = "GoToDepartment(document.getElementById('{{college[0]}}'))"> {{college[0]}} </button> </td>
+			<td> <button onclick = 'GoToDepartment(document.getElementById("{{college[0]}}"))'> {{college[0]}} </button> </td>
 		{% endfor %}
 	</tr>
 	<tr>
@@ -22,7 +22,7 @@
 	</tr>
 	<tr>
 		{% for college in DepartmentsByCollege[5:] %}
-			<td><button onclick = "GoToDepartment(document.getElementById('{{college[0]}}'))"> {{college[0]}} </button> </td>
+			<td><button onclick = 'GoToDepartment(document.getElementById("{{college[0]}}"))'> {{college[0]}} </button> </td>
 		{% endfor %}
 	</tr>
 	<tr>

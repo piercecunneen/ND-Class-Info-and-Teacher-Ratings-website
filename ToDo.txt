@@ -18,9 +18,9 @@ Cross Listed Courses
 Fix ratings
 	Overall rating calculation
 	Textbook needed
-	Rating descriptions
+	###Rating descriptions
 
-Fix URL display on new pages
+### Fix URL display on new pages
 
 
 ### Add mystite/ to any text file calls from routes.py up on servers

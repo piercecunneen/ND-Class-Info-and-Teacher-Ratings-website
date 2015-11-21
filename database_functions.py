@@ -32,7 +32,7 @@ def getProfReviews(lastName, firstName, department, college):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            query = 'SELECT * FROM profReview WHERE LastName = ' + lastName + ' AND FirstName = ' + firstName
+            query = 'SELECT * FROM profReview WHERE LastName = "' + lastName + '" AND FirstName = "' + firstName + '"'
             c.execute(query)
             profReviews = c.fetchall()
             return profReviews
@@ -42,7 +42,7 @@ def getProfReviews(lastName, firstName, department, college):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%'
+            query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%"'
             c.execute(query)
             profReviews = c.fetchall()
             return profReviews        
@@ -53,7 +53,7 @@ def getClassReviews(department, title):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%'
+            query = 'SELECT * FROM classReview WHERE Department LIKE "%' + department + '%"'
             c.execute(query)
             classList = c.fetchall()
             return [classList, "department"]
@@ -61,7 +61,7 @@ def getClassReviews(department, title):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            query = 'SELECT * FROM classReview WHERE Title = ' + title
+            query = 'SELECT * FROM classReview WHERE Title = "' + title + '"'
             c.execute(query)
             classList = c.fetchall()
             return [classList, "title"]
@@ -149,7 +149,6 @@ def calculateClassRatings(classReviews):
         return classReviews
     
 def bestProf(department):
-
     profList = getProfReviews("","", department, "")
     profs = []
     for prof in profList:
@@ -202,6 +201,7 @@ def easiestProf(department):
     
 def bestClass(department):
     courseList = getClassReviews(department, "")
+    print courseList
     courses = set([course[2] for course in courseList[0]])
     courses = list(courses)
     crn_index = -2
@@ -213,7 +213,9 @@ def bestClass(department):
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j]
+        print courseName
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
+        print courseRatingList
         courseRating = [courseRatingList[rating_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating 
     courseDictSorted = Sort_dict(courseDict, 1)

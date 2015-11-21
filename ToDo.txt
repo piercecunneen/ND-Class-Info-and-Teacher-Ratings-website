@@ -1,3 +1,9 @@
+
+### == completed
+
+# == started
+
+
 Short term:
 
 Fix Layout of Instructor_info page
@@ -7,17 +13,17 @@ Fix Bug on DepartmentsMain (Search Departments)
 Cross Listed Courses
 	Combine courses of the same name across departments and within departments
 	List into database call, list out of database call from routes.py
-Add course attributes to class info page
+### Add course attributes to class info page
 
 Fix ratings
 	Overall rating calculation
 	Textbook needed
-	Rating descriptions
+	###Rating descriptions
 
-Fix URL display on new pages
+### Fix URL display on new pages
 
 
-Add mystite/ to any text file calls from routes.py up on servers
+### Add mystite/ to any text file calls from routes.py up on servers
 
 
 After Class Search post requests, keep search info in tables

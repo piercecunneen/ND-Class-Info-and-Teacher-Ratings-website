@@ -160,9 +160,6 @@ def InstructorByDepartment(Department):
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
-    print Best_Teachers
-    print '\n\n\n'
-    print Best_Teachers_Sorted
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
     Crn_and_Term = {}

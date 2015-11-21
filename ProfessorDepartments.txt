@@ -2913,4 +2913,18 @@ Ramirez, Ricardo; Departments:AFST
 Oka, Rahul; Departments:AFST
 Donovan, Kevin; Departments:AFST
 Battin, Steven; Departments:AFST
+<<<<<<< HEAD
 Rossi, Frank; Departments:AS
+=======
+Scheel, Molly; Departments:IUSM
+Chang, Hsueh-Chia; Departments:AME
+Novick, Rachel; Departments:BIOS
+Flagel, David; Departments:BIOS
+Datta, Anjuli; Departments:BIOS
+Blakesley, Michael; Departments:BIOS
+Stack, Mary; Departments:BIOS
+Jean-Pierre, Pascal; Departments:BIOS
+Cybulski, Kathleen; Departments:BIOS
+Leege, David; Departments:BIOS
+Baron, Jessica; Departments:BIOS
+>>>>>>> upstream/master

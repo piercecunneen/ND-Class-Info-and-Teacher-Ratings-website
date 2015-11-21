@@ -8,7 +8,7 @@ database = 'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
     # department comes in as list, needs to be changed to string
-    department = create_string(department)
+    department = ' '.join(department)
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
     conn = lite.connect(database)
     with conn:
@@ -18,6 +18,7 @@ def addProfReview(lastName, firstName, review, workload, grading, quality, acces
         #conn.close()
         
 def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date):
+    department = ' '.join(department)
     data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date]
     conn = lite.connect(database)
     with conn:
@@ -31,7 +32,8 @@ def getProfReviews(lastName, firstName, department, college):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            c.execute("SELECT * FROM profReview WHERE LastName=:last AND FirstName=:first", {"last":lastName, "first":firstName})
+            query = 'SELECT * FROM profReview WHERE LastName = ' + lastName + ' AND FirstName = ' + firstName
+            c.execute(query)
             profReviews = c.fetchall()
             return profReviews
             
@@ -40,14 +42,10 @@ def getProfReviews(lastName, firstName, department, college):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            c.execute("SELECT * FROM profReview WHERE Department=:dept", {"dept":department})
+            query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%'
+            c.execute(query)
             profReviews = c.fetchall()
-            return profReviews
-        
-    if college != "":
-        #pull prof list by college
-        x = 1  
-        
+            return profReviews        
         
 def getClassReviews(department, title):
     #pull reviews by department
@@ -55,14 +53,16 @@ def getClassReviews(department, title):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            c.execute("SELECT * FROM classReview WHERE Department=:dept", {"dept":department})
+            query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%'
+            c.execute(query)
             classList = c.fetchall()
             return [classList, "department"]
     else:
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            c.execute("SELECT * FROM classReview WHERE Title=:title", {"title":title})
+            query = 'SELECT * FROM classReview WHERE Title = ' + title
+            c.execute(query)
             classList = c.fetchall()
             return [classList, "title"]
     
@@ -240,35 +240,4 @@ def easiestClass(department):
    
     return courseDict, courseDictSorted
     
-    
-def create_string(string_list):
-    # takes in list of strings and makes it one string to go into db as a string
-    length = len(string_list)
-    new_string = ""
-    for  i in xrange(length):
-        if i == 0:
-            new_string = string_list[i] + " "
-        elif i == length - 1:
-            new_string += string_list[i]
-        else:
-            new_string += string_list[i] + ' '
-    return new_string
-    
-def create_list(input_string):
-    length = len(input_string)
-    new_list = []
-    current_string = ""
-    for i in range(length):
-        if input_string[i] == chr(32):
-            print "space"
-            # append new string onto list
-            new_list.append(current_string)
-            current_string = ""
-        elif i == length - 1:
-            current_string += input_string[i]
-            new_list.append(current_string)
-        else: 
-            print current_string   
-            current_string += input_string[i]
-            
-    return new_list
+

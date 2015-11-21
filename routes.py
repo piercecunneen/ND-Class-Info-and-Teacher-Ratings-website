@@ -120,12 +120,23 @@ def DisplayClassPage(Class, CRN, Term):
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
         Corequisites = Descriptions[2]
+        Attributes = Descriptions[3]
+        Restrictions = Descriptions[4]
     elif Descriptions[1] == "Both":
         Prerequisites = Descriptions[2]
         Corequisites = Descriptions[3]
+        Attributes = Descriptions[4]
+        Restrictions = Descriptions[5]
     elif  Descriptions[1] == 'Prerequisite Only':
         Prerequisites = Descriptions[2]
-    return render_template('class_info.html', Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
+        Attributes = Descriptions[3]
+        Restrictions = Descriptions[4]
+
+    else:
+        Attributes = Descriptions[2]
+        Restrictions = Descriptions[3]
+    Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
+    return render_template('class_info.html',Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review, Attributes = Attributes )
 
 
 @app.route('/DepartmentsMain/')
@@ -149,9 +160,6 @@ def InstructorByDepartment(Department):
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
-    print Best_Teachers
-    print '\n\n\n'
-    print Best_Teachers_Sorted
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
     Crn_and_Term = {}

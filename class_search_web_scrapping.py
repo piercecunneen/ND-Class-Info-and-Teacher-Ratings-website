@@ -8,7 +8,9 @@ def CleanUpString(string):
     """
     return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '')
 
-    
+
+def GetCurrentSemester():
+    return "201520"
     
     
 def GetOptions():
@@ -166,6 +168,8 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         return Classlist
 
 
+
+
 def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
@@ -178,9 +182,16 @@ def GetClassDescriptionAndAll(CRN, Term):
     soup = BeautifulSoup(response.content, "lxml")
     
     
-    DataText = soup.find_all('td')[2].text.split('Restrictions:')[0]
+    Data = soup.find_all('td')[2].text.split('Restrictions:')
+    DataText = Data[0]
+    Restrictions = CleanUpString(Data[1]).replace(u"\xa0", '').split("Course Attributes")[0].split("Cannot")[0].split(".syllabus")[0]
+    try:
+        # Catch index error if class has no attributes
+        AttributeText = CleanUpString(Data[1].split("Course Attributes:")[1].split(".syllabus")[0])
+        AttributeText = [str(i) for i in AttributeText.split(u"\xa0")]
+    except IndexError:
+        AttributeText = []
     
-    # Now want to get only course description, Prerequisites, and Corequisite 
     Course_Description = DataText.split('Associated Term:')[0]
     
     
@@ -189,15 +200,18 @@ def GetClassDescriptionAndAll(CRN, Term):
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
             Prerequisites = CleanUpString(str(Temporary[0]))
             Corequisites = CleanUpString(str(Temporary[1]))
-            return [Course_Description, 'Both', Prerequisites, Corequisites]
+            return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions]
         else:
             Prerequisites = CleanUpString(DataText.split('Prerequisites:')[1])
-            return [Course_Description, 'Prerequisite Only', Prerequisites]
+            return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions]
     elif 'Corequisites' in DataText:
             Corequisites = CleanUpString(DataText.split('Corequisites:')[1])
-            return [Course_Description, 'Corequisite Only', Corequisites]
+            return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions]
     else:
-        return [Course_Description, 'Neither']
+        return [Course_Description, 'Neither', AttributeText, Restrictions]
+
+
+
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
@@ -292,7 +306,7 @@ def GetAllProfessorDepartments():
     f.close()
     return ProfDepartments
 def GetCoursesTaught(Prof_ID):
-    url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=201510&P=' + str(Prof_ID)
+    url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=' + GetCurrentSemester() +'&P=' + str(Prof_ID)
     response = requests.get(url)
     soup = BeautifulSoup(response.content)
     rows = soup.find_all('tr')[2:]
@@ -304,5 +318,6 @@ def GetCoursesTaught(Prof_ID):
         CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
     return CoursesTaught
     
+
 
     

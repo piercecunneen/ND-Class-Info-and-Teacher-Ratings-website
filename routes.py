@@ -115,7 +115,6 @@ def DisplayClassPage(Class, CRN, Term):
         Overall_Rating = ''
     else:
         Overall_Rating = (toughness + interest) / 2.0
-    Course_text_review = 'sdfds'
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -136,7 +135,8 @@ def DisplayClassPage(Class, CRN, Term):
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
-    return render_template('class_info.html',Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review, Attributes = Attributes )
+
+    return render_template('class_info.html',Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness, Attributes = Attributes )
 
 
 @app.route('/DepartmentsMain/')

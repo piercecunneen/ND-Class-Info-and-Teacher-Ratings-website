@@ -81,9 +81,7 @@ function GoToURL(element){
 			var course = element.options[element.selectedIndex].value;
 			location.href = "".concat("../class_info/", course);
 	}
-function GoToCoursePage(element){
-			
-}
+
 function CreateRatingsSelect(elementID){
 			element = document.getElementById(elementID);
 			var opt = document.createElement('option')

@@ -27,6 +27,12 @@ Fix ratings
 
 ### Add mystite/ to any text file calls from routes.py up on servers
 
+Fix Bug when class name contains ":" and "&"
+	Reserved characters for url
+	Found in Philosophy class search
+
+Fix double names for professors
+
 Searching for Professors
 	Use search bar 
 

@@ -1,7 +1,7 @@
 import sqlite3
 from passlib.hash import pbkdf2_sha256
 
-db_path = "/Users/zachjanicki/Git/ND-Class-Info-and-Teacher-Ratings-website/pass.sqlite"
+db_path = "pass.sqlite"
 
 def create_user(username, password):
     

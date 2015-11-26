@@ -11,7 +11,6 @@ def create_user(username, password):
     with conn:
         c = conn.cursor()
         sql = 'insert into passwords values("' + username + '", "' + pass_hash + '")'
-        print sql
         c.execute(sql) 
         
 def validate_user(username, password):
@@ -22,14 +21,9 @@ def validate_user(username, password):
         sql = "select * from passwords where username = " + "'" + username + "'" 
         c.execute(sql)
         user = c.fetchone()
-    print user
     
     if user is None:
         return False
     
     return pbkdf2_sha256.verify(password, user[1])
     
-#test script
-
-x = validate_user("zj", "pass")
-print x

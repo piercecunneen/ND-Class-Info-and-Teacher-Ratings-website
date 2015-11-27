@@ -86,7 +86,7 @@
 		<tr> 
 			{% for i in Keys %}
 				{% if i == 'Title' %}
-					<td>  <a HREF ="/class_info/{{class[i]}}/{{class['CRN']}}/{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
+					<td>  <a HREF ="/class_info/{{class[i]}}-{{class['CRN']}}-{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
 				{% elif i == 'View_Books' %}
 					<td> <a href = "{{class[i]}}" target="_blank" > View Books </a> </td>
 				{% elif i == 'Instructor' %}

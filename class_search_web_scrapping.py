@@ -8,10 +8,8 @@ def CleanUpString(string):
     """
     return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '')
 
-
 def GetCurrentSemester():
     return "201520"
-    
     
 def GetOptions():
     """Gets the options for the 6 categories (Term, Division, Campus, Subject, Attribute, and Credits)..
@@ -57,11 +55,6 @@ def GetOptions():
             OptionCategories[3][key.replace("/", " and ")] = OptionCategories[3][key]
             del OptionCategories[3][key]
     return OptionCategories
-        
-
-
-
-    
 
 def GetClasses(term, subj, credit, Attr, divs, campus):
     """
@@ -172,9 +165,6 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     
         return Classlist
 
-
-
-
 def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
@@ -215,9 +205,6 @@ def GetClassDescriptionAndAll(CRN, Term):
     else:
         return [Course_Description, 'Neither', AttributeText, Restrictions]
 
-
-
-
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
     the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
@@ -228,7 +215,6 @@ def Sort_dict(data, isTerms):
         return keys
     else:
         return sorted(data)
-
 
 #CollegeDepartments = []
 #for i in Colleges:
@@ -265,10 +251,6 @@ def GetSubjectsInDepartments():
         sorted_Colleges_with_deparments.append(new_college)
     f.close()
     return sorted_Colleges_with_deparments
-    
-
-
-
 
 def GetAllProfessors():
     f = open('TeacherList.txt', 'r')
@@ -322,7 +304,3 @@ def GetCoursesTaught(Prof_ID):
         url_data = url_data.split('CRN=')[1].split('TERM=')
         CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
     return CoursesTaught
-    
-
-
-    

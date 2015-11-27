@@ -189,6 +189,7 @@ def Instructor(ProfessorName):
     OverallRatings = calculateProfRatings(Reviews) 
 
     ProfessorDescriptions = [review[2] for review in Reviews]
+    ReviewCount = len(Reviews)
     
     workload = OverallRatings[3]
     grading = OverallRatings[4]
@@ -197,7 +198,7 @@ def Instructor(ProfessorName):
     syllabus = OverallRatings[7]
     
     ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html',Courses = CoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility)
+    return render_template('instructor_info.html',Courses = CoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, ReviewCount = ReviewCount)
 
 @app.route('/BestClassesFor/', methods = ['GET', 'POST'])
 def BestClassesFor(page = 1):
@@ -276,5 +277,5 @@ def SubmitReviewMain():
     return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 
 if __name__=='__main__':
-    app.run(host='0.0.0.0', port=8000)
+    app.run(debug=True, host='0.0.0.0', port=8000)
 

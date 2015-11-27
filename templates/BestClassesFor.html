@@ -7,7 +7,7 @@
 	<div class="col l3 s6">
 		<h6 align="center">{{ SubjectsSorted[i] }}</h6>
 		<div class="collection">
-		{% for course in Courses[i] %}
+		{% for course in Courses[i][1:50] %}
 			<a class="collection-item" href="/class_info/{{course[0]}}/{{course[1]}}/{{course[2]}}">{{course[0]}}</a>
 		{% endfor %}
 		</div>

@@ -1,94 +1,76 @@
 {% extends "layout.html" %}
 {% block content %}
-<form id = "ClassSearchForm" method = "post">
-<table>
-	<tr> 
-		<td> Term:
-			<select id = "TermOptions" name = "TermOptions">
-			{% for key in TermOptionKeys %}
-   				<option value = {{TermOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			<script>
-			document.getElementById('TermOptions').options[0].selected = true;
-			</script>
-			</select>
-		</td>	
-		<td> Division: 
-			<select id = "DivisionOptions" name = "DivisionOptions">
-			{% for key in DivisionOptionKeys %}
-   				<option value = {{DivisionOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			</select>
-		</td>
-		<td > Campus: 
-			<select id = "CampusOptions" name = "CampusOptions">
-			{% for key in CampusOptionKeys %}
-   				<option value = {{CampusOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			<script>
-			DefaultSelect("CampusOptions", "M");
-			
-			</script>
-			</select>
-		</td>
-	</tr>
-	<tr> 
-		<td> Subjects: 
-			<select size = 5 multiple = "true" id = "SubjectOptions"  name = "SubjectOptions">
-			{% for key in SubjectOptionKeys %}
-   				<option value = {{SubjectOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			<script>
-			document.getElementById('SubjectOptions').options[0].selected = true;
-			</script>
-			</select>
-			
-		</td>
-		<td>Attributes:
-			<select id = "AttributeOptions" name = "AttributeOptions">
-			{% for key in AttributeOptionKeys %}
-   				<option value = {{AttributeOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			
-			</select>
-		</td>
-		<td> Credits: 
-			<select id = "CreditsOptions" name = "CreditsOptions">
-			{% for key in CreditsOptionKeys %}
-   				<option value = {{CreditsOptions[key]}}> {{key}} </option>
-			{% endfor %}
-			<script>
-			DefaultSelect("CreditsOptions", "A");
-			
-			</script>
-			</select>
-			
-		</td>
-	</tr>
 
-</table>
-<table>
-	<tr>
-		<td>  <button> Search Classes </button> </td<
-		<td> Click on a course or professor for info and past reviews </td>
-	</tr>
-</table>
-  
-<table border = "1" class = "ClassData">
-		<tr>
+<div class="row">
+	<form class="col s12 row" id="ClassSearchForm" method="post">
+		<div class="col s6">
+			<label>Term</label>
+			<select class="browser-default" id="TermOptions" name="TermOptions">
+				{% for key in TermOptionKeys %}
+				<option value='{{ TermOptions[key] }}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col s6">
+			<label>Division</label>
+			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
+				{% for key in DivisionOptionKeys %}
+   				<option value='{{DivisionOptions[key]}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col s6">
+			<label>Campus</label>
+			<select class="browser-default" id="CampusOptions" name="CampusOptions">
+				{% for key in CampusOptionKeys %}
+   				<option {% if key == 'Main' %}selected="selected"{% endif %} value='{{CampusOptions[key]}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col s6">
+			<label>Subject</label>
+			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
+				{% for key in SubjectOptionKeys %}
+   				<option value='{{SubjectOptions[key]}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col s6">
+			<label>Attribute</label>
+			<select class="browser-default" id="AttributeOptions" name="AttributeOptions">
+				{% for key in AttributeOptionKeys %}
+   				<option value='{{AttributeOptions[key]}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col s6">
+			<label>Credits</label>
+			<select class="browser-default" id="CreditsOptions" name="CreditsOptions">
+				{% for key in CreditsOptionKeys %}
+   				<option {% if key == 'All' %}selected="selected"{% endif %}value='{{CreditsOptions[key]}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<input class="blue lighten-1 btn waves-effect padded" type="submit" value="SearchClasses"></input>
+	</form>
+</div>
+
+<table border="1" class="ClassData striped centered">
+	<thead>
+        	<tr>
 			{% for key in Keys %}
-				{% if key != 'Teacher_Info'%}
-					<td> {{key}} </td>
-				{% endif %}
+			<th data-field="{{key}}">{{key}}</th>
 			{% endfor %}
-		</tr>
+        	</tr>
+        </thead>
+	<tbody>
 	{% for class in ClassList %}
 		<tr> 
 			{% for i in Keys %}
 				{% if i == 'Title' %}
-					<td>  <a href ="/class_info/{{class[i]}}/{{class['CRN']}}/{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
+					<td>  <a href="/class_info/{{class[i]}}/{{class['CRN']}}/{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
 				{% elif i == 'View_Books' %}
-					<td> <a href = "{{class[i]}}" target="_blank" > View Books </a> </td>
+					<td> <a href="{{class[i]}}" target="_blank" > View Books </a> </td>
 				{% elif i == 'Instructor' %}
 					<td> 
 					{% if class[i] %}
@@ -100,13 +82,14 @@
 					{% endif %}
 					</td>
 				{% elif i  == 'Teacher_Info' %}
-					
+					<td></td>	
 				{% else %}
 					<td> {{class[i]}} </td>
 				{% endif %}
 			{% endfor %}
 		</tr>
 	{% endfor %}
+	</tbody>
 </table>
 </form>
 {% endblock %}

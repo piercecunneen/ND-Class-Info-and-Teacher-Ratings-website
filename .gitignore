@@ -5,3 +5,6 @@
 
 # Vim leftovers
 *.swp
+
+# Our database
+*.sqlite

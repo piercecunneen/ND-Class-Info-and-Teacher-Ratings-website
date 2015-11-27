@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<<<<<<< HEAD
 <h2 align = "middle"> Best Classes for ....</h2> 
 <table>
 	<tr> 
@@ -18,7 +19,21 @@
 			</td>
 		{% endfor %}	
 	</tr>
+=======
+<h2 align="middle"> Best Classes for ....</h2> 
+>>>>>>> 222f43630300819c33d52002de1702e2fe8e3453
 
-</table>
+<div class="row">
+	{% for i in Indexs %}
+	<div class="col l3 s6">
+		<h6 align="center">{{ SubjectsSorted[i] }}</h6>
+		<div class="collection">
+		{% for course in Courses[i][1:50] %}
+			<a class="collection-item" href="/class_info/{{course[0]}}/{{course[1]}}/{{course[2]}}">{{course[0]}}</a>
+		{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+</div>
 
 {% endblock %}

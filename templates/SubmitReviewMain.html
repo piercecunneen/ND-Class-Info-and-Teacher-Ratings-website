@@ -2,25 +2,27 @@
   
 {% block content %}
 <div>
-<h1 align="center">Search for a Professor to Review</h1>
-<p align="center">Select an instructor by department or name</p>
-<br>
+	<h1 align="center">Search for a Professor to Review</h1>
+	<p align="center">Select an instructor by department or name</p>
 </div>
-	<div style="float: left">		
-		<select id = "Department">
+<div class="row">
+	<div class="col s6">
+		<select class="browser-default" id="Department">
 			{% for key in DepartmentKeys %}
 				<option value = "{{key}}" > {{key}} </option>
 			{% endfor %}
 		</select>
 		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>
-		
-		<select id = "Professors">
+	</div>
+	<div class="col s6">
+		<select class="browser-default" id="Professors">
 			{% for key in ProfessorKeys %}
 				<option > {{key}} </option>
 			{% endfor %}
 		</select>
 		<button type="button" onclick = "IframeTeacherSearch(document.getElementById('Professors'))" > Search by Last Name </button>
 	</div>
+</div>
 			
 <iframe id="TeacherInfoFrame" height="500px" width="900px" frameborder="2">  </iframe>
 

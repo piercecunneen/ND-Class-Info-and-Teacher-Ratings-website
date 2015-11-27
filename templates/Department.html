@@ -5,6 +5,7 @@
 <input type="button" value="Go Back" onclick="history.back()"></input>
 <input type="button" value="Go Forward" onclick="history.forward()"></input>
 <h2 align = "middle"> {{Department}} </h2>
+<<<<<<< HEAD
 <table> 
 	<tr id = "TitleRow" align = "middle">
 		<td> Teacher Search </td>
@@ -62,3 +63,40 @@
 	</tr>
 </table>
 {% endblock %}
+=======
+<div class="row">
+	<div class="col s3">
+		<h5 align="center">Best Teachers</h5>
+		<ul class="collection">
+			{% for teacher in Best_Teachers_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Easiest Teachers</h5>
+		<ul class="collection">
+			{% for teacher in Easiest_Teachers_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Most Interesting Classes</h5>
+		<ul class="collection">
+			{% for course in Best_Classes_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Easiest Classes</h5>
+		<ul class="collection">
+			{% for course in Easiest_Classes_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock %}
+>>>>>>> 222f43630300819c33d52002de1702e2fe8e3453

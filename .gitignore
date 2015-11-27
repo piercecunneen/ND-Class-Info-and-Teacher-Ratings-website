@@ -1,1 +1,7 @@
 .DS_Store
+
+# Compiled python files
+*.pyc
+
+# Vim leftovers
+*.swp

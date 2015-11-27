@@ -2,33 +2,62 @@
   
 {% block content %}
 
-<h1 style="text-align: center"> {{CourseName}}</h1>
+<h1 align="center">{{CourseName}}</h1>
 <div id = "Sections">
-	<div id = "left">
-			<h4> Toughness Rating:  {{toughness}} </p> </h4> 
-			 <h4>Interest Rating: {{interest}} </h4> 
-			<h4>Textbook Needed: {{Textbook}}</h4> 
-			<h4>Overall Rating:  {{Overall_Rating}}</h4> 
-	</div>
-	<div id = "right">
-		<h3> Course Description: </h3>
-		<p> {{CourseDescription}} </p><br> <br>
-		<h3> Prerequisites: </h3>
-		<p> {{Prerequisites}} </p><br> <br>
-		<h3> Corequisites </h3>
-		<p> {{Corequisites}} </p><br> <br>
-		<h3> Restrictions: </h3>:
-		{% for i in Restrictions %}
-			<p> {{i}} </p>
-		{% endfor %}
-		<br><br>
-		<h3> Attributes: </h3>
-		{% for i in Attributes %}
-				<p> {{i}} </p>
-		{% endfor %}
-		<br><br>
-
-
+	<table>
+		<thead>
+			<tr>
+				<th data-field="toughness">Toughness</th>
+				<th data-field="interest">Interest</th>
+				<th data-field="textbook-needed">Textbook Needed</th>
+				<th data-field="overall">Overall</th>
+			<tr>
+		<thead>
+			<tr>
+				<td>{% if toughness %}{{ toughness }}{% else %}None{% endif %}</td>
+				<td>{% if interest %}{{ interest }}{% else %}None{% endif %}</td>
+				<td>{% if Textbook %}{{ Textbook }}{% else %}None{% endif %}</td>
+				<td>{% if Overall_Rating %}{{ Overall_Rating }}{% else %}None{% endif %}</td>
+			</tr>
+		<tbody>
+		</tbody>
+	</table>
+	<h4 align="center">Course Information</h4>
+	<div class="row">
+		<ul class="collapsible" data-collapsible="accordian">
+			<li>
+				<div class="collapsible-header"><i class="material-icons">add</i>Course Description</div>
+      				<div class="collapsible-body"><p>{{ CourseDescription }}</p></div>
+			</li>
+			<li>
+				<div class="collapsible-header"><i class="material-icons">add</i>Prerequisites</div>
+      				<div class="collapsible-body"><p>{{ Prerequisites }}</p></div>
+			</li>
+			<li>
+				<div class="collapsible-header"><i class="material-icons">add</i>Corequisites</div>
+      				<div class="collapsible-body"><p>{{ Corequisites }}</p></div>
+			</li>
+			<li>
+				<div class="collapsible-header"><i class="material-icons">add</i>Restrictions</div>
+      				<div class="collapsible-body">
+					<ul class="collection">
+					{% for i in Restrictions %}
+						<li class="collection-item">{{i}}</li>
+					{% endfor %}
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="collapsible-header"><i class="material-icons">add</i>Attributes</div>
+      				<div class="collapsible-body">
+					<ul class="collection">
+					{% for i in Attributes %}
+						<li class="collection-item">{{i}}</li>
+					{% endfor %}
+					</ul>
+				</div>
+			</li>
+		</ul>
 	</div>
 </div>
 

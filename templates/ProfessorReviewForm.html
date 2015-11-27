@@ -3,31 +3,76 @@
 <form onsubmit = "if (CheckBeforeSubmitting()){return false;};" id = "formID" method = "post">
 
 <h2 align = "middle"> Review for {{ProfessorName}} </h2>
+<div class="row">
+	<div class="col s12">
+		<label>Course to Review</label>
+		<select class="browser-default" id="CoursedTaughtID" name="CoursesTaughtID">
+			{% for course in CoursesTaught %}
+			<option value="{{course[2]}} {{course[3]}} {{course[4]}}">{{course[2]}} {{course[1]}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col s6">
+		<h3 align="center">Course Review</h3>
+		<label for="ToughnessID">Toughness</label>
+		<select class="browser-default" id="ToughnessID" name="ToughnessID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="InterestID">Interest Level</label>
+		<select class="browser-default" id="InterestID" name="InterestID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="GradingID">Grading Difficulty</label>
+		<select class="browser-default" id="GradingID" name="GradingID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="WorkloadID">Workload Level</label>
+		<select class="browser-default" id="WorkloadID" name="WorkloadID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+	</div>
+	<div class="col s6">
+		<h3 align="center">Professor Review</h3>
+	</div>
+</div>
+
 <table>
-	<tr>
-		<td> Choose a course to review: 
-		</td>
-		<td> Course ratings: </td>
-		<td> Professor ratings: </td>
-	</tr>
-	<tr>
-		<td>
-			<select id = "CoursesTaughtID" name = "CoursesTaughtID" >   
-				<option value = '-- select an option --'> -- select an option -- </option>
-				{% for course in CoursesTaught %}
-					<option value = "{{course[2]}} {{course[3]}} {{course[4]}}" > {{course[2]}} {{course[1]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> Toughness <br> <select id = "ToughnessID" name = "ToughnessID"><script> CreateRatingsSelect('ToughnessID'); </script> </select> </td>
-		<td> Grading <br>  <select id = "GradingID" name = "GradingID"><script> CreateRatingsSelect('GradingID'); </script> </select> </td>
-
-	</tr>
-	<tr>
-		<td> </td>
-		<td> Interest Level<br> <select id = "InterestID" name = "InterestID" ><script> CreateRatingsSelect('InterestID'); </script> </select> </td>
-		<td> Workload  <br> <select id = "WorkloadID" name = "WorkloadID"><script> CreateRatingsSelect('WorkloadID'); </script> </select> </td>
-
 	</tr>
 	<tr>
 		<td> </td>

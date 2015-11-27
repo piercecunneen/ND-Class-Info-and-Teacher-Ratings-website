@@ -8,12 +8,13 @@ Short term:
 
 Fix Layout of Instructor_info page
 	Weird bar
-Fix Bug on DepartmentsMain (Search Departments)
-	forward slash in Bus Admin - Accounting/Bus Law screws up url
-Escape / in class names with %2f
-	Design/Analysis of algorithms
-Cross Listed Courses
-	# Combine courses of the same name across departments and within departments
+
+###Escape / in class names with %2f
+	###Design/Analysis of algorithms
+###Fix Bug on DepartmentsMain (Search Departments)
+	###forward slash in Bus Admin - Accounting/Bus Law screws up url
+###Cross Listed Courses
+	### Combine courses of the same name across departments and within departments
 	### List into database call, list out of database call from routes.py
 ### Add course attributes to class info page
 
@@ -27,9 +28,9 @@ Fix ratings
 
 ### Add mystite/ to any text file calls from routes.py up on servers
 
-Fix Bug when class name contains ":" and "&"
-	Reserved characters for url
-	Found in Philosophy class search
+###Fix Bug when class name contains ":" and "&"
+	###Reserved characters for url
+	###Found in Philosophy class search
 
 Fix double names for professors
 

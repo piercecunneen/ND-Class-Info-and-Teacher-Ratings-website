@@ -102,7 +102,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
     AttributeOptionKeys = Sort_dict(Options[4], False), AttributeOptions = Options[4],
     CreditsOptionKeys = Sort_dict(Options[5], False), CreditsOptions = Options[5], ClassList = ClassList, Keys = Keys)
 
-@app.route('/class_info/<Class>/<CRN>/<Term>')
+@app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
@@ -115,6 +115,15 @@ def DisplayClassPage(Class, CRN, Term):
         Overall_Rating = ''
     else:
         Overall_Rating = (toughness + interest) / 2.0
+
+    # Round numbers
+    if type(toughness) == float:
+        toughness = round(toughness,2)
+    if type(interest) == float:
+        interest = round(interest,2)
+    if type(Textbook) == float:
+        Textbook == round(Textbook,2)
+    
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -155,6 +164,7 @@ def InstructorByCollege(College):
 def InstructorByDepartment(Department):
     # Place holder lists
     #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
+    
     Teachers = [prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]]
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
@@ -285,9 +295,19 @@ def ProfessorReview(ProfessorName):
     try:
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])
     except KeyError:
-        CoursesTaught =  []
+        CoursesTaught =  ["No courses listed"]
     
-    return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = CoursesTaught)
+
+    num_items = len(CoursesTaught[0]) - 1
+    RevisedCoursesTaught = []
+
+    for i in xrange(len(CoursesTaught)):
+        if i != 0:
+            if (CoursesTaught[i][2] != CoursesTaught[i-1][2]) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
+                RevisedCoursesTaught.append(CoursesTaught[i])
+        else:
+            RevisedCoursesTaught.append(CoursesTaught[i])
+    return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = RevisedCoursesTaught)
 
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():

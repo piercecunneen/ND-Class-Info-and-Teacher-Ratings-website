@@ -52,6 +52,10 @@ def GetOptions():
     for entry in New_Term_Options:
         if 'Year' in entry:
             del OptionCategories[0][entry]
+    for key in OptionCategories[3]:
+        if "/" in key:
+            OptionCategories[3][key.replace("/", " and ")] = OptionCategories[3][key]
+            del OptionCategories[3][key]
     return OptionCategories
         
 
@@ -163,6 +167,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         
         # Clean up Course - sec in Classlist
         for i in Classlist:
+            i["Title"] = i["Title"].replace('/', ' and ')
             i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
     
         return Classlist

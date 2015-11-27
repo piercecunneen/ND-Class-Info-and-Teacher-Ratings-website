@@ -10,12 +10,12 @@
 		<td> TeacherList: </td>
 	</tr>
 	<tr>
-		<td> <select id = "AllDepartments">
+		<td> <select class="browser-default" id="AllDepartments">
 			{% for department in Departments %}
 				<option> {{department}} </option>
 			{% endfor %}
 		
-		</select>  <br><button onclick = 'GoToDepartment(document.getElementById("AllDepartments"));'> Search </button></td>
+		</select>  <br><button onclick='GoToDepartment(document.getElementById("AllDepartments"));'> Search </button></td>
 		<td> <select id = "AllTeachers">
 			{% for teacher in Teachers %}
 				<option> {{teacher}} </option>

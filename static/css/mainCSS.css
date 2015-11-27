@@ -2,3 +2,8 @@
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
+
+.centerButton {
+	margin: 0 auto;
+	display: block;
+}

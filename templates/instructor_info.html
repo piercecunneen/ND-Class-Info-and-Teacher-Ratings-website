@@ -1,18 +1,63 @@
 {% extends "layout.html" %}
   
 {% block content %}
-<h2 id = "ProfessorName"> {{ProfessorName}} </h2> <button id = "SubmitProfessorReview" onclick = " location.href = '/ProfessorReviewForm/{{ProfessorName}}'" > Submit review for this Professor </button>
-<p> {{ID}} </p>
+<h2>{{ProfessorName}}</h2>
+<button class="btn waves-effect blue lighten-2" id="SubmitProfessorReview" onclick="location.href='/ProfessorReviewForm/{{ProfessorName}}'">Submit review for this Professor</button>
+<p>{{ID}}</p>
 
 <div id="Sections">
-	<div id="left" >
-		<h3 align = "center"> Courses Taught </h3>
-		<table border = "1" id = "ClassesTaughtTable">
+	<div class="row">
+		<h3 align="center"> Evaluations </h3>
+		<table class="striped">
+			<thead>
 				<tr>
-					<td> Course </td>
-					<td> Semester Taught </td>
-					<td> Title </td>
+					<th data-field="Rating">Rating Category</th>
+					<th data-field="Score">Score</th>
 				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Grading</td>
+					<td>{% if grading %}{{grading}}{% else %}No Rating Yet{% endif %}</td>
+				</tr>
+				<tr>
+					<td>Quality</td>
+					<td>{% if quality %}{{quality}}{% else %}No Rating Yet{% endif %}</td>
+				</tr>
+				<tr>
+					<td>Workload</td>
+					<td>{% if workload %}{{workload}}{% else %}No Rating Yet{% endif %}</td>
+				</tr>
+				<tr>
+					<td>Accessibility</td>
+					<td>{% if accessibility %}{{accessibility}}{% else %}No Rating Yet{% endif %}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<h3 align="center">Reviews</h3>
+		{% if ReviewCount > 0 %}
+			{% for description in ProfessorDescriptions %}
+			<div class="card col s12">
+				<p class="padded">{{description}}</p>
+			</div>
+			{% endfor %}
+		{% else %}
+			<div class="card col s12"><p class="padded">No Reviews have been added yet</p></div>
+		{% endif %}
+	</div>
+	<div>
+		<h3 align="center">Courses Taught</h3>
+		<table class="centered striped">
+			<thead>
+				<tr>
+					<th date-field="Course">Course</th>
+					<th date-field="Semester">Semester Taught</th>
+					<th date-field="Title">Title</th>
+				</tr>
+			</thead>
+			<tbody>
 			{% for course in Courses %}
 				<tr> 
 					<td><a href = "/class_info/{{course[2]}}/{{course[3]}}/{{course[4]}}"> {{course[0]}}</a> </td> 
@@ -20,49 +65,9 @@
 					<td> {{course[2]}} </td>
 				</tr>
 			{% endfor %}
+			</tbody>
 		</table>
-			
    	</div>
-    	<div id="right">
-		<h3 align = "center"> Evaluations </h3>
-		<table id = "EvaluationsTable" border = "1"> 
-			<tr>
-					<td align = "center"> Rating Category </td>
-					<td align = "center"> Score </td>
-			</tr>
-			<tr>
-				<td align = "center"> Grading </td>
-				<td align = "center"> {{grading}} </td>
-			</tr>
-			<tr>
-				<td align = "center"> Quality </td>
-				<td align = "center"> {{quality}} </td>
-
-			</tr>
-			<tr>
-				<td align = "center"> Workload </td>
-				<td align = "center"> {{workload}}</td>
-
-			</tr>
-			<tr>
-				<td align = "center"> Accessibility </td>
-				<td align = "center"> {{accessibility}} </td>
-
-			</tr>
-		</table>
-		<table>
-			{% for description in ProfessorDescriptions %}
-				<tr> 
-					<td> {{description}} </td>
-
-				</tr>
-			{% endfor %}	
-		</table>
-		
-
-		
-		
-    	</div>
 </div>
 
 {% endblock %}

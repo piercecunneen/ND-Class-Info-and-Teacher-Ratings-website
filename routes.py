@@ -115,7 +115,6 @@ def DisplayClassPage(Class, CRN, Term):
         Overall_Rating = ''
     else:
         Overall_Rating = (toughness + interest) / 2.0
-    Course_text_review = 'sdfds'
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -136,7 +135,8 @@ def DisplayClassPage(Class, CRN, Term):
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
-    return render_template('class_info.html',Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review, Attributes = Attributes )
+
+    return render_template('class_info.html',Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness, Attributes = Attributes )
 
 
 @app.route('/DepartmentsMain/')
@@ -149,7 +149,6 @@ def DepartmentsMainPage():
 def InstructorByCollege(College):
     Departments = [i for i in GetSubjectsInDepartments() if College in i[0]][0][1:]
     Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
-
     return render_template('InstructorByCollege.html', College = College ,Departments = Departments, Teachers = Teachers)
     
 @app.route('/Department/<Department>')
@@ -181,8 +180,19 @@ def InstructorByDepartment(Department):
 def Instructor(ProfessorName):
     try:
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])
+        num_items = len(CoursesTaught[0]) - 1 # need this to be index of semester code 
     except KeyError:
         CoursesTaught =  []
+    RevisedCoursesTaught = []
+    for i in xrange(len(CoursesTaught)):
+        if i != 0:
+            if (CoursesTaught[i][0].split()[0] != CoursesTaught[i-1][0].split()[0]) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
+                RevisedCoursesTaught.append(CoursesTaught[i])
+        else:
+            RevisedCoursesTaught.append(CoursesTaught[i])
+
+
+
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])
     Reviews = getProfReviews(last_name, first_name, '', '')
@@ -192,10 +202,21 @@ def Instructor(ProfessorName):
     ReviewCount = len(Reviews)
     
     workload = OverallRatings[3]
+    if type(workload) == float:
+        workload = round(workload,2)
+
     grading = OverallRatings[4]
+    if type(grading) == float:
+        grading = round(grading,2)
     quality = OverallRatings[5]
+    if type(quality) == float:
+        quality = round(quality, 2)
     accessibility = OverallRatings[6]
+    if type(accessibility) == float:
+        accessibility = round(accessibility,2)
     syllabus = OverallRatings[7]
+    if type(syllabus) == float:
+        accessibility = round(accessibility,2)
     
     ProfReviews = OverallRatings[2]
     return render_template('instructor_info.html',Courses = CoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, ReviewCount = ReviewCount)
@@ -254,7 +275,7 @@ def ProfessorReview(ProfessorName):
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
         try:
-            department = str(ProfDepartments[ProfessorName][0])
+            department = ProfDepartments[ProfessorName]
         except:
             department = "Unknown"
         

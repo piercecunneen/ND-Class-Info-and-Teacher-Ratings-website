@@ -1,74 +1,129 @@
 {% extends "layout.html" %}
 {% block content %}
-<form onsubmit = "if (CheckBeforeSubmitting()){return false;};" id = "formID" method = "post">
+
+<form onsubmit="if (CheckBeforeSubmitting()){return false;};" id="formID" method="post">
 
 <h2 align = "middle"> Review for {{ProfessorName}} </h2>
-<table>
-	<tr>
-		<td> Choose a course to review: 
-		</td>
-		<td> Course ratings: </td>
-		<td> Professor ratings: </td>
-	</tr>
-	<tr>
-		<td>
-			<select id = "CoursesTaughtID" name = "CoursesTaughtID" >   
-				<option value = '-- select an option --'> -- select an option -- </option>
-				{% for course in CoursesTaught %}
-					<option value = "{{course[2]}} {{course[3]}} {{course[4]}}" > {{course[2]}} {{course[1]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> Toughness <br> <select id = "ToughnessID" name = "ToughnessID"><script> CreateRatingsSelect('ToughnessID'); </script> </select> </td>
-		<td> Grading <br>  <select id = "GradingID" name = "GradingID"><script> CreateRatingsSelect('GradingID'); </script> </select> </td>
+<div class="row">
+	<div class="col s12">
+		<label>Course to Review</label>
+		<select class="browser-default" id="CoursedTaughtID" name="CoursesTaughtID">
+			{% for course in CoursesTaught %}
+			<option value="{{course[2]}} {{course[3]}} {{course[4]}}">{{course[2]}} {{course[1]}}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col s6">
+		<h3 align="center">Course Review</h3>
+		<label for="ToughnessID">Toughness</label>
+		<select class="browser-default" id="ToughnessID" name="ToughnessID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="InterestID">Interest Level</label>
+		<select class="browser-default" id="InterestID" name="InterestID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label>Was the Textbook necessary?</label>
+		<select class="browser-default" id="TextbookNeeded" name="TextbookNeeded">
+			<option value = "1"> Yes </option>
+			<option value = "0"> No </option>
+		</select>
+		<div class="row padded">
+			<div class="input-field col s12">
+				<textarea id="OptionalResponseCourse" name="OptionalResponseCourse" class="materialize-textarea"></textarea>
+				<label for="OptionalResponseCourse">Description of Course (optional)</label>
+			</div>
+		</div>
+	</div>
+	<div class="col s6">
+		<h3 align="center">Professor Review</h3>
+		<label for="GradingID">Grading Difficulty</label>
+		<select class="browser-default" id="GradingID" name="GradingID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="WorkloadID">Workload Level</label>
+		<select class="browser-default" id="WorkloadID" name="WorkloadID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="QualityID">Quality</label>
+		<select class="browser-default" id="QualityID" name="QualityID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="AccessibilityID">Accessibility</label>
+		<select class="browser-default" id="AccessibilityID" name="AccessibilityID">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+			<option value="6">6</option>
+			<option value="7">7</option>
+			<option value="8">8</option>
+			<option value="9">9</option>
+			<option value="10">10</option>
+		</select>
+		<label for="SyllabusID">Was the Syllabus useful?</label>
+		<select class="browser-default" id="SyllabusID" name="SyllabusID">
+			<option value = "0"> Never used it </option>
+			<option value = "1"> It came in handy at times </option>
+			<option value = "2"> It's your lifeline </option>
+		</select>
+		<div class="row padded">
+			<div class="input-field col s12">
+				<textarea id="OptionalResponseProfessor" name="OptionalResponseProfessor" class="materialize-textarea"></textarea>
+				<label for="OptionalResponseProfessor">Description of Professor (optional)</label>
+			</div>
+		</div>
+	</div>
+</div>
 
-	</tr>
-	<tr>
-		<td> </td>
-		<td> Interest Level<br> <select id = "InterestID" name = "InterestID" ><script> CreateRatingsSelect('InterestID'); </script> </select> </td>
-		<td> Workload  <br> <select id = "WorkloadID" name = "WorkloadID"><script> CreateRatingsSelect('WorkloadID'); </script> </select> </td>
+<input class="btn btn-large blue lighten-2 centerButton" style="display:block;" type="submit" value="Submit Reviews"></input>
 
-	</tr>
-	<tr>
-		<td> </td>
-		<td> Was the Textbook necessary? <br>
-			<select id = "TextbookNeeded" name = "TextbookNeeded"> 
-				<option value = '-- select an option --'> -- select an option -- </option>
-				<option value = "1"> Yes </option>
-				<option value = "0"> No </option>
-			</select>
- 		</td>
-		<td> Quality <br> <select style = "float: top;" id = "QualityID" name = "QualityID"><script> CreateRatingsSelect('QualityID'); </script> </select> </td>
-	</tr>
-	<tr>
-		<td> </td>
-		<td> </td>
-		<td> Accessibility <br> 
-			<select id = "AccessibilityID" name = "AccessibilityID">
-				<script> CreateRatingsSelect('AccessibilityID'); </script>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<td> </td>
-		<td> </td>
-		<td> Was the Syllabus useful? <br> 
-			<select id = "SyllabusID" name = "SyllabusID">
-				<option> -- select an option -- </option>
-				<option value = "0"> Never used it </option>
-				<option value = "1"> It came in handy at times </option>
-				<option value = "2"> It's your lifeline </option>
-			</select>
-		</td>
-	</tr>
-
-	<tr> 
-		<td> </td>
-		<td>Description of Course (optional)<br> <textarea  style = "height: 100px; width: 270px;" id = "OptionalResponseCourse" name = "OptionalResponseCourse" > </textarea> </td>
-		<td> Description of Professor (optional)<br> <textarea  style = "height: 100px; width: 270px;" id = "OptionalResponseProfessor" name = "OptionalResponseProfessor" > </textarea> </td>
-	</tr>
-</table>
-	<input type='submit' required>
 </form>
 
 {% endblock %}

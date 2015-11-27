@@ -5,60 +5,38 @@
 <input type="button" value="Go Back" onclick="history.back()"></input>
 <input type="button" value="Go Forward" onclick="history.forward()"></input>
 <h2 align = "middle"> {{Department}} </h2>
-<table> 
-	<tr id = "TitleRow" align = "middle">
-		<td> Teacher Search </td>
-		<td> Best Teachers </td>
-		<td> Easiest Teachers </td>
-		<td> Most Interesting Classes </td>
-		<td> Easiest Classes </td>
-	</tr>
-	<tr align = "middle">
-		<td > 	
-			<select size = "10" Id = "ProfessorList"> 
-				{% for teacher in Teachers_Sorted %}
-					<option value = "{{teacher}}"> {{teacher}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> 
-			<select size = "10" Id = "BestProfessorsList"> 
-				{% for teacher in Best_Teachers_Sorted %}
-					<option value = "{{teacher}}"> {{teacher}}: {{Best_Teachers[teacher]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> 
-			<select size = "10" Id = "EasiestProfessorsList"> 
-				{% for teacher in Easiest_Teachers_Sorted %}
-					<option value = "{{teacher}}"> {{teacher}}: {{Easiest_Teachers[teacher]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> 
-			<select size = "10" Id = "InterestingClassList"> 
-				{% for course in Best_Classes_Sorted %}
-					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Best_Classes[course][0]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-		<td> 
-			<select size = "10" Id = "EasiestClassList"> 
-				{% for course in Easiest_Classes_Sorted %}
-					<option value = "{{course}}/{{Crn_and_Term[course][0]}}/{{Crn_and_Term[course][1]}}"> {{course}}: {{Easiest_Classes[course][0]}} </option>
-				{% endfor %}
-			</select> 
-		</td>
-	
-	</tr>
-	<tr>
-		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('ProfessorList'));"> Search for Teacher </button></td>
-		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('BestProfessorsList'));"> Search for Teacher </button></td>
-		<td><button width = "20px" onclick = "IframeTeacherSearch(document.getElementById('EasiestProfessorsList'));"> Search for Teacher </button></td>
-		<td><button width = "20px" onclick = "IframeClassSearch(document.getElementById('InterestingClassList'));"> Search for Course </button></td>
-		<td><button width = "20px" onclick = "IframeClassSearch(document.getElementById('EasiestClassList'));"> Search for Course </button></td>
-
-	
-	</tr>
-</table>
+<div class="row">
+	<div class="col s3">
+		<h5 align="center">Best Teachers</h5>
+		<ul class="collection">
+			{% for teacher in Best_Teachers_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Easiest Teachers</h5>
+		<ul class="collection">
+			{% for teacher in Easiest_Teachers_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Most Interesting Classes</h5>
+		<ul class="collection">
+			{% for course in Best_Classes_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col s3">
+		<h5 align="center">Easiest Classes</h5>
+		<ul class="collection">
+			{% for course in Easiest_Classes_Sorted %}
+			<li class="collection-item">{{ teacher }}</li>	
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 {% endblock %}

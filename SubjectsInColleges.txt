@@ -1,6 +1,3 @@
-School of Architecture
-Architecture
------
 College of Arts & Letters
 Journalism, Ethics & Democracy
 Constitutional Studies
@@ -86,14 +83,17 @@ Environmental Geosciences
 Civil Engineering
 Engineering Business Program
 -----
-First Year of Studies
-First Year of Studies
-First Year Composition
------
-The Law School
-Patent Law Masters
-Law
-Patent Law
+College of Science
+Chemistry and Biochemistry
+Applied & Comp Math and Stats
+Biological Sciences
+Sustainability
+Science Preprofessional
+Mathematics
+Science (Non-departmental)
+Energy Studies
+Physics
+Integrated Biomedical Sciences
 -----
 Mendoza College of Business
 Business Administration
@@ -130,17 +130,14 @@ Business Administration - EG
 Management - Entrepreneurship
 Business Administration - SC
 -----
-College of Science
-Chemistry and Biochemistry
-Applied & Comp Math and Stats
-Biological Sciences
-Sustainability
-Science Preprofessional
-Mathematics
-Science (Non-departmental)
-Energy Studies
-Physics
-Integrated Biomedical Sciences
+First Year of Studies
+First Year of Studies
+First Year Composition
+-----
+The Law School
+Patent Law Masters
+Law
+Patent Law
 -----
 St. Mary's College
 Spanish - Translation (SMC)
@@ -192,4 +189,7 @@ Global Health - Eck Institute
 Center for Social Concerns
 Military Science (Army ROTC)
 Pre-College Summer Experience
+-----
+School of Architecture
+Architecture
 -----

@@ -223,7 +223,6 @@ def easiestProf(department):
     
 def bestClass(department):
     courseList = getClassReviews(department, "")
-    print courseList
     courses = set([course[2] for course in courseList[0]])
     courses = list(courses)
     crn_index = -2
@@ -235,9 +234,7 @@ def bestClass(department):
     courseRating = [] * num_courses
     for j in range(0, num_courses):
         courseName = courses[j]
-        print courseName
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
-        print courseRatingList
         courseRating = [courseRatingList[rating_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating 
     courseDictSorted = Sort_dict(courseDict, 1)

@@ -207,7 +207,7 @@ def Instructor(ProfessorName):
 
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])
-    Reviews = getProfReviews(last_name, first_name, '', '')
+    Reviews = getProfReviews(Professors[last_name + first_name])
     OverallRatings = calculateProfRatings(Reviews) 
 
     ProfessorDescriptions = [review[2] for review in Reviews]
@@ -291,8 +291,8 @@ def ProfessorReview(ProfessorName):
         except:
             department = "Unknown"
         
-        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department)
-        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term)
+        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department, Professors[last_name + first_name])
+        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term, Professors[last_name + first_name])
         return render_template('PostSubmissionForm.html', test =' ' )        
          
     try:

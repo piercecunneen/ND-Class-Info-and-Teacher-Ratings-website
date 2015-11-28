@@ -6,29 +6,34 @@ import sys
 from class_search_web_scrapping import Sort_dict
 database = 'reviews.sqlite'
 
-def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department):
+def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id):
     # department comes in as list, needs to be changed to string
-    department = ' '.join(department)
-    data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department]
+    if len(department) > 1:
+        department = ' '.join(department)
+    else:
+        department = department[0]
+    print department
+    data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id]
     conn = lite.connect(database)
     with conn:
-    
         c = conn.cursor()
-        c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?,?)',(data,))
         #conn.close()
         
-def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date):
-    department = ' '.join(department)
-    data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date]
+def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id):
+    if len(department) > 1:
+        department = ' '.join(department)
+    else:
+        department = department[0]
+    data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id]
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?,?)',(data,))
 
-def getProfReviews(lastName, firstName, department, college):
-    if lastName != "":
+def getProfReviews(id):
+    '''if lastName != "":
         # pull list of professors by last name
-        
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
@@ -45,8 +50,25 @@ def getProfReviews(lastName, firstName, department, college):
             query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%"'
             c.execute(query)
             profReviews = c.fetchall()
-            return profReviews        
+            return profReviews    '''    
         
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = 'SELECT * FROM profReview WHERE ID = ' + str(id) 
+        c.execute(query)
+        profReviews = c.fetchall()
+        return profReviews
+
+def getDepartmentReviews(department):
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%"'
+        c.execute(query)
+        profReviews = c.fetchall()
+        return profReviews    
+
 def getClassReviews(department, title):
     #pull reviews by department
     if department != "":
@@ -149,7 +171,7 @@ def calculateClassRatings(classReviews):
         return classReviews
     
 def bestProf(department):
-    profList = getProfReviews("","", department, "")
+    profList = getDepartmentReviews(department)
     profs = []
     for prof in profList:
         if prof not in profs:
@@ -165,7 +187,7 @@ def bestProf(department):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
-        profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
+        profRatingList = calculateProfRatings(getDepartmentReviews(department))
         profRating = profRatingList[interest_index]
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
@@ -175,7 +197,7 @@ def bestProf(department):
 def easiestProf(department):
     #a = calculateProfRatings(getProfReviews("", "", department, ""))
     #return a
-    profList = getProfReviews("","", department, "")
+    profList = getDepartmentReviews(department)
     profs = []
     for prof in profList:
         if prof not in profs:
@@ -191,7 +213,7 @@ def easiestProf(department):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
-        profRatingList = calculateProfRatings(getProfReviews(profLast, profFirst, "", ""))
+        profRatingList = calculateProfRatings(getDepartmentReviews(department))
         profRating = profRatingList[workload_index]
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)

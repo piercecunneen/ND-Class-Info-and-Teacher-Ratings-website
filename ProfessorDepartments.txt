@@ -2996,7 +2996,7 @@ Rhodes, Robin; Departments:ARCH
 Eide, Jerome; Departments:ARCH
 Geymonat, Ludovico; Departments:ARHI
 Doss, Erika; Departments:ARHI
- Minor, Heather; Departments:ARHI
+Minor, Heather; Departments:ARHI
 Brownstein, Michael; Departments:ARHI
 Cardenas, Gilberto; Departments:ARHI
 Bajuyo, Leticia; Departments:ARST

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
     Input: string
@@ -189,7 +190,16 @@ def GetClassDescriptionAndAll(CRN, Term):
     
     Course_Description = DataText.split('Associated Term:')[0]
     
+    EnrollmentData = soup.find_all("table", {"class":"datadisplaytable"})
+    if len(EnrollmentData) == 4:
+        Registration = EnrollmentData[1].text
+        CrossListed = EnrollmentData[2].text
+    elif len(EnrollmentData) == 3:
+        Registration = EnrollmentData[1].text
+        CrossListed  = "None"
     
+    
+    return Registration, CrossListed
     if 'Prerequisites' in DataText:
         if 'Corequisites' in DataText:
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
@@ -204,6 +214,8 @@ def GetClassDescriptionAndAll(CRN, Term):
             return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions]
     else:
         return [Course_Description, 'Neither', AttributeText, Restrictions]
+
+
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts

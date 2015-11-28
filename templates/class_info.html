@@ -16,7 +16,7 @@
 			<tr>
 				<td>{% if toughness %}{{ toughness }}{% else %}None{% endif %}</td>
 				<td>{% if interest %}{{ interest }}{% else %}None{% endif %}</td>
-				<td>{% if Textbook %}{{ Textbook }}{% else %}None{% endif %}</td>
+				<td>{% if Textbook %}{{Textbook }}% of reviews said yes {% else %}None{% endif %}</td>
 				<td>{% if Overall_Rating %}{{ Overall_Rating }}{% else %}None{% endif %}</td>
 			</tr>
 		<tbody>
@@ -26,7 +26,7 @@
 	<div class="row">
 		<ul class="collapsible" data-collapsible="accordian">
 			<li>
-				<div class="collapsible-header"><i class="material-icons">add</i>Course Description</div>
+				<div class="collapsible-header active"><i class="material-icons">add</i>Course Description</div>
       				<div class="collapsible-body"><p>{{ CourseDescription }}</p></div>
 			</li>
 			<li>

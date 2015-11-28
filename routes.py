@@ -26,8 +26,9 @@ def ClassSearch():
         Attribute = request.form['AttributeOptions']
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
+
+        print 
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
-        #return render_template('home.html', Term = Term, Subject = Subject, Attribute = Attribute, Division = Division, Campus = Campus, Credit = Credit)
     return render_template('class_search.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
     DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
     CampusOptionKeys = Sort_dict(Options[2], False), CampusOptions = Options[2], 
@@ -35,14 +36,14 @@ def ClassSearch():
     AttributeOptionKeys = Sort_dict(Options[4], False), AttributeOptions = Options[4],
     CreditsOptionKeys = Sort_dict(Options[5], False), CreditsOptions = Options[5]  )
 
-@app.route('/class_search/<class_info>/')
-def classInfo(class_info):
-    CourseRatings = calculateClassRatings(getClassReviews('', class_info))
-    Course_text_review = str(CourseRatings[3])
-    toughness = str(CourseRatings[4])
-    interest = str(CourseRatings[5])
-    Textbook = str(CourseRatings[6])
-    return render_template('class_info.html', Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
+# @app.route('/class_search/<class_info>/')
+# def classInfo(class_info):
+#     CourseRatings = calculateClassRatings(getClassReviews('', class_info))
+#     Course_text_review = str(CourseRatings[3])
+#     toughness = str(CourseRatings[4])
+#     interest = str(CourseRatings[5])
+#     Textbook = str(CourseRatings[6])
+#     return render_template('class_info.html', Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
  
 @app.route('/instructor_eval/')
 def eval():
@@ -94,6 +95,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
         ProfDepartments = GetAllProfessorDepartments()
         didAddDept = False
     # Keys specifies what exactly we want to show up on our class search
+
     Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
     DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
@@ -122,8 +124,7 @@ def DisplayClassPage(Class, CRN, Term):
     if type(interest) == float:
         interest = round(interest,2)
     if type(Textbook) == float:
-        Textbook == round(Textbook,2)
-    
+        Textbook = round(Textbook * 100,2)
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -171,7 +172,7 @@ def InstructorByDepartment(Department):
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
-    print Best_Teachers
+
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]

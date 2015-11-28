@@ -98,11 +98,6 @@ function CreateRatingsSelect(elementID){
 	}
 }
 
-function QuickSearchFunction(){
-	alert('Please fill out all required ff');
-	
-
-}
 function CheckBeforeSubmitting(){
 	var form = document.getElementById('formID'); 
 	

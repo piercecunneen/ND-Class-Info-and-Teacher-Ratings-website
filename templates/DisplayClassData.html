@@ -59,7 +59,9 @@
 	<thead>
         	<tr>
 			{% for key in Keys %}
+			{% if key != "Teacher_Info" %}
 			<th data-field="{{key}}">{{key}}</th>
+			{% endif %}
 			{% endfor %}
         	</tr>
         </thead>
@@ -68,11 +70,7 @@
 		<tr> 
 			{% for i in Keys %}
 				{% if i == 'Title' %}
-<<<<<<< HEAD
 					<td>  <a HREF ="/class_info/{{class[i]}}-{{class['CRN']}}-{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
-=======
-					<td>  <a href="/class_info/{{class[i]}}/{{class['CRN']}}/{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
->>>>>>> 222f43630300819c33d52002de1702e2fe8e3453
 				{% elif i == 'View_Books' %}
 					<td> <a href="{{class[i]}}" target="_blank" > View Books </a> </td>
 				{% elif i == 'Instructor' %}
@@ -86,7 +84,6 @@
 					{% endif %}
 					</td>
 				{% elif i  == 'Teacher_Info' %}
-					<td></td>	
 				{% else %}
 					<td> {{class[i]}} </td>
 				{% endif %}

@@ -6,7 +6,7 @@
 <input type="button" value="Go Forward" onclick="history.forward()"></input>
 <h2 align = "middle"> {{Department}} </h2>
 <div class="row">
-	<div class="col s3">
+	<div class="col s4">
 		<h5 align="center"> Teachers</h5>
 		<ul class="collection">
 			{% for teacher in Teachers %}
@@ -14,7 +14,7 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div class="col s3">
+	<div class="col s2">
 		<h5 align="center">Best Teachers</h5>
 		<ul class="collection">
 			{% for teacher in Best_Teachers_Sorted %}
@@ -22,7 +22,7 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div class="col s3">
+	<div class="col s2">
 		<h5 align="center">Easiest Teachers</h5>
 		<ul class="collection">
 			{% for teacher in Easiest_Teachers_Sorted %}
@@ -30,7 +30,7 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div class="col s3">
+	<div class="col s2">
 		<h5 align="center">Most Interesting Classes</h5>
 		<ul class="collection">
 			{% for course in Best_Classes_Sorted %}
@@ -38,7 +38,7 @@
 			{% endfor %}
 		</ul>
 	</div>
-	<div class="col s3">
+	<div class="col s2">
 		<h5 align="center">Easiest Classes</h5>
 		<ul class="collection">
 			{% for course in Easiest_Classes_Sorted %}

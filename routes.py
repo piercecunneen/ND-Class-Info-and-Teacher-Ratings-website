@@ -171,6 +171,7 @@ def InstructorByDepartment(Department):
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
+    print Best_Teachers
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]
@@ -229,7 +230,7 @@ def Instructor(ProfessorName):
         accessibility = round(accessibility,2)
     
     ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html',Courses = CoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, ReviewCount = ReviewCount)
+    return render_template('instructor_info.html',Courses = RevisedCoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, ReviewCount = ReviewCount)
 
 @app.route('/BestClassesFor/', methods = ['GET', 'POST'])
 def BestClassesFor(page = 1):

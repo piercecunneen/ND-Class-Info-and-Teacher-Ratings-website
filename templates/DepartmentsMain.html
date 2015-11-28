@@ -2,41 +2,30 @@
   
 {% block content %}
 <h2 align = "middle"> Search Departments for Class and Professor Information </h2>
-<table>
-	<tr>
-		{% for college in DepartmentsByCollege[0:5] %}
-			<td> <button onclick = 'GoToDepartment(document.getElementById("{{college[0]}}"))'> {{college[0]}} </button> </td>
+
+<div class="row">
+	{% for college in DepartmentsByCollege[0:4] %}
+	<div class="col l3 s6">
+		<h6 align="center"> {{college[0]}} </h6>
+		<div class="collection">
+		{% for department in college[1:] %}
+			<a class="collection-item" href="/Department/{{department}}">{{department}}</a>
 		{% endfor %}
-	</tr>
-	<tr>
-		{% for college in DepartmentsByCollege[0:5] %}
-			<td style = "align: left;">
-			<select size = "5" id = "{{college[0]}}" style = "width:200px;"> 
-				{% for department in college[1:] %}
-					<option> {{department}} </option>
-				{% endfor %}
-			</select>
-			</td>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+<div class="row">
+	{% for college in DepartmentsByCollege[4:] %}
+	<div class="col l3 s6">
+		<h6 align="center"> {{college[0]}} </h6>
+		<div class="collection">
+		{% for department in college[1:] %}
+			<a class="collection-item" href="/Department/{{department}}">{{department}}</a>
 		{% endfor %}
-				
-	</tr>
-	<tr>
-		{% for college in DepartmentsByCollege[5:] %}
-			<td><button onclick = 'GoToDepartment(document.getElementById("{{college[0]}}"))'> {{college[0]}} </button> </td>
-		{% endfor %}
-	</tr>
-	<tr>
-		{% for college in DepartmentsByCollege[5:] %}
-			<td style = "align: left;">
-			<select id = "{{college[0]}}" size = "5" style = "width:200px;"> 
-				{% for department in college[1:] %}
-					<option> {{department}} </option>
-				{% endfor %}
-			</select>
-			</td>
-		{% endfor %}
-				
-	</tr>
-	
-</table>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
 {% endblock %}

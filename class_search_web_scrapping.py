@@ -216,22 +216,8 @@ def Sort_dict(data, isTerms):
     else:
         return sorted(data)
 
-#CollegeDepartments = []
-#for i in Colleges:
-#    CollegeDepartments.append([])
-#Subjects = GetOptions()[3]
-#for subject in Subjects:
-#    index = 0
-#    for i in Colleges:
-#        print i + ': ' + str(index)
-#        index += 1
-#    print subject
-#    Department = input("Department = ")
-#    print ' '
-#    print ' ----------------------'
-#    CollegeDepartments[Department].append(subject)
 def GetSubjectsInDepartments():
-    Colleges = ['School of Architecture', 'College of Arts & Letters', 'College of Engineering','First Year of Studies', 'The Law School','Mendoza College of Business', 'College of Science', "St. Mary's College",'Other']
+    Colleges = [ 'College of Arts & Letters', 'College of Engineering', 'College of Science','Mendoza College of Business','First Year of Studies', 'The Law School', "St. Mary's College",'Other','School of Architecture']
     Colleges_with_deparments = []
     for i in Colleges:
         Colleges_with_deparments.append([])

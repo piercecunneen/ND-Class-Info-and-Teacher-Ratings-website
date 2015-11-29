@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
 from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 
@@ -16,6 +16,15 @@ def GetCurrentSemester():
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/search/<query>/', methods = ['POST'])
+def Search(query):
+	unicode_profs = {} 
+	for prof in Professors:
+		prof_name = unicode(prof, "utf-8")
+		if query.lower() in prof_name.lower():
+			unicode_profs[prof_name] = '/instructor_info/' + prof_name
+	return jsonify(unicode_profs)
 
 @app.route('/class_search/', methods = ['GET', 'POST'])
 def ClassSearch():

@@ -12,7 +12,6 @@ def addProfReview(lastName, firstName, review, workload, grading, quality, acces
         department = ' '.join(department)
     else:
         department = department[0]
-    print department
     data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id]
     conn = lite.connect(database)
     with conn:
@@ -187,6 +186,7 @@ def bestProf(department):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
+        print getDepartmentReviews(department)
         profRatingList = calculateProfRatings(getDepartmentReviews(department))
         profRating = profRatingList[interest_index]
         profDict[profName] = profRating
@@ -235,8 +235,7 @@ def bestClass(department):
     for j in range(0, num_courses):
         courseName = courses[j]
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
-        print courseRatingList
-        print getClassReviews("", str(courseName))
+
         courseRating = [courseRatingList[rating_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating 
     courseDictSorted = Sort_dict(courseDict, 1)

@@ -11,11 +11,22 @@ Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
 
 def GetCurrentSemester():
-    return '201510' 
+    return '201520' 
 
 @app.route('/')
 def home():
     return render_template('home.html')
+
+
+@app.route('/class_search/quick-search=<ATTR>')
+def QuickSearch(ATTR):
+    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
+    Subjects = Options[3].values()
+    Semester = GetCurrentSemester()
+    Attribute = Attributes[ATTR]
+    print Attribute
+    return DisplayClasses(Semester, Subjects, Options[5]["All"],Attribute,"A", Options[2]["Main"])
+
 
 @app.route('/search/<query>/', methods = ['POST'])
 def Search(query):
@@ -36,7 +47,7 @@ def ClassSearch():
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
 
-        print 
+         
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
     return render_template('class_search.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
     DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
@@ -104,6 +115,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
         ProfDepartments = GetAllProfessorDepartments()
         didAddDept = False
     # Keys specifies what exactly we want to show up on our class search
+
 
     Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
     return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
@@ -182,6 +194,7 @@ def InstructorByDepartment(Department):
     Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
     Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
 
+    print Best_Teachers
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]

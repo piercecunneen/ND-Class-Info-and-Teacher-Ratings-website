@@ -4,7 +4,7 @@
 
 <div class="row">
 	<form class="col s12 row" id="ClassSearchForm" method="post">
-		<div class="col s5">
+		<div class="col s6">
 			<label>Term</label>
 			<select class="browser-default" id="TermOptions" name="TermOptions">
 				{% for key in TermOptionKeys %}
@@ -12,7 +12,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Division</label>
 			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
 				{% for key in DivisionOptionKeys %}
@@ -20,7 +20,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Campus</label>
 			<select class="browser-default" id="CampusOptions" name="CampusOptions">
 				{% for key in CampusOptionKeys %}
@@ -28,7 +28,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Subject</label>
 			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
 				{% for key in SubjectOptionKeys %}
@@ -36,7 +36,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Attribute</label>
 			<select class="browser-default" id="AttributeOptions" name="AttributeOptions">
 				{% for key in AttributeOptionKeys %}
@@ -44,7 +44,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Credits</label>
 			<select class="browser-default" id="CreditsOptions" name="CreditsOptions">
 				{% for key in CreditsOptionKeys %}
@@ -54,6 +54,14 @@
 		</div>
 	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Search Classes"> </input>
 	</form>
-	
+	<div class="col s6">
+			<label>Quick Search for University Requirements</label>
+			<select class="browser-default" id="QuickSearch" name="QuickSearch">
+				{% for key in {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'} %}
+   				<option value='{{key}}'>{{key}}</option>
+				{% endfor %}
+			</select>
+		</div>
+	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Search Classes" onclick = "QuickSearch();"> </input>
 </div>
 {% endblock %}

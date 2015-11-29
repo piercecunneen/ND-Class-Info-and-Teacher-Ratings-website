@@ -16,7 +16,7 @@
 			<tr>
 				<td>{% if toughness %}{{ toughness }}{% else %}None{% endif %}</td>
 				<td>{% if interest %}{{ interest }}{% else %}None{% endif %}</td>
-				<td>{% if Textbook %}{{Textbook }}% of reviews said yes {% else %}None{% endif %}</td>
+				<td>{% if Textbook %}{{Textbook * 100 }}% of reviews said yes {% else %}None{% endif %}</td>
 				<td>{% if Overall_Rating %}{{ Overall_Rating }}{% else %}None{% endif %}</td>
 			</tr>
 		<tbody>

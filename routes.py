@@ -124,7 +124,7 @@ def DisplayClassPage(Class, CRN, Term):
     if type(interest) == float:
         interest = round(interest,2)
     if type(Textbook) == float:
-        Textbook = round(Textbook * 100,2)
+        Textbook = round(Textbook,2)
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -202,7 +202,6 @@ def Instructor(ProfessorName):
                 RevisedCoursesTaught.append(CoursesTaught[i])
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
-
 
 
     last_name = str(ProfessorName.split(',')[0]) + ','

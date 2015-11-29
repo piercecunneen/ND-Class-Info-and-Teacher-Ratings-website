@@ -177,7 +177,7 @@ def GetClassDescriptionAndAll(CRN, Term):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
     
-    
+    print CRN, Term
     Data = soup.find_all('td')[2].text.split('Restrictions:')
     DataText = Data[0]
     Restrictions = CleanUpString(Data[1]).replace(u"\xa0", '').split("Course Attributes")[0].split("Cannot")[0].split(".syllabus")[0]
@@ -199,7 +199,6 @@ def GetClassDescriptionAndAll(CRN, Term):
         CrossListed  = "None"
     
     
-    return Registration, CrossListed
     if 'Prerequisites' in DataText:
         if 'Corequisites' in DataText:
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
@@ -215,7 +214,9 @@ def GetClassDescriptionAndAll(CRN, Term):
     else:
         return [Course_Description, 'Neither', AttributeText, Restrictions]
 
-
+CRN = 29766
+Term = 201520
+#a = GetClassDescriptionAndAll(CRN, Term)
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
@@ -301,4 +302,7 @@ def GetCoursesTaught(Prof_ID):
         url_data = str(course.find_all('a')[0]).split("'")[1].split('P=')[0].replace('&amp;', '')
         url_data = url_data.split('CRN=')[1].split('TERM=')
         CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
+    print CoursesTaught[0]
+    for i in CoursesTaught:
+             i[2] = i[2].replace('/', ' and ')
     return CoursesTaught

@@ -135,7 +135,7 @@ def calculateClassRatings(classReviews):
     elif classReviews[1]=="title":
         #TODO - rewrite code for the case that classReviews[1] == "department"
         if len(classReviews[0]) == 1:
-            return [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2], classReviews[0][0][4], classReviews[0][0][5], classReviews[0][0][6], classReviews[0][0][-2], classReviews[0][0][-1]]
+            return [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2], classReviews[0][0][4], classReviews[0][0][5], classReviews[0][0][6], classReviews[0][0][-3], classReviews[0][0][-2]]
         else:
             toughness = [0] * i
             interest = [0] * i
@@ -155,7 +155,7 @@ def calculateClassRatings(classReviews):
             toughnessTotal /= float(i)
             interestTotal /= float(i)
             textbookTotal /= float(i)
-            review = [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2],  toughnessTotal, interestTotal, textbookTotal, classReviews[0][0][-2], classReviews[0][0][-1]]
+            review = [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2],  toughnessTotal, interestTotal, textbookTotal, classReviews[0][0][-3], classReviews[0][0][-2]]
             return review
         
     elif classReviews[1] == "department": 
@@ -235,6 +235,8 @@ def bestClass(department):
     for j in range(0, num_courses):
         courseName = courses[j]
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
+        print courseRatingList
+        print getClassReviews("", str(courseName))
         courseRating = [courseRatingList[rating_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating 
     courseDictSorted = Sort_dict(courseDict, 1)

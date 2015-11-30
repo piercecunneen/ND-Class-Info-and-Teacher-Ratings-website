@@ -3,7 +3,8 @@
 
 import sqlite3 as lite
 import sys
-from class_search_web_scrapping import Sort_dict
+from class_search_web_scrapping import Sort_dict, GetAllProfessors
+
 database = 'reviews.sqlite'
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id):
@@ -176,7 +177,7 @@ def bestProf(department):
         if prof not in profs:
             # change to add only names
             profs.append(prof)
-    
+    professors = GetAllProfessors()
     interest_index = 5
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
@@ -186,8 +187,9 @@ def bestProf(department):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
-
-        profRatingList = calculateProfRatings(getDepartmentReviews(department))
+        # need to get prof ID
+        id = professors[profName]
+        profRatingList = calculateProfRatings(getProfReviews(id))
         profRating = profRatingList[interest_index]
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
@@ -209,11 +211,13 @@ def easiestProf(department):
     profDict = {}
     num_profs = len(profs)
     profRating = [] * num_profs
+    professors = GetAllProfessors()
     for j in range(0, num_profs):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
-        profRatingList = calculateProfRatings(getDepartmentReviews(department))
+        id = professors[profName]
+        profRatingList = calculateProfRatings(getProfReviews(id))
         profRating = profRatingList[workload_index]
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)

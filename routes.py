@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for, redirect
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
 from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 
@@ -12,6 +12,22 @@ ProfDepartments = GetAllProfessorDepartments()
 
 def GetCurrentSemester():
     return '201520' 
+
+@app.route('/register', methods = ["GET", "POST"])
+def register():
+    return render_template('UserRegistration.html')
+
+@app.route('/login', methods = ["GET", "POST"])
+def login():
+    error = None
+    if request.method == "POST":
+        if request.form['username'] != "Pierce" or request.form['password'] != "Cunneen":
+            error = "Invalid credentials"
+        else:
+            return redirect(url_for('home'))
+    return render_template('login.html', error=error)
+
+
 
 @app.route('/')
 def home():
@@ -137,14 +153,16 @@ def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
     CourseDescription = Descriptions[0]
-    CourseRatings = calculateClassRatings(getClassReviews('', Class))
+    Reviews = getClassReviews('', Class)
+    CourseRatings = calculateClassRatings(Reviews)
+    CourseTextReviews = [review[3] for review in Reviews [0] if review[3] != '']
     toughness = CourseRatings[3]  
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
     if type(toughness) == str:
         Overall_Rating = ''
     else:
-        Overall_Rating = (toughness + interest) / 2.0
+        Overall_Rating = round((toughness + interest) / 2.0, 2)
 
     # Round numbers
     if type(toughness) == float:
@@ -191,7 +209,7 @@ def DisplayClassPage(Class, CRN, Term):
     #         data = i.split("\n")
     #         Spots.append(data[2:])
     #         courseName = data[0]
-    return render_template('class_info.html',CrossListed = CrossListed ,Registration = Remaining, Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness, Attributes = Attributes )
+    return render_template('class_info.html',CourseTextReviews = CourseTextReviews,CrossListed = CrossListed ,Registration = Remaining, Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness, Attributes = Attributes )
 
 
 @app.route('/DepartmentsMain/')
@@ -203,7 +221,6 @@ def DepartmentsMainPage():
 @app.route('/InstructorByCollege/<College>')
 def InstructorByCollege(College):
     Departments = [i for i in GetSubjectsInDepartments() if College in i[0]][0][1:]
-    Teachers = ["Teacher 1", "Teacher 2", "Teacher 3", "Teacher 4"]
     return render_template('InstructorByCollege.html', College = College ,Departments = Departments, Teachers = Teachers)
     
 @app.route('/Department/<Department>')
@@ -211,7 +228,7 @@ def InstructorByDepartment(Department):
     # Place holder lists
     #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
     
-    Teachers = [prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]]
+    Teachers = sorted([prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]])
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
     Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]

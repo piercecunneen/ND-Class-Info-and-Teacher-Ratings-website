@@ -186,7 +186,7 @@ def bestProf(department):
         profFirst = profs[j][1]
         profLast = profs[j][0]
         profName = profLast +  profFirst
-        print getDepartmentReviews(department)
+
         profRatingList = calculateProfRatings(getDepartmentReviews(department))
         profRating = profRatingList[interest_index]
         profDict[profName] = profRating

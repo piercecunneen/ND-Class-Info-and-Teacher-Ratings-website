@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
 from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
-
+from password import create_user, validate_user
 app = Flask(__name__)
 
 
@@ -15,14 +15,27 @@ def GetCurrentSemester():
 
 @app.route('/register', methods = ["GET", "POST"])
 def register():
-    return render_template('UserRegistration.html')
+    error = None
+    if request.method == "POST":
+        if request.form["password"] != request.form["password confirmation"]:
+            error = "Passwords did not match"
+            return render_template('UserRegistration.html', error = error)
+        Response, Message = create_user(request.form["username"], request.form["password"])
+        if not Response:
+            error = Message
+        else:
+            return redirect(url_for('home'))
+
+    return render_template('UserRegistration.html', error = error)
+
 
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     error = None
     if request.method == "POST":
-        if request.form['username'] != "Pierce" or request.form['password'] != "Cunneen":
-            error = "Invalid credentials"
+        Response, Message = validate_user(request.form["username"], request.form["password"])
+        if not Response:
+            error = Message
         else:
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
@@ -215,7 +228,8 @@ def DisplayClassPage(Class, CRN, Term):
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
     DepartmentsByCollege = GetSubjectsInDepartments()
-    return render_template('DepartmentsMain.html', DepartmentsByCollege = DepartmentsByCollege)
+    Colleges = [ 'College of Arts & Letters', 'College of Engineering', 'College of Science','Mendoza College of Business','First Year of Studies', 'The Law School', "St. Mary's College",'Other','School of Architecture']
+    return render_template('DepartmentsMain.html', DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
 
 
 @app.route('/InstructorByCollege/<College>')

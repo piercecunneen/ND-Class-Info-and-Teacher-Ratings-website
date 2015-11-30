@@ -4,28 +4,59 @@
 <h2 align = "middle"> Search Departments for Class and Professor Information </h2>
 
 <div class="row">
-	{% for college in DepartmentsByCollege[0:4] %}
-	<div class="col l3 s6">
-		<h6 align="center"> {{college[0]}} </h6>
-		<div class="collection">
-		{% for department in college[1:] %}
-			<a class="collection-item" href="/Department/{{department}}">{{department}}</a>
-		{% endfor %}
-		</div>
-	</div>
-	{% endfor %}
+	<div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s15"><a href="#college1">A&L</a></li>
+        <li class="tab col s15"><a href="#college2">Engineering</a></li>
+        <li class="tab col s15"><a href="#college3">Science</a></li>
+        <li class="tab col s15"><a href="#college4">Mendoza</a></li> 
+        <li class="tab col s15"><a href="#college5">First Year</a></li>
+        <li class="tab col s15"><a href="#college6">Law</a></li>
+        <li class="tab col s15"><a href="#college7">St. Marys</a></li>
+        <li class="tab col s15"><a href="#college8">Other</a></li>
+      </ul>
+    </div>
+    <div id="college1" class="collection">
+    	{% for department in DepartmentsByCollege[0][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college2" class="collection">
+    	{% for department in DepartmentsByCollege[1][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college3" class="collection">
+    	{% for department in DepartmentsByCollege[2][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college4" class="collection">
+    	{% for department in DepartmentsByCollege[3][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college5" class="collection">
+    	{% for department in DepartmentsByCollege[4][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college6" class="collection">
+    	{% for department in DepartmentsByCollege[5][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college7" class="collection">
+    	{% for department in DepartmentsByCollege[6][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
+    <div id="college8" class="collection">
+    	{% for department in DepartmentsByCollege[7][1:] %}
+    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
+    	{% endfor %}
+    </div>
 </div>
-<div class="row">
-	{% for college in DepartmentsByCollege[4:] %}
-	<div class="col l3 s6">
-		<h6 align="center"> {{college[0]}} </h6>
-		<div class="collection">
-		{% for department in college[1:] %}
-			<a class="collection-item" href="/Department/{{department}}">{{department}}</a>
-		{% endfor %}
-		</div>
-	</div>
-	{% endfor %}
-</div>
+
 
 {% endblock %}

@@ -22,8 +22,10 @@ def create_user(username, password):
                 return False, "User already exists"
             else: # add user to the db
                 pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
-                sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
-                c.execute(sql)
+                #sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
+                data = [username, pass_hash]
+                c.executemany('INSERT INTO userInfo VALUES(?,?)',(data,))
+                #c.execute(sql)
                 return True, "User created successfully"
 
     else:

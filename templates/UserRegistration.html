@@ -3,6 +3,9 @@
 {% block content %}
 
 
+{% if error %}
+		<h3 class = "error"> <strong> Error: </strong> {{ error }} </h3>
+{% endif %}
 <form class = "col s12" id = "AuthenticationForm" method = "post">
 		<div class = "row"> 
 			<div class= "input-field col s6"> 
@@ -19,7 +22,7 @@
 		</div>
 		<div class = "row"> 
 			<div class= "input-field col s6"> 
-				<input placeholder = "PasswordConfirmation"id = "password confirmation" name = "password confirmation" type = "text" class = "validate">
+				<input placeholder = "Password Confirmation"id = "password confirmation" name = "password confirmation" type = "text" class = "validate">
 				<label for = "password"> Confirm Password </label>
 			</div>
 		</div>

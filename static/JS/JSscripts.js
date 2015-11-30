@@ -9,7 +9,6 @@ function DefaultSelect(element_ID,value){
 	}
 }
 
-
 function QuickSearch(){
 	var selected_attribute = document.getElementById('QuickSearch').value;
 	location.href = ''.concat('/class_search/quick-search=', selected_attribute);

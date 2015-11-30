@@ -1,14 +1,36 @@
-from flask import Flask, render_template, request, jsonify, url_for, redirect
+from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
+from flask.ext.login import LoginManager, UserMixin, login_required, login_user
+
 from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
 from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 from password import create_user, validate_user
+import requests
+from User import User
 app = Flask(__name__)
+app.secret_key = 'some_secret'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 Options = GetOptions()
 
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
+
+def is_logged_in(id):
+    user = load_User(id)
+    if user != None:
+        if user.authenticated == True:
+            return True
+    return False
+
+def load_User(id):
+    return User.get(id)
+
+def logout():
+    session['username'] = None
+    return
 
 def GetCurrentSemester():
     return '201520' 
@@ -29,18 +51,25 @@ def register():
     return render_template('UserRegistration.html', error = error)
 
 
+
 @app.route('/login', methods = ["GET", "POST"])
 def login():
     error = None
     if request.method == "POST":
+        if request.form.get("RememberMe"):
+            pass
+            ### Call function that remembers user
+        else:
+            pass
+            ### call function that sets timelimit on user
         Response, Message = validate_user(request.form["username"], request.form["password"])
         if not Response:
             error = Message
         else:
+            user = load_User(request.form["username"])
+            session['username'] = user.id
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
-
-
 
 @app.route('/')
 def home():
@@ -57,7 +86,7 @@ def QuickSearch(ATTR):
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
-    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
+    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
     Subjects = Options[3].values()
     Semester = GetCurrentSemester()
     Attribute = Attributes[ATTR]

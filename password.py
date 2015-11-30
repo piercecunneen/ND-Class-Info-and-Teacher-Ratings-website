@@ -1,7 +1,7 @@
 import sqlite3
 from passlib.hash import pbkdf2_sha256
 
-db_path = "pass.sqlite"
+db_path = "reviews.sqlite"
 
 
 
@@ -15,19 +15,28 @@ def create_user(username, password):
         conn = sqlite3.connect(db_path)
         with conn:
             c = conn.cursor()
-            sql = "select * from passwords where username = " + "'" + username + "'" 
+            sql = "select * from userInfo where username = " + "'" + username + "'" 
             c.execute(sql)
             user = c.fetchone()
             if user:
                 return False, "User already exists"
             else: # add user to the db
                 pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
-                sql = 'insert into passwords values("' + username + '", "' + pass_hash + '")'
+                sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
                 c.execute(sql)
                 return True, "User created successfully"
 
     else:
         return False, "Please register with a valid nd.edu email address" 
+
+def change_password(username, password):
+    pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
+    conn = sqlite3.connect(db_path)
+    with conn:
+        c = conn.cursor()
+        sql = "update userInfo set password = '" + str(pass_hash) + "' where username = '" + str(username) + "'"
+        c.execute(sql)
+        
 
         
 def validate_user(username, password):
@@ -35,7 +44,7 @@ def validate_user(username, password):
     conn = sqlite3.connect(db_path)
     with conn:
         c = conn.cursor()
-        sql = "select * from passwords where username = " + "'" + username + "'" 
+        sql = "select * from userInfo where username = " + "'" + username + "'" 
         c.execute(sql)
         user = c.fetchone()
     

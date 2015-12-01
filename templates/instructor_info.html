@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
   
 {% block content %}
-<h2>{{ProfessorName}}</h2>
-<button class="btn waves-effect blue lighten-2" id="SubmitProfessorReview" onclick="location.href='/ProfessorReviewForm/{{ProfessorName}}'">Submit review for this Professor</button>
+<h2 align = "center">{{ProfessorName}}</h2>
+<button class="btn waves-effect blue lighten-2 " id="SubmitProfessorReview" onclick="location.href='/ProfessorReviewForm/{{ProfessorName}}'">Submit review for this Professor</button>
 <p>{{ID}}</p>
 
 <div id="Sections">
@@ -39,9 +39,11 @@
 		<h3 align="center">Reviews</h3>
 		{% if ReviewCount > 0 %}
 			{% for description in ProfessorDescriptions %}
+			{% if description %}
 			<div class="card col s12">
 				<p class="padded">{{description}}</p>
 			</div>
+			{% endif %}
 			{% endfor %}
 		{% else %}
 			<div class="card col s12"><p class="padded">No Reviews have been added yet</p></div>

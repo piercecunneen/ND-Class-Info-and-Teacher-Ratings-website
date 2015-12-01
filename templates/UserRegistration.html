@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+{% if error %}
+		<h3 class = "error"> <strong> Error: </strong> {{ error }} </h3>
+{% endif %}
+<form class = "col s12" id = "AuthenticationForm" method = "post">
+		<div class = "row"> 
+			<div class= "input-field col s6"> 
+				<input placeholder = "Username"id = "username" name = "username"type = "text" class = "validate">
+				<label for = "username"> Username (Please use a valid ND email address) </label>
+
+			</div>
+		</div>
+		<div class = "row"> 
+			<div class= "input-field col s6"> 
+				<input placeholder = "Password"id = "password" name = "password" type = "PASSWORD" class = "validate">
+				<label for = "password"> Password </label>
+			</div>
+		</div>
+		<div class = "row"> 
+			<div class= "input-field col s6"> 
+				<input placeholder = "Password Confirmation"id = "password confirmation" name = "password confirmation" type = "PASSWORD" class = "validate">
+				<label for = "password"> Confirm Password </label>
+			</div>
+		</div>
+	<input class="btn btn-default" type="submit" value="Login">
+	</form>
+
+{% endblock %}

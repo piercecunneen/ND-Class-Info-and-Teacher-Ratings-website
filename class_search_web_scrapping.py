@@ -195,7 +195,7 @@ def GetClassDescriptionAndAll(CRN, Term):
         CrossListed = EnrollmentData[2].text
     elif len(EnrollmentData) == 3:
         Registration = EnrollmentData[1].text
-        CrossListed  = "None"
+        CrossListed  = None
     
     
     if 'Prerequisites' in DataText:
@@ -203,19 +203,17 @@ def GetClassDescriptionAndAll(CRN, Term):
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
             Prerequisites = CleanUpString(str(Temporary[0]))
             Corequisites = CleanUpString(str(Temporary[1]))
-            return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions]
+            return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions, Registration, CrossListed]
         else:
             Prerequisites = CleanUpString(DataText.split('Prerequisites:')[1])
-            return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions]
+            return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions, Registration, CrossListed]
     elif 'Corequisites' in DataText:
             Corequisites = CleanUpString(DataText.split('Corequisites:')[1])
-            return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions]
+            return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions, Registration, CrossListed]
     else:
-        return [Course_Description, 'Neither', AttributeText, Restrictions]
+        return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed]
 
-CRN = 29766
-Term = 201520
-#a = GetClassDescriptionAndAll(CRN, Term)
+
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts

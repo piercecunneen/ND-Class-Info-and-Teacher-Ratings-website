@@ -57,11 +57,12 @@
 	<div class="col s6">
 			<label>Quick Search for University Requirements</label>
 			<select class="browser-default" id="QuickSearch" name="QuickSearch">
-				{% for key in {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'} %}
+				{% for key in ['2nd Theology', '2nd Philosophy', 'Social Science',  'Natural Science (req)', 'Fine Arts', 'Literature', 'History', "Sophomore Business Courses", "Junior Business Courses"] %}
    				<option value='{{key}}'>{{key}}</option>
 				{% endfor %}
 			</select>
 		</div>
 	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Search Classes" onclick = "QuickSearch();"> </input>
 </div>
+
 {% endblock %}

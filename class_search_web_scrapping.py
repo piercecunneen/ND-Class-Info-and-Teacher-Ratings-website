@@ -166,6 +166,9 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
     
         return Classlist
 
+
+
+
 def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
@@ -212,8 +215,6 @@ def GetClassDescriptionAndAll(CRN, Term):
             return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions, Registration, CrossListed]
     else:
         return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed]
-
-
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts

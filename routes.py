@@ -424,5 +424,5 @@ def SubmitReviewMain():
     return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 
 if __name__=='__main__':
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    app.run(debug=True)
 

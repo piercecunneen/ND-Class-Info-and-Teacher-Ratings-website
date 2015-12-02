@@ -12,19 +12,23 @@
 				<option value = "{{key}}" > {{key}} </option>
 			{% endfor %}
 		</select>
-		<button type="button" onclick="SearchInstructorByDepartment();"> Search by Department </button>
+		<button type="button" onclick="GoToDepartment(document.getElementById('Department'));"> Search by Department </button>
 	</div>
 	<div class="col s6">
-		<select class="browser-default" id="Professors">
-			{% for key in ProfessorKeys %}
-				<option > {{key}} </option>
-			{% endfor %}
-		</select>
-		<button type="button" onclick = "IframeTeacherSearch(document.getElementById('Professors'))" > Search by Last Name </button>
+		<form id="searchForm2">
+						<div class="input-field">
+							<input id="search2" type="search" required>
+							<label for="search"><i class="material-icons">search</i></label>
+							<i class="material-icons">close</i>
+						</div>
+					</form>
+	</div>
+	<div id="SearchResults2" class="row">
+		<ul class="collection col s4 offset-s8" id="ResultList2" style="display:None;">
+		</ul>
 	</div>
 </div>
 			
-<iframe id="TeacherInfoFrame" height="500px" width="900px" frameborder="2">  </iframe>
 
 
 {% endblock %}

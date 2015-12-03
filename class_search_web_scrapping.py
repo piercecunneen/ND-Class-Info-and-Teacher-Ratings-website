@@ -303,3 +303,42 @@ def GetCoursesTaught(Prof_ID):
     for i in CoursesTaught:
              i[2] = i[2].replace('/', ' and ')
     return CoursesTaught
+
+
+
+
+
+def Professors_No_Repeats():
+    f = open('TeacherList.txt', 'r')
+    Professors = {}
+    
+    line = f.readline()
+    while line != '':
+        name = line.split('>')[-1].replace('\n', '')
+        
+        # get rid of any trailing spaces
+        while name[-1] == ' ':
+            name = name[:-1]
+        # get last name
+        last_name = CleanUpString(name.split(',')[0])
+        
+        # get list of all middle and first names
+        surname = [CleanUpString(string) for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
+        surname_combinations = []
+        for i in range(1,len(surname)+1):
+            surname_combinations.append(' '.join(surname[0:i]))
+        name_combinations = [last_name + ', ' + surname_option for surname_option in surname_combinations]
+        ID = CleanUpString(line.split('"')[1])
+        for i in name_combinations:
+            Professors[ID] = i
+        line = f.readline()
+    return sorted(Professors.values())
+
+
+
+
+
+
+
+
+

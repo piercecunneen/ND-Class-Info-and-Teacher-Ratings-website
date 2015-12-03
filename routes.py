@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
-from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments
+from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 from password import create_user, validate_user
 import requests
@@ -14,7 +14,7 @@ login_manager.init_app(app)
 
 
 Options = GetOptions()
-
+Sorted_Profs_No_Repeats = Professors_No_Repeats()
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
 
@@ -96,7 +96,7 @@ def QuickSearch(ATTR):
 @app.route('/search/<query>/', methods = ['POST'])
 def Search(query):
 	unicode_profs = {} 
-	for prof in Professors:
+	for prof in Sorted_Profs_No_Repeats:
 		prof_name = unicode(prof, "utf-8")
 		if query.lower() in prof_name.lower():
 			unicode_profs[prof_name] = '/instructor_info/' + prof_name
@@ -418,8 +418,7 @@ def ProfessorReview(ProfessorName):
 
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():
-    global Professors
-    ProfessorKeys = Sort_dict(Professors, False) 
+    ProfessorKeys = Sorted_Profs_No_Repeats
     ProfessorKeys = [i.decode('utf-8') for i in ProfessorKeys]
     return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
 

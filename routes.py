@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
-from class_search_web_scrapping import GetCoursesTaught,GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
-from database_functions import easiestClass, bestClass, easiestProf,bestProf,getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
+from class_search_web_scrapping import GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
+from database_functions import easiestClass, bestClass, easiestProf, bestProf, getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 from password import create_user, validate_user
 import requests
 from User import User
@@ -11,7 +11,6 @@ app.secret_key = 'some_secret'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 Options = GetOptions()
 Sorted_Profs_No_Repeats = Professors_No_Repeats()
@@ -33,26 +32,24 @@ def logout():
     return
 
 def GetCurrentSemester():
-    return '201520' 
+    return '201520'
 
-@app.route('/register', methods = ["GET", "POST"])
+@app.route('/register', methods=["GET", "POST"])
 def register():
     error = None
     if request.method == "POST":
         if request.form["password"] != request.form["password confirmation"]:
             error = "Passwords did not match"
-            return render_template('UserRegistration.html', error = error)
+            return render_template('UserRegistration.html', error=error)
         Response, Message = create_user(request.form["username"], request.form["password"])
         if not Response:
             error = Message
         else:
             return redirect(url_for('home'))
 
-    return render_template('UserRegistration.html', error = error)
+    return render_template('UserRegistration.html', error=error)
 
-
-
-@app.route('/login', methods = ["GET", "POST"])
+@app.route('/login', methods=["GET", "POST"])
 def login():
     error = None
     if request.method == "POST":
@@ -75,8 +72,7 @@ def login():
 def home():
     return render_template('home.html')
 
-
-@app.route('/class_search/quick-search=<ATTR>', methods = ["POST", "GET"])
+@app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
 def QuickSearch(ATTR):
     if request.method == "POST":
         Term = request.form['TermOptions']
@@ -86,23 +82,22 @@ def QuickSearch(ATTR):
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
-    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
+    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
     Subjects = Options[3].values()
     Semester = GetCurrentSemester()
     Attribute = Attributes[ATTR]
-    return DisplayClasses(Semester, Subjects, Options[5]["All"],Attribute,"A", Options[2]["Main"])
+    return DisplayClasses(Semester, Subjects, Options[5]["All"], Attribute, "A", Options[2]["Main"])
 
-
-@app.route('/search/<query>/', methods = ['POST'])
+@app.route('/search/<query>/', methods=['POST'])
 def Search(query):
-	unicode_profs = {} 
-	for prof in Sorted_Profs_No_Repeats:
-		prof_name = unicode(prof, "utf-8")
-		if query.lower() in prof_name.lower():
-			unicode_profs[prof_name] = '/instructor_info/' + prof_name
-	return jsonify(unicode_profs)
+    unicode_profs = {}
+    for prof in Sorted_Profs_No_Repeats:
+        prof_name = unicode(prof, "utf-8")
+        if query.lower() in prof_name.lower():
+            unicode_profs[prof_name] = '/instructor_info/' + prof_name
+    return jsonify(unicode_profs)
 
-@app.route('/class_search/', methods = ['GET', 'POST'])
+@app.route('/class_search/', methods=['GET', 'POST'])
 def ClassSearch():
     if request.method == 'POST':
         Term = request.form['TermOptions']
@@ -112,14 +107,13 @@ def ClassSearch():
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
 
-         
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
-    return render_template('class_search.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
-    DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
-    CampusOptionKeys = Sort_dict(Options[2], False), CampusOptions = Options[2], 
-    SubjectOptionKeys = Sort_dict(Options[3], False), SubjectOptions =  Options[3], 
-    AttributeOptionKeys = Sort_dict(Options[4], False), AttributeOptions = Options[4],
-    CreditsOptionKeys = Sort_dict(Options[5], False), CreditsOptions = Options[5]  )
+    return render_template('class_search.html', TermOptionKeys=Sort_dict(Options[0], True), TermOptions=Options[0],
+                           DivisionOptionKeys=Sort_dict(Options[1], False), DivisionOptions=Options[1],
+                           CampusOptionKeys=Sort_dict(Options[2], False), CampusOptions=Options[2],
+                           SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
+                           AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
+                           CreditsOptionKeys=Sort_dict(Options[5], False), CreditsOptions=Options[5])
 
 # @app.route('/class_search/<class_info>/')
 # def classInfo(class_info):
@@ -128,21 +122,20 @@ def ClassSearch():
 #     toughness = str(CourseRatings[4])
 #     interest = str(CourseRatings[5])
 #     Textbook = str(CourseRatings[6])
-#     return render_template('class_info.html', Textbook = Textbook, interest = interest,toughness = toughness,Course_text_review = Course_text_review )
- 
+#     return render_template('class_info.html', Textbook=Textbook, interest=interest, toughness=toughness,Course_text_review=Course_text_review )
+
 @app.route('/instructor_eval/')
 def eval():
-    return render_template('instructor_eval.html', DepartmentKeys= Sort_dict(GetOptions()[3], False), DepartmentOptions =  GetOptions()[3])
-    
+    return render_template('instructor_eval.html', DepartmentKeys=Sort_dict(GetOptions()[3], False), DepartmentOptions=GetOptions()[3])
 
 @app.route('/class_search/')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
-    global Professors 
+    global Professors
     global ProfDepartments
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
     didAddProf = False
     didAddDept = False
-    
+
     # Checks to see if every instructor is is Professors dictionary. If they
     # are not, we add their names to the text file, and recalculate the Professors dictionary
     ProfsAdded = []
@@ -153,11 +146,11 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
             P = [course['Teacher_Info'][i].split('P=')[-1] for i in range(len(course['Teacher_Info']))]
             for i in range(len(profs)):
                 if profs[i] not in Professors:
-                    f  = open('TeacherList.txt', 'a')
+                    f = open('TeacherList.txt', 'a')
                     f.write('<OPTION VALUE="' + str(P[i]) + '">' + str(profs[i]) + '\n')
                     f.close()
                     didAddProf = True
-                if profs[i] not in ProfDepartments and (profs[i], Department) not in ProfsAdded :
+                if profs[i] not in ProfDepartments and (profs[i], Department) not in ProfsAdded:
                     f = open('ProfessorDepartments.txt', 'a')
                     f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
                     f.close()
@@ -170,7 +163,6 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
                     didAddDept = True
                     ProfsAdded.append((profs[i], Department))
 
-
         except KeyError:
             pass
     if didAddProf:
@@ -181,14 +173,15 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
         didAddDept = False
     # Keys specifies what exactly we want to show up on our class search
 
-
-    Keys = ['Title', 'Course - Sec','View_Books', 'Cr', 'Max', 'Opn', 'CRN','Teacher_Info', 'Instructor', 'When','Begin','End','Where']
-    return render_template('DisplayClassData.html', TermOptionKeys = Sort_dict(Options[0], True), TermOptions = Options[0] , 
-    DivisionOptionKeys = Sort_dict(Options[1], False), DivisionOptions = Options[1],
-    CampusOptionKeys = Sort_dict(Options[2], False), CampusOptions = Options[2], 
-    SubjectOptionKeys = Sort_dict(Options[3], False), SubjectOptions =  Options[3], 
-    AttributeOptionKeys = Sort_dict(Options[4], False), AttributeOptions = Options[4],
-    CreditsOptionKeys = Sort_dict(Options[5], False), CreditsOptions = Options[5], ClassList = ClassList, Keys = Keys)
+    Keys = ['Title', 'Course - Sec', 'View_Books', 'Cr', 'Max', 'Opn', 'CRN', 'Teacher_Info', 'Instructor', 'When', 'Begin', 'End', 'Where']
+    return render_template('DisplayClassData.html', TermOptionKeys=Sort_dict(Options[0], True),
+                           TermOptions=Options[0],
+                           DivisionOptionKeys=Sort_dict(Options[1], False), DivisionOptions=Options[1],
+                           CampusOptionKeys=Sort_dict(Options[2], False), CampusOptions=Options[2],
+                           SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
+                           AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
+                           CreditsOptionKeys=Sort_dict(Options[5], False),
+                           CreditsOptions=Options[5], ClassList=ClassList, Keys=Keys)
 
 @app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
@@ -197,8 +190,8 @@ def DisplayClassPage(Class, CRN, Term):
     CourseDescription = Descriptions[0]
     Reviews = getClassReviews('', Class)
     CourseRatings = calculateClassRatings(Reviews)
-    CourseTextReviews = [review[3] for review in Reviews [0] if review[3] != '']
-    toughness = CourseRatings[3]  
+    CourseTextReviews = [review[3] for review in Reviews[0] if review[3] != '']
+    toughness = CourseRatings[3]
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
     if type(toughness) == str:
@@ -208,11 +201,11 @@ def DisplayClassPage(Class, CRN, Term):
 
     # Round numbers
     if type(toughness) == float:
-        toughness = round(toughness,2)
+        toughness = round(toughness, 2)
     if type(interest) == float:
-        interest = round(interest,2)
+        interest = round(interest, 2)
     if type(Textbook) == float:
-        Textbook = round(Textbook,2)
+        Textbook = round(Textbook, 2)
     Prerequisites = ''
     Corequisites = ''
     if Descriptions[1] == "Corequisite Only":
@@ -241,7 +234,7 @@ def DisplayClassPage(Class, CRN, Term):
         Registration = Descriptions[4]
         CrossListed = Descriptions[5]
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
-    Remaining  = Registration.split("TOTAL")[1]
+    Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
     # Spots = []
     # if CrossListed:
@@ -251,55 +244,62 @@ def DisplayClassPage(Class, CRN, Term):
     #         data = i.split("\n")
     #         Spots.append(data[2:])
     #         courseName = data[0]
-    return render_template('class_info.html',CourseTextReviews = CourseTextReviews,CrossListed = CrossListed ,Registration = Remaining, Restrictions = Restrictions, Overall_Rating = Overall_Rating,Prerequisites = Prerequisites, Corequisites = Corequisites, CourseName = CourseName, CourseDescription = CourseDescription, Textbook = Textbook, interest = interest,toughness = toughness, Attributes = Attributes )
-
+    return render_template('class_info.html', CourseTextReviews=CourseTextReviews,
+                           CrossListed=CrossListed, Registration=Remaining,
+                           Restrictions=Restrictions, Overall_Rating=Overall_Rating,
+                           Prerequisites=Prerequisites, Corequisites=Corequisites,
+                           CourseName=CourseName, CourseDescription=CourseDescription,
+                           Textbook=Textbook, interest=interest,
+                           toughness=toughness, Attributes=Attributes)
 
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
     DepartmentsByCollege = GetSubjectsInDepartments()
-    Colleges = [ 'College of Arts & Letters', 'College of Engineering', 'College of Science','Mendoza College of Business','First Year of Studies', 'The Law School', "St. Mary's College",'Other','School of Architecture']
-    return render_template('DepartmentsMain.html', DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
-
+    Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
+    return render_template('DepartmentsMain.html', DepartmentsByCollege=DepartmentsByCollege, Colleges=Colleges)
 
 @app.route('/InstructorByCollege/<College>')
 def InstructorByCollege(College):
     Departments = [i for i in GetSubjectsInDepartments() if College in i[0]][0][1:]
-    return render_template('InstructorByCollege.html', College = College ,Departments = Departments, Teachers = Teachers)
-    
+    return render_template('InstructorByCollege.html', College=College, Departments=Departments, Teachers=Teachers)
+
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
     # Place holder lists
-    #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '',Options[3][Department], '')])
-    
+    #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '', Options[3][Department], '')])
+
     Teachers = sorted([prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]])
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
-    Best_Teachers,Best_Teachers_Sorted  = bestProf(Options[3][Department])#Best_Professors[0], Best_Professors[1]
-    Easiest_Teachers,Easiest_Teachers_Sorted  = easiestProf(Options[3][Department])
-    Best_Classes,Best_Classes_Sorted  = bestClass(Options[3][Department])
+    Best_Teachers, Best_Teachers_Sorted = bestProf(Options[3][Department])
+    Easiest_Teachers, Easiest_Teachers_Sorted = easiestProf(Options[3][Department])
+    Best_Classes, Best_Classes_Sorted = bestClass(Options[3][Department])
 
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]
         Crn_and_Term[Course[2]] = ((Course[-2], Course[-1]))
-    
-    Easiest_Classes,Easiest_Classes_Sorted  = easiestClass(Options[3][Department])
+
+    Easiest_Classes, Easiest_Classes_Sorted = easiestClass(Options[3][Department])
     DepartmentOptions = Options[3]
     for option in DepartmentOptions:
         if DepartmentOptions[option] == Department:
             Department = option
-    return render_template('Department.html',Teachers_Sorted = Teachers_Sorted,Best_Teachers_Sorted = Best_Teachers_Sorted,Best_Teachers = Best_Teachers, 
-    Easiest_Teachers = Easiest_Teachers,Easiest_Teachers_Sorted = Easiest_Teachers_Sorted, Department = Department,Teachers = Teachers,
-    Best_Classes = Best_Classes,Best_Classes_Sorted = Best_Classes_Sorted,Easiest_Classes = Easiest_Classes, Easiest_Classes_Sorted = Easiest_Classes_Sorted
-    ,Crn_and_Term = Crn_and_Term)
+    return render_template('Department.html', Teachers_Sorted=Teachers_Sorted,
+                           Best_Teachers_Sorted=Best_Teachers_Sorted, Best_Teachers=Best_Teachers,
+                           Easiest_Teachers=Easiest_Teachers, Easiest_Teachers_Sorted=Easiest_Teachers_Sorted,
+                           Department=Department, Teachers=Teachers, Best_Classes=Best_Classes,
+                           Best_Classes_Sorted=Best_Classes_Sorted, Easiest_Classes=Easiest_Classes,
+                           Easiest_Classes_Sorted=Easiest_Classes_Sorted,
+                           Crn_and_Term=Crn_and_Term)
 
 @app.route('/instructor_info/<ProfessorName>')
 def Instructor(ProfessorName):
     try:
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])
-        num_items = len(CoursesTaught[0]) - 1 # need this to be index of semester code 
+        num_items = len(CoursesTaught[0]) - 1 # need this to be index of semester code
     except KeyError:
-        CoursesTaught =  []
+        CoursesTaught = []
     RevisedCoursesTaught = []
     for i in xrange(len(CoursesTaught)):
         if i != 0:
@@ -308,40 +308,42 @@ def Instructor(ProfessorName):
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
 
-
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])
     Reviews = getProfReviews(Professors[last_name + first_name])
-    OverallRatings = calculateProfRatings(Reviews) 
+    OverallRatings = calculateProfRatings(Reviews)
 
     ProfessorDescriptions = [review[2] for review in Reviews]
     ReviewCount = len(Reviews)
-    
+
     workload = OverallRatings[3]
     if type(workload) == float:
-        workload = round(workload,2)
+        workload = round(workload, 2)
 
     grading = OverallRatings[4]
     if type(grading) == float:
-        grading = round(grading,2)
+        grading = round(grading, 2)
     quality = OverallRatings[5]
     if type(quality) == float:
         quality = round(quality, 2)
     accessibility = OverallRatings[6]
     if type(accessibility) == float:
-        accessibility = round(accessibility,2)
+        accessibility = round(accessibility, 2)
     syllabus = OverallRatings[7]
     if type(syllabus) == float:
-        accessibility = round(accessibility,2)
-    
-    ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html',Courses = RevisedCoursesTaught,ProfessorDescriptions = ProfessorDescriptions, ProfessorName = ProfessorName ,ProfReviews = ProfReviews, workload = workload,grading = grading, quality = quality, accessibility = accessibility, ReviewCount = ReviewCount)
+        accessibility = round(accessibility, 2)
 
-@app.route('/BestClassesFor/', methods = ['GET', 'POST'])
-def BestClassesFor(page = 1):
+    ProfReviews = OverallRatings[2]
+    return render_template('instructor_info.html', Courses=RevisedCoursesTaught,
+                           ProfessorDescriptions=ProfessorDescriptions, ProfessorName=ProfessorName,
+                           ProfReviews=ProfReviews, workload=workload, grading=grading, quality=quality,
+                           accessibility=accessibility, ReviewCount=ReviewCount)
+
+@app.route('/BestClassesFor/', methods=['GET', 'POST'])
+def BestClassesFor(page=1):
     # Dummy list until we can access classes from database
     if page == 1:
-        Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC',  'Natural Science (req)': 'NASC'}
+        Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'Natural Science (req)': 'NASC'}
     elif page == 2:
         Attributes = {'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST'}
     ClassList = []
@@ -351,24 +353,15 @@ def BestClassesFor(page = 1):
         SubjectsSorted = ['Fine Arts', 'Literature', 'History']
     Indexs = range(len(SubjectsSorted))
     for attr in SubjectsSorted:
-        courses = GetClasses('201510', Options[3].values(), 'A', Attributes[attr],'A', 'M')
+        courses = GetClasses('201510', Options[3].values(), 'A', Attributes[attr], 'A', 'M')
         course_container = []
         for i in courses:
             course_container.append([i['Title'], i['CRN'], i['Term']])
         ClassList.append(course_container)
-    
 
-    return render_template('BestClassesFor.html', Subjects = Attributes, SubjectsSorted = SubjectsSorted, Courses = ClassList, Indexs = Indexs)
+    return render_template('BestClassesFor.html', Subjects=Attributes, SubjectsSorted=SubjectsSorted, Courses=ClassList, Indexs=Indexs)
 
-
-
-
-
-
-
-
-
-@app.route('/ProfessorReviewForm/<ProfessorName>', methods = ['GET', 'POST'])
+@app.route('/ProfessorReviewForm/<ProfessorName>', methods=['GET', 'POST'])
 def ProfessorReview(ProfessorName):
     if request.method == 'POST':
         # Instructor evaluation
@@ -384,9 +377,9 @@ def ProfessorReview(ProfessorName):
         # Course Evaluation
         CourseToughness = int(request.form['ToughnessID'])
         CourseInterest = int(request.form['InterestID'])
-        TextbookNeeded =  int(request.form['TextbookNeeded'])
+        TextbookNeeded = int(request.form['TextbookNeeded'])
         OptionalDescriptionCourse = str(request.form['OptionalResponseCourse'])
-        
+
         # Add to database
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
@@ -394,16 +387,15 @@ def ProfessorReview(ProfessorName):
             department = ProfDepartments[ProfessorName]
         except:
             department = "Unknown"
-        
-        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility,Syllabus, department, Professors[last_name + first_name])
+
+        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility, Syllabus, department, Professors[last_name + first_name])
         addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term, Professors[last_name + first_name])
-        return render_template('PostSubmissionForm.html', test =' ' )        
-         
+        return render_template('PostSubmissionForm.html', test=' ')
+
     try:
         CoursesTaught = GetCoursesTaught(Professors[ProfessorName])
     except KeyError:
-        CoursesTaught =  ["No courses listed"]
-    
+        CoursesTaught = ["No courses listed"]
 
     num_items = len(CoursesTaught[0]) - 1
     RevisedCoursesTaught = []
@@ -414,14 +406,16 @@ def ProfessorReview(ProfessorName):
                 RevisedCoursesTaught.append(CoursesTaught[i])
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
-    return render_template('ProfessorReviewForm.html', ProfessorName = ProfessorName, CoursesTaught = RevisedCoursesTaught)
+    return render_template('ProfessorReviewForm.html', ProfessorName=ProfessorName, CoursesTaught=RevisedCoursesTaught)
 
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():
     ProfessorKeys = Sorted_Profs_No_Repeats
     ProfessorKeys = [i.decode('utf-8') for i in ProfessorKeys]
-    return render_template('SubmitReviewMain.html', DepartmentKeys = Sort_dict(Options[3], False), DepartmentOptions =  Options[3], Professors = Professors, ProfessorKeys = ProfessorKeys)
+    return render_template('SubmitReviewMain.html',
+                           DepartmentKeys=Sort_dict(Options[3], False),
+                           DepartmentOptions=Options[3],
+                           Professors=Professors, ProfessorKeys=ProfessorKeys)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
-

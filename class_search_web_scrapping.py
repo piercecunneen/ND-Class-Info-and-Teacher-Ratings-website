@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-
+import urllib2
+import re
 
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
@@ -11,7 +12,22 @@ def CleanUpString(string):
 
 def GetCurrentSemester():
     return "201520"
-    
+
+def GetISBNS(url):
+    # Grabs the ISBNs from the bookstore page if any exist
+    # TODO: Determine which books are required vs optional.
+    # Returns as a list of strings
+    opener = urllib2.build_opener()
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    raw = opener.open(url)
+    soup = BeautifulSoup(raw.read())
+    isbn_spans = soup.find_all('span', attrs={'id': 'materialISBN'})
+    isbns = []
+    for isbn in isbn_spans:
+	# Get the numerical portion of the html text
+	isbns.append(re.search(r'\d+', isbn.text).group())
+    return isbns
+
 def GetOptions():
     """Gets the options for the 6 categories (Term, Division, Campus, Subject, Attribute, and Credits)..
     Gets both the option that is displayed on class-search.nd.edu as well as the option_key that is neccessary 
@@ -165,9 +181,6 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
     
         return Classlist
-
-
-
 
 def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites

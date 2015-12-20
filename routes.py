@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
-from class_search_web_scrapping import GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
+from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import easiestClass, bestClass, easiestProf, bestProf, getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 from password import create_user, validate_user
 import requests
@@ -183,6 +183,11 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
                            CreditsOptionKeys=Sort_dict(Options[5], False),
                            CreditsOptions=Options[5], ClassList=ClassList, Keys=Keys)
 
+# @app.route('/Textbook_info/<term>-<div>-<department>-<courseID>-<section>')
+# def DisplayTextBookInformation(term, div, department, courseID, section):
+#     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
+
+
 @app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
@@ -194,6 +199,8 @@ def DisplayClassPage(Class, CRN, Term):
     toughness = CourseRatings[3]
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
+
+
     if type(toughness) == str:
         Overall_Rating = ''
     else:

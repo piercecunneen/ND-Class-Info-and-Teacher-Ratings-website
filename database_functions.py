@@ -7,29 +7,29 @@ from class_search_web_scrapping import Sort_dict, GetAllProfessors
 
 database = 'reviews.sqlite'
 
-def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id):
+def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility, syllabus, department, id, username, submit_date):
     # department comes in as list, needs to be changed to string
     if len(department) > 1:
         department = ' '.join(department)
     else:
         department = department[0]
-    data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id]
+    data = [lastName, firstName, review, workload, grading, quality, accessibility,syllabus, department, id, username, submit_date]
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()
-        c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO profReview VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',(data,))
         #conn.close()
         
-def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id):
+def addClassReview(lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id, username, submit_date):
     if len(department) > 1:
         department = ' '.join(department)
     else:
         department = department[0]
-    data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id]
+    data = [lastName, firstName, title, review, toughness, interest, textbook, department, crn, date, id, username, submit_date]
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()    
-        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?,?)',(data,))
+        c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',(data,))
 
 def getProfReviews(id):
     '''if lastName != "":
@@ -88,6 +88,7 @@ def getClassReviews(department, title):
             classList = c.fetchall()
             return [classList, "title"]
     
+# REFACTOR HERE    
     
 def calculateProfRatings(profReviews): #must pull profReviews by name, not department or college 
     i = len(profReviews)
@@ -124,44 +125,55 @@ def calculateProfRatings(profReviews): #must pull profReviews by name, not depar
         qualityTotal /= float(i)
         accessiblityTotal /= float(i)
         syllabusTotal /= float(i)
-    
-        review = [profReviews[0][0], profReviews[0][1], profReviews[0][2], workloadTotal, gradingTotal, qualityTotal, accessiblityTotal, syllabusTotal]
+        
+        last_name = profReviews[0][0]
+        first_name = profReviews[0][1]
+        review = profReviews[0][2]
+
+        review = [last_name, first_name, review, workloadTotal, gradingTotal, qualityTotal, accessiblityTotal, syllabusTotal]
         return review
-    
+
+# REFACTOR HERE
+
 def calculateClassRatings(classReviews):
     i = len(classReviews[0])
     if (i == 0):
         return ["","","","","","",""] #change if number of categories change
     elif classReviews[1]=="title":
-        #TODO - rewrite code for the case that classReviews[1] == "department"
-        if len(classReviews[0]) == 1:
-            return [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2], classReviews[0][0][4], classReviews[0][0][5], classReviews[0][0][6], classReviews[0][0][-3], classReviews[0][0][-2]]
-        else:
-            toughness = [0] * i
-            interest = [0] * i
-            textbook = [0] * i
-            for j in range(0,i):
-                toughness[j] = classReviews[0][j][4]
-                interest[j] = classReviews[0][j][5]
-                textbook[j] = classReviews[0][j][6]   
-            toughnessTotal = 0
-            interestTotal = 0
-            textbookTotal = 0
-            for k in range(0,i):
-                toughnessTotal += toughness[k]
-                interestTotal += interest[k]
-                textbookTotal += textbook[k]
-                
-            toughnessTotal /= float(i)
-            interestTotal /= float(i)
-            textbookTotal /= float(i)
-            review = [classReviews[0][0][0], classReviews[0][0][1], classReviews[0][0][2],  toughnessTotal, interestTotal, textbookTotal, classReviews[0][0][-3], classReviews[0][0][-2]]
-            return review
+        classReviews = classReviews[0] # destroy weird indexing
+        i = len(classReviews)
+        toughness = [0] * i
+        interest = [0] * i
+        textbook = [0] * i
+        for j in range(0,i):
+            toughness[j] = classReviews[j][4]
+            interest[j] = classReviews[j][5]
+            textbook[j] = classReviews[j][6]   
+        toughnessTotal = 0
+        interestTotal = 0
+        textbookTotal = 0
+        for k in range(0,i):
+            toughnessTotal += toughness[k]
+            interestTotal += interest[k]
+            textbookTotal += textbook[k]
+            
+        toughnessTotal /= float(i)
+        interestTotal /= float(i)
+        textbookTotal /= float(i)
+        last_name = classReviews[0][0]
+        first_name = classReviews[0][1]
+        title = classReviews[0][2]
+        crn = classReviews[0][8]
+        date = classReviews[0][9]
+        review = [last_name, first_name, title, toughnessTotal, interestTotal, textbookTotal, crn, date]
+        return review
         
     elif classReviews[1] == "department": 
         # get number of different courses then run calculateClassRatings() for each different course title
         course_title_list = [] #* len(classReviews[0])
-        for i in range(0,len(classReviews) + 1):
+        for i in range(0,len(classReviews[0]) + 1):
+            print classReviews
+            print classReviews[0][i][2]
             title = classReviews[0][i][2]
             if title not in course_title_list:
                 course_title_list.append(title)
@@ -229,8 +241,8 @@ def bestClass(department):
     courseList = getClassReviews(department, "")
     courses = set([course[2] for course in courseList[0]])
     courses = list(courses)
-    crn_index = -2
-    date_index = -1
+    crn_index = 6
+    date_index = 7
     rating_index = 4
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
@@ -250,8 +262,8 @@ def easiestClass(department):
     courseList = getClassReviews(department, "")
     courses = set([course[2] for course in courseList[0]])
     courses = list(courses)
-    crn_index = -2
-    date_index = -1
+    crn_index = 6
+    date_index = 7
     workload_index = 4
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}

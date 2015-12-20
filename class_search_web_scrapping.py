@@ -1,22 +1,23 @@
-import requests
 from bs4 import BeautifulSoup
 import urllib2
 import re
+import requests
 
 def CleanUpString(string):
     """Cleans up a string by getting rid of '\\t', '\\r', '\\n', and double spaces (i.e. '  ').
     Input: string
     Returns: String
     """
-    return string.replace('\t', '').replace('\r','').replace('\n', '').replace('  ', '')
+    return string.replace('\t', '').replace('\r', '').replace('\n', '').replace('  ', '')
 
 def GetCurrentSemester():
     return "201520"
 
 def GetISBNS(url):
-    # Grabs the ISBNs from the bookstore page if any exist
-    # TODO: Determine which books are required vs optional.
-    # Returns as a list of strings
+    """Grabs the ISBNs from the bookstore page if any exist
+    TODO: Determine which books are required vs optional.
+    Returns as a list of strings
+    """
     opener = urllib2.build_opener()
     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
     raw = opener.open(url)
@@ -25,33 +26,35 @@ def GetISBNS(url):
     isbns = []
     for isbn in isbn_spans:
 	# Get the numerical portion of the html text
-	isbns.append(re.search(r'\d+', isbn.text).group())
+        isbns.append(re.search(r'\d+', isbn.text).group())
     return isbns
 
 def GetOptions():
-    """Gets the options for the 6 categories (Term, Division, Campus, Subject, Attribute, and Credits)..
-    Gets both the option that is displayed on class-search.nd.edu as well as the option_key that is neccessary 
-    to submit the post request in order to navigate to the correct page
+    """
+    Gets the options for the 6 categories (Term, Division, Campus, Subject, Attribute, and Credits)
+    Gets both the option that is displayed on class-search.nd.edu as well as the option_key
+    that is neccessary to submit the post request in order to navigate to the correct page
     Returns: dictionary of option_descriptions (what is displayed on class-search.nd.edu)
         that point to option_keys{option_description: option_key}
     """
-    
-    #
+
     url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
     data = soup.find_all('select')
-    
-    # Dictionaries used to store both option description and the form data value required for post requests
+
+    # Dictionaries used to store both option description and the form
+    # data value required for post requests
     TermOptions = {}
     DivisionOptions = {}
-    CampusOptions  = {}
+    CampusOptions = {}
     SubjectOptions = {}
-    AttributeOptions= {}
+    AttributeOptions = {}
     CreditsOptions = {}
-    
-    OptionCategories = [TermOptions, DivisionOptions, CampusOptions, SubjectOptions, AttributeOptions, CreditsOptions]
-    
+
+    OptionCategories = [TermOptions, DivisionOptions, CampusOptions,
+                        SubjectOptions, AttributeOptions, CreditsOptions]
+
     for i, category in zip(data, OptionCategories):
         options = i.find_all('option')
         for option in options:
@@ -61,7 +64,7 @@ def GetOptions():
                 category[CleanUpString(str(option.text))] = str(option).split('"')[3]
             else:
                 category[CleanUpString(str(option.text))] = str(option).split('"')[1]
-    
+
     # Get rid of all Year entries for TermOptions
     New_Term_Options = OptionCategories[0].copy()
     for entry in New_Term_Options:
@@ -76,25 +79,22 @@ def GetOptions():
 def GetClasses(term, subj, credit, Attr, divs, campus):
     """
     Given the inputs, function will find the class data from class-search.nd.edu.
-    Inputs: Academic term, Academic subject, number of credits, Attribute type, Academic division, and finally campus. 
+    Inputs: Academic term, Academic subject, number of credits, Attribute type,
+       Academic division, and finally campus.
        All should be in the form of strings
     Returns: A list of dictionaries, with each dictionary being a specific class at Notre Dame
-       Each dictionary has the same keys and gives the same information for each class 
+       Each dictionary has the same keys and gives the same information for each class
     """
     url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet'
-   
-    #divs = 'A'
-    #campus = 'M'
-    #Attr = '0ANY'
-    #credit = 'A'
-    
+
     # stores data for the post request
-    FormData = {'TERM': term, 'SUBJ': subj, 'CREDIT':credit, 'ATTR':Attr, 'DIVS':divs, 'CAMPUS' : campus}
-    
-    response = requests.post(url, data = FormData)
+    FormData = {'TERM': term, 'SUBJ': subj, 'CREDIT':credit, 'ATTR':Attr,
+                'DIVS':divs, 'CAMPUS' : campus}
+
+    response = requests.post(url, data=FormData)
     soup = BeautifulSoup(response.content, "lxml")
     ClassTable = soup.find_all('table', {'id':'resulttable'})
-    
+
     # If no classes listed on class search, return an empty []
     if len(ClassTable) == 0:
         return []
@@ -102,17 +102,16 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         ClassTable = ClassTable[0].find_all('tr')
 
         Headers = ClassTable[0].find_all('th')
-        
+
         # Class_Headers stores the column headers for the class data
         Class_Headers = []
         for header in Headers:
             Class_Headers.append(str(header.text))
-        
-        
+
         Classes = ClassTable[1:]
-        
+
         Classlist = []
-        
+
         # Temporary counting variable
         Num_Classes = 0
         URLS = []
@@ -120,7 +119,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             Classlist.append({})
             Info = Class.find_all('td')
             URLS.append([])
-            for i, header in zip(Info,Class_Headers):                
+            for i, header in zip(Info, Class_Headers):
                 url = ''
                 url = i.find_all('a')
                 if url:
@@ -140,7 +139,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
                                 if x[-1] == ' ':
                                     x = x[:-1]
                                 professors.append(x)
-                            Classlist[Num_Classes][header]  = professors
+                            Classlist[Num_Classes][header] = professors
                     else:
                         Classlist[Num_Classes][header] = CleanUpString(str(i.text).replace('\t', ''))
                 except UnicodeEncodeError:
@@ -149,7 +148,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             Classlist[Num_Classes]['Term'] = term
             Classlist[Num_Classes]['Attribute'] = Attr
             Num_Classes += 1
-        
+
         # Reassign temporary counting variable
         Num_Classes = 0
         for url in URLS:
@@ -158,11 +157,13 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
             BookStoreUrlData = ClassUrlData[1]
             BookStoreUrl = BookStoreUrlData.get('href')
             ClassUrlExtension = CleanUpString(ClassDescriptionUrl.split("'")[1])
-            
-            Classlist[Num_Classes]['Course_Info'] = 'https://class-search.nd.edu/reg/srch/' + ClassUrlExtension
-            Classlist[Num_Classes]['View_Books'] =  BookStoreUrl
-            
-            # Some classes have no teacher yet announced. If they do not have a teacher, then len(url) == 1. 
+
+            baseUrl = 'https://class-search.nd.edu/reg/srch/'
+            Classlist[Num_Classes]['Course_Info'] = baseUrl + ClassUrlExtension
+            Classlist[Num_Classes]['View_Books'] = BookStoreUrl
+
+            # Some classes have no teacher yet announced.
+            # If they do not have a teacher, then len(url) == 1.
             # If the teacher is announced, len(url) == 2
             if len(url) == 2:
                 url_data = []
@@ -170,29 +171,30 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
                     InstructorUrlData = url[1][i].get('href')
                     TeacherUrlExtension = CleanUpString(InstructorUrlData.split("'")[1])
                     url_data.append(TeacherUrlExtension)
-                Classlist[Num_Classes]['Teacher_Info'] = [ ('https://class-search.nd.edu/reg/srch/' + i) for i in url_data]           
+                baseUrl = 'https://class-search.nd.edu/reg/srch/'
+                Classlist[Num_Classes]['Teacher_Info'] = [(baseUrl + i) for i in url_data]
             else:
                 Classlist[Num_Classes]['Teacher_Info'] = 'NONE'
             Num_Classes += 1
-        
+
         # Clean up Course - sec in Classlist
         for i in Classlist:
             i["Title"] = i["Title"].replace('/', ' and ')
             i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
-    
+
         return Classlist
 
 def GetClassDescriptionAndAll(CRN, Term):
     """Gets the class description, the course prerequisites, and the course corequisites
     Input: a url of a class specific page
-    returns: A list with the course description, a string that reveals the contents of the rest of the list, 
+    returns: A list with the course description, a string that reveals the contents of the rest of the list,
             the prerequisites (if any), and corequisites (if a
             String options: 'Both', 'Neither', 'Prerequisote Only', or 'Corequisite Only'
     """
     url = 'https://class-search.nd.edu/reg/srch/ClassSearchServlet?CRN=' + str(CRN) + '&TERM=' + str(Term)
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
-    
+
     Data = soup.find_all('td')[2].text.split('Restrictions:')
     DataText = Data[0]
     Restrictions = CleanUpString(Data[1]).replace(u"\xa0", '').split("Course Attributes")[0].split("Cannot")[0].split(".syllabus")[0]
@@ -202,18 +204,17 @@ def GetClassDescriptionAndAll(CRN, Term):
         AttributeText = [str(i) for i in AttributeText.split(u"\xa0")]
     except IndexError:
         AttributeText = []
-    
+
     Course_Description = DataText.split('Associated Term:')[0]
-    
+
     EnrollmentData = soup.find_all("table", {"class":"datadisplaytable"})
     if len(EnrollmentData) == 4:
         Registration = EnrollmentData[1].text
         CrossListed = EnrollmentData[2].text
     elif len(EnrollmentData) == 3:
         Registration = EnrollmentData[1].text
-        CrossListed  = None
-    
-    
+        CrossListed = None
+
     if 'Prerequisites' in DataText:
         if 'Corequisites' in DataText:
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
@@ -232,7 +233,7 @@ def GetClassDescriptionAndAll(CRN, Term):
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
     the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
-    
+
     if isTerms:
         keys = sorted(data, key=data.get)
         keys.reverse()
@@ -241,7 +242,7 @@ def Sort_dict(data, isTerms):
         return sorted(data)
 
 def GetSubjectsInDepartments():
-    Colleges = [ 'College of Arts & Letters', 'College of Engineering', 'College of Science','Mendoza College of Business','First Year of Studies', 'The Law School', "St. Mary's College",'Other','School of Architecture']
+    Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
     Colleges_with_deparments = []
     for i in Colleges:
         Colleges_with_deparments.append([])
@@ -265,21 +266,21 @@ def GetSubjectsInDepartments():
 def GetAllProfessors():
     f = open('TeacherList.txt', 'r')
     Professors = {}
-    
+
     line = f.readline()
     while line != '':
         name = line.split('>')[-1].replace('\n', '')
-        
+
         # get rid of any trailing spaces
         while name[-1] == ' ':
             name = name[:-1]
         # get last name
         last_name = CleanUpString(name.split(',')[0])
-        
+
         # get list of all middle and first names
         surname = [CleanUpString(string) for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
         surname_combinations = []
-        for i in range(1,len(surname)+1):
+        for i in range(1, len(surname)+1):
             surname_combinations.append(' '.join(surname[0:i]))
         name_combinations = [last_name + ', ' + surname_option for surname_option in surname_combinations]
         ID = CleanUpString(line.split('"')[1])
@@ -290,7 +291,7 @@ def GetAllProfessors():
 
 def GetAllProfessorDepartments():
     f = open('ProfessorDepartments.txt', 'r')
-    line  = f.readline()
+    line = f.readline()
     ProfDepartments = {}
     while line != '':
         name = CleanUpString(line.split('; Departments:')[0])
@@ -302,6 +303,7 @@ def GetAllProfessorDepartments():
         line = f.readline()
     f.close()
     return ProfDepartments
+
 def GetCoursesTaught(Prof_ID):
     url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=' + GetCurrentSemester() +'&P=' + str(Prof_ID)
     response = requests.get(url)
@@ -317,28 +319,24 @@ def GetCoursesTaught(Prof_ID):
              i[2] = i[2].replace('/', ' and ')
     return CoursesTaught
 
-
-
-
-
 def Professors_No_Repeats():
     f = open('TeacherList.txt', 'r')
     Professors = {}
-    
+
     line = f.readline()
     while line != '':
         name = line.split('>')[-1].replace('\n', '')
-        
+
         # get rid of any trailing spaces
         while name[-1] == ' ':
             name = name[:-1]
         # get last name
         last_name = CleanUpString(name.split(',')[0])
-        
+
         # get list of all middle and first names
         surname = [CleanUpString(string) for string in name.split(',')[1].split(' ') if string != ' ' and string != '']
         surname_combinations = []
-        for i in range(1,len(surname)+1):
+        for i in range(1, len(surname)+1):
             surname_combinations.append(' '.join(surname[0:i]))
         name_combinations = [last_name + ', ' + surname_option for surname_option in surname_combinations]
         ID = CleanUpString(line.split('"')[1])
@@ -346,12 +344,3 @@ def Professors_No_Repeats():
             Professors[ID] = i
         line = f.readline()
     return sorted(Professors.values())
-
-
-
-
-
-
-
-
-

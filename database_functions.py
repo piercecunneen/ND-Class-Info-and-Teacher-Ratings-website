@@ -136,7 +136,7 @@ def calculateProfRatings(profReviews): #must pull profReviews by name, not depar
 # REFACTOR HERE
 
 def calculateClassRatings(classReviews):
-    i = len(classReviews)
+    i = len(classReviews[0])
     if (i == 0):
         return ["","","","","","",""] #change if number of categories change
     elif classReviews[1]=="title":
@@ -171,7 +171,9 @@ def calculateClassRatings(classReviews):
     elif classReviews[1] == "department": 
         # get number of different courses then run calculateClassRatings() for each different course title
         course_title_list = [] #* len(classReviews[0])
-        for i in range(0,len(classReviews) + 1):
+        for i in range(0,len(classReviews[0]) + 1):
+            print classReviews
+            print classReviews[0][i][2]
             title = classReviews[0][i][2]
             if title not in course_title_list:
                 course_title_list.append(title)

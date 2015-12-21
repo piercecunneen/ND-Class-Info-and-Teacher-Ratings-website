@@ -1,12 +1,16 @@
+"""
+Functions for creatin and modifying users
+"""
+
 import sqlite3
 from passlib.hash import pbkdf2_sha256
 
 db_path = "reviews.sqlite"
 
-
-
 def create_user(username, password):
-    
+    """
+    Adds a user to the database
+    """
     # check for nd.edu email
     address = username[-6:-1] + username[len(username) - 1]
     if address == "nd.edu":
@@ -15,7 +19,7 @@ def create_user(username, password):
         conn = sqlite3.connect(db_path)
         with conn:
             c = conn.cursor()
-            sql = "select * from userInfo where username = " + "'" + username + "'" 
+            sql = "select * from userInfo where username = " + "'" + username + "'"
             c.execute(sql)
             user = c.fetchone()
             if user:
@@ -24,37 +28,45 @@ def create_user(username, password):
                 pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
                 #sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
                 data = [username, pass_hash]
-                c.executemany('INSERT INTO userInfo VALUES(?,?)',(data,))
+                c.executemany('INSERT INTO userInfo VALUES(?,?)', (data,))
                 #c.execute(sql)
                 return True, "User created successfully"
 
     else:
-        return False, "Please register with a valid nd.edu email address" 
+        return False, "Please register with a valid nd.edu email address"
 
 def change_password(username, password):
+    """
+    Changes the username of user with username @username
+    to have the password @password
+    """
     pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
     conn = sqlite3.connect(db_path)
     with conn:
         c = conn.cursor()
-        sql = "update userInfo set password = '" + str(pass_hash) + "' where username = '" + str(username) + "'"
+        sql = ("update userInfo set password = '" + str(pass_hash) +
+               "' where username = '" + str(username) + "'")
         c.execute(sql)
-        
 
-        
 def validate_user(username, password):
-    
+    """
+    Attempts to verify a user login
+
+    returns True if a username with parameters
+    @username and @password exist in user database.
+    False otherwise.
+    """
     conn = sqlite3.connect(db_path)
     with conn:
         c = conn.cursor()
-        sql = "select * from userInfo where username = " + "'" + username + "'" 
+        sql = "select * from userInfo where username = " + "'" + username + "'"
         c.execute(sql)
         user = c.fetchone()
-    
+
     if user is None:
         return False, "Username not found"
-    
+
     if pbkdf2_sha256.verify(password, user[1]):
         return True, "Login Successful"
     else:
         return False, "Incorrect password"
-    

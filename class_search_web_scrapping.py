@@ -295,14 +295,14 @@ def GetClassDescriptionAndAll(CRN, Term):
     if 'Prerequisites' in DataText:
         if 'Corequisites' in DataText:
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
-            Prerequisites = CleanUpString(str(Temporary[0]))
-            Corequisites = CleanUpString(str(Temporary[1]))
+            Prerequisites = CleanUpString(str(Temporary[0].replace(u'\xa0', '')))
+            Corequisites = CleanUpString(str(Temporary[1].replace(u'\xa0', '')))
             return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
         else:
-            Prerequisites = CleanUpString(DataText.split('Prerequisites:')[1])
+            Prerequisites = CleanUpString(DataText.split('Prerequisites:')[1].replace(u'\xa0', ''))
             return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
     elif 'Corequisites' in DataText:
-            Corequisites = CleanUpString(DataText.split('Corequisites:')[1])
+            Corequisites = CleanUpString(DataText.split('Corequisites:')[1].replace(u'\xa0', ''))
             return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
     else:
         return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]

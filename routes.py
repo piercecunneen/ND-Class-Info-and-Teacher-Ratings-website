@@ -5,6 +5,8 @@ from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllP
 from database_functions import easiestClass, bestClass, easiestProf, bestProf, getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
 from password import create_user, validate_user
 import requests
+import datetime
+
 from User import User
 app = Flask(__name__)
 app.secret_key = 'som_secret'
@@ -150,18 +152,20 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
                     f.write('<OPTION VALUE="' + str(P[i]) + '">' + str(profs[i]) + '\n')
                     f.close()
                     didAddProf = True
-                if profs[i] not in ProfDepartments and (profs[i], Department) not in ProfsAdded:
+                if P[i] not in ProfDepartments and (P[i], Department) not in ProfsAdded:
                     f = open('ProfessorDepartments.txt', 'a')
-                    f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    #f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    f.write(str(P[i]) + '; Departments:' + Department + '\n')
                     f.close()
                     didAddDept = True
-                    ProfsAdded.append((profs[i], Department))
-                if Department not in ProfDepartments[profs[i]] and (profs[i], Department) not in ProfsAdded:
+                    ProfsAdded.append((P[i], Department))
+                if Department not in ProfDepartments[P[i]] and (P[i], Department) not in ProfsAdded:
                     f = open('ProfessorDepartments.txt', 'a')
-                    f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    #f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
+                    f.write(str(P[i]) + '; Departments:' + Department + '\n')
                     f.close()
                     didAddDept = True
-                    ProfsAdded.append((profs[i], Department))
+                    ProfsAdded.append((P[i], Department))
 
         except KeyError:
             pass
@@ -265,9 +269,6 @@ def DisplayClassPage(Class, CRN, Term):
         ## List of lists of dictionaries
             # each inner list represents a textbook
             # each dictionary represents a buying option for the textbook 
-    print Required_textbook_info
-    print '\n\n\n'
-    print Textbooks
     number_of_textbooks = len(Textbooks)
     num_required = len(Required_textbook_info)
     # Spots = []
@@ -305,7 +306,15 @@ def InstructorByDepartment(Department):
     # Place holder lists
     #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '', Options[3][Department], '')])
 
-    Teachers = sorted([prof for prof in ProfDepartments if Options[3][Department] in ProfDepartments[prof]])
+    #Teachers = sorted([prof for prof in Professors if Options[3][Department] in ProfDepartments.get(Professors.get(prof))])
+    Teachers = []
+
+    Department_Name = Options[3][Department]
+    for prof, ID in Professors.items():
+        department = ProfDepartments.get(ID)
+        if department and  Department_Name in department:
+            Teachers.append(prof)
+    Teachers = sorted(Teachers)
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])
     Best_Teachers, Best_Teachers_Sorted = bestProf(Options[3][Department])
@@ -421,12 +430,19 @@ def ProfessorReview(ProfessorName):
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
 
-        department = ProfDepartments.get(ProfessorName)
+        department = ProfDepartments.get(Professors.get(ProfessorName))
         if not department:
             department = "Unknown"
 
-        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility, Syllabus, department, Professors[last_name + first_name], "username", "date")
-        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term, Professors[last_name + first_name], 'username', 'date')
+        date = datetime.datetime.now()
+        date_string = str(date.year) + " " + str(date.month) + " " + str(date.day)
+
+        if session.get('username'):
+            username = session['username']
+        else:
+            username = "Unknown user"
+        addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility, Syllabus, department, Professors[last_name + first_name], username, date_string)
+        addClassReview(last_name, first_name, CourseName, OptionalDescriptionCourse, CourseToughness, CourseInterest, TextbookNeeded, department, CRN, Term, Professors[last_name + first_name], username, date_string)
         return render_template('PostSubmissionForm.html', test=' ')
 
     try:

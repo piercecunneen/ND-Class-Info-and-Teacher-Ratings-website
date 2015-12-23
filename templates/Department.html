@@ -6,45 +6,39 @@
 <input type="button" value="Go Forward" onclick="history.forward()"></input>
 <h2 align = "middle"> {{Department}} </h2>
 <div class="row">
-	<div class="col s4">
-		<h5 align="center"> Teachers</h5>
-		<ul class="collection">
-			{% for teacher in Teachers %}
+	<div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s15"><a href="#college1">All Professors</a></li>
+        <li class="tab col s15"><a href="#college2">Best Professors</a></li>
+        <li class="tab col s15"><a href="#college3">Easiest Professors</a></li>
+        <li class="tab col s15"><a href="#college4">Best Classes</a></li> 
+        <li class="tab col s15"><a href="#college5">Easiest Classes</a></li>
+      </ul>
+    </div>
+    <div id="college1" class="collection">
+    	{% for teacher in Teachers %}
 			<a href = "../../instructor_info/{{teacher}}" class="collection-item">{{teacher}}</a>	
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="col s2">
-		<h5 align="center">Best Teachers</h5>
-		<ul class="collection">
-			{% for teacher in Best_Teachers_Sorted %}
+		{% endfor %}
+    </div>
+    <div id="college2" class="collection">
+    	{% for teacher in Best_Teachers_Sorted %}
 			<a href = "../../instructor_info/{{teacher}}" class="collection-item">{{ teacher }}: {{Best_Teachers[teacher]}}</a>	
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="col s2">
-		<h5 align="center">Easiest Teachers</h5>
-		<ul class="collection">
-			{% for teacher in Easiest_Teachers_Sorted %}
+		{% endfor %}
+    </div>
+    <div id="college3" class="collection">
+    	{% for teacher in Easiest_Teachers_Sorted %}
 			<a href = "../../instructor_info/{{teacher}}" class="collection-item">{{ teacher }}: {{Easiest_Teachers[teacher]}}</a>	
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="col s2">
-		<h5 align="center">Most Interesting Classes</h5>
-		<ul class="collection">
-			{% for course in Best_Classes_Sorted %}
+		{% endfor %}
+    </div>
+    <div id="college4" class="collection">
+    	{% for course in Best_Classes_Sorted %}
 			<a href = "../../class_info/{{course}}-{{Best_Classes[course][1]}}-{{Best_Classes[course][2]}}"class="collection-item">{{ course }}: {{Best_Classes[course][0]}}</a>	
-			{% endfor %}
-		</ul>
-	</div>
-	<div class="col s2">
-		<h5 align="center">Easiest Classes</h5>
-		<ul class="collection">
-			{% for course in Easiest_Classes_Sorted %}
+		{% endfor %}
+    </div>
+    <div id="college5" class="collection">
+    	{% for course in Easiest_Classes_Sorted %}
 			<a href = "../../class_info/{{course}}-{{Easiest_Classes[course][1]}}-{{Easiest_Classes[course][2]}}" class="collection-item">{{course}}: {{Easiest_Classes[course][0]}}</a>	
-			{% endfor %}
-		</ul>
-	</div>
+		{% endfor %}
+    </div>
 </div>
 {% endblock %}

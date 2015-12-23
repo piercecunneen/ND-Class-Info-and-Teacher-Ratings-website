@@ -372,12 +372,12 @@ def GetAllProfessorDepartments():
     line = f.readline()
     ProfDepartments = {}
     while line != '':
-        name = CleanUpString(line.split('; Departments:')[0])
+        ID = CleanUpString(line.split('; Departments:')[0])
         Department = CleanUpString(line.split('; Departments:')[1].replace('\n', ''))
-        if name in ProfDepartments:
-            ProfDepartments[name].append(Department)
+        if ID in ProfDepartments:
+            ProfDepartments[ID].append(Department)
         else:
-            ProfDepartments[name] = [Department]
+            ProfDepartments[ID] = [Department]
         line = f.readline()
     f.close()
     return ProfDepartments

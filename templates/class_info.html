@@ -75,11 +75,55 @@
 				</div>
 			</li>
 			<li> 
-				<div class = "collapsible-header"> <i class = "material-icons">add</i>Textbook info</div>
+				<div class = "collapsible-header"> <i class = "material-icons">add</i>Bookstore Textbook info</div>
+					<div class = "collapsible-body">
+						<ul class="collection">
+						{% for i in range(number_of_textbooks) %}
+							<li class="collection-item"> 
+							Title: {{ Textbooks[i]["title"] }} <br>
+							Author: {{ Textbooks[i]["author"] }}<br>
+							ISBN: {{ Textbooks[i]["isbn"] }} <br> 
+							{% if i < num_required %} 
+								<br>Required <br>
+							{% else %}
+								<br>Recommended <br>
+							{% endif %}
+							<table> 
+								<thead>
+									<tr>
+										<th> New/Used </th>	
+										<th> Price </th>	
+										<th> Buy/Rent </th> 
+										<th> Type </th>
+									</tr>
+								</thead>
+								<tbody>
+									{%  for option in Required_textbook_info[i] %}
+									<tr> 
+										<td> {{ option["Option"]}} </td>
+										<td> {{ option["Price"]}} </td>
+										<td> {{ option["Buy/Rent"]}} </td>
+										<td> {{ option["Type"]}} </td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							</li>
+						{% endfor %}
+						</ul>
+						{% if number_of_textbooks == 0 %}
+							<p> No textbook information available at this time </p>
+						{% endif %}
+					</div>
+
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="material-icons">add</i>Registration</div>
-      				<div class="collapsible-body"> <p> Maximum: {{Registration[0]}} <br> Enrolled: {{Registration[1]}} <br> Remaining: {{Registration[2]}} <br> </p></div>
+      				<div class="collapsible-body"> 
+      					<p> Maximum: {{Registration[0]}} <br> 
+      					Enrolled: {{Registration[1]}} <br>
+      					Remaining: {{Registration[2]}} <br> </p>
+      				</div>
 			</li>
 		</ul>
 	</div>

@@ -10,6 +10,8 @@
 				{% for key in TermOptionKeys %}
 				<option value='{{ TermOptions[key] }}'>{{key}}</option>
 				{% endfor %}
+				<script> document.getElementById("TermOptions").selectedIndex = "1"; </script>
+
 			</select>
 		</div>
 		<div class="col s6">

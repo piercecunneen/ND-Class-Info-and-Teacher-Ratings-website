@@ -29,12 +29,21 @@ def GetTextBookInfo(url):
     authors = [str(author.split("Author: ")[1]) for author in author_info]
 
     Titles_info = [str(i.text) for i in soup.find_all("h3", attrs = {'class':'material-group-title'})]
+    choice_of_titles_index = -1
+    for i in xrange(len(Titles_info)):
+        Titles_info[i] = Titles_info[i].replace("Edition", " Edition")
+        if "Choice of Titles" in Titles_info[i]:
+            choice_of_titles_index = i
+    
+    if choice_of_titles_index != -1:
+        Titles_info.pop(choice_of_titles_index)
+
     Textbooks = []
     for i in xrange(len(authors)):
         new_textbook = {}
-        new_textbook['author'] = authors[i]
-        new_textbook['isbn'] = isbns[i]
-        new_textbook['title'] = Titles_info[i]
+        new_textbook['author'] = CleanUpString(authors[i])
+        new_textbook['isbn'] = CleanUpString(isbns[i])
+        new_textbook['title'] = CleanUpString(Titles_info[i])
         Textbooks.append(new_textbook)
 
     required_books = soup.find_all("li", attrs = {"id":"material-group_REQUIRED"})
@@ -250,11 +259,24 @@ def GetClassDescriptionAndAll(CRN, Term):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "lxml")
 
+    # Get department, section, and course number for textbook scrapping
+    Course_Info = soup.find_all("th", attrs = {"class":"ddlabel"})[0]
+    course_section = CleanUpString(Course_Info.text).replace(u'\xa0','')
+    Department_Index = 0
+    while not course_section[Department_Index].isnumeric():
+        Department_Index += 1
+    Department = str(course_section[0:Department_Index])
+    Course_Num_Index = Department_Index
+    while course_section[Course_Num_Index] != '-':
+        Course_Num_Index+= 1
+    Course_Num = str(course_section[Department_Index:Course_Num_Index])
+    section = str(course_section.split("Section")[1][0:2])
+
     Data = soup.find_all('td')[2].text.split('Restrictions:')
     DataText = Data[0]
     Restrictions = CleanUpString(Data[1]).replace(u"\xa0", '').split("Course Attributes")[0].split("Cannot")[0].split(".syllabus")[0]
     try:
-        # Catch index error if class has no attributes
+        # Catch Department_Index error if class has no attributes
         AttributeText = CleanUpString(Data[1].split("Course Attributes:")[1].split(".syllabus")[0])
         AttributeText = [str(i) for i in AttributeText.split(u"\xa0")]
     except IndexError:
@@ -275,15 +297,16 @@ def GetClassDescriptionAndAll(CRN, Term):
             Temporary = DataText.split('Prerequisites:')[1].split('Corequisites:')
             Prerequisites = CleanUpString(str(Temporary[0]))
             Corequisites = CleanUpString(str(Temporary[1]))
-            return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions, Registration, CrossListed]
+            return [Course_Description, 'Both', Prerequisites, Corequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
         else:
             Prerequisites = CleanUpString(DataText.split('Prerequisites:')[1])
-            return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions, Registration, CrossListed]
+            return [Course_Description, 'Prerequisite Only', Prerequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
     elif 'Corequisites' in DataText:
             Corequisites = CleanUpString(DataText.split('Corequisites:')[1])
-            return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions, Registration, CrossListed]
+            return [Course_Description, 'Corequisite Only', Corequisites, AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
     else:
-        return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed]
+        return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
+
 
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
@@ -302,15 +325,15 @@ def GetSubjectsInDepartments():
     for i in Colleges:
         Colleges_with_deparments.append([])
     f = open('SubjectsInColleges.txt', 'r')
-    department_index = 0
+    department_Department_Index = 0
     for line in f.read().split('\n'):
         if line == '-----':
-            department_index += 1
+            department_Department_Index += 1
         else:
             if line == '':
                 continue
             else:
-                Colleges_with_deparments[department_index].append(line)
+                Colleges_with_deparments[department_Department_Index].append(line)
     sorted_Colleges_with_deparments = []
     for college in Colleges_with_deparments:
         new_college = [college[0]] + sorted(college[1:])

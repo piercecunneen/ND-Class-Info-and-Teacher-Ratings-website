@@ -7,7 +7,7 @@ from password import create_user, validate_user
 import requests
 from User import User
 app = Flask(__name__)
-app.secret_key = 'some_secret'
+app.secret_key = 'som_secret'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -16,6 +16,10 @@ Options = GetOptions()
 Sorted_Profs_No_Repeats = Professors_No_Repeats()
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
+
+
+
+
 
 def is_logged_in(id):
     user = load_User(id)
@@ -83,7 +87,9 @@ def QuickSearch(ATTR):
         Campus = request.form['CampusOptions']
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
     Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
-    Subjects = Options[3].values()
+    #SelectSubjects = {'2nd Theology':['THEO'], '2nd Philosophy':['PHIL'], 'Social Science': ["ECON", "POLS", "ANTH", "SOC", "PSY"], 'Natural Science (req)': ['BIOS', 'CHEM'], 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
+
+    Subjects = GetOptions()[3].values()
     Semester = GetCurrentSemester()
     Attribute = Attributes[ATTR]
     return DisplayClasses(Semester, Subjects, Options[5]["All"], Attribute, "A", Options[2]["Main"])
@@ -115,14 +121,8 @@ def ClassSearch():
                            AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
                            CreditsOptionKeys=Sort_dict(Options[5], False), CreditsOptions=Options[5])
 
-# @app.route('/class_search/<class_info>/')
-# def classInfo(class_info):
-#     CourseRatings = calculateClassRatings(getClassReviews('', class_info))
-#     Course_text_review = str(CourseRatings[3])
-#     toughness = str(CourseRatings[4])
-#     interest = str(CourseRatings[5])
-#     Textbook = str(CourseRatings[6])
-#     return render_template('class_info.html', Textbook=Textbook, interest=interest, toughness=toughness,Course_text_review=Course_text_review )
+
+
 
 @app.route('/instructor_eval/')
 def eval():
@@ -221,6 +221,9 @@ def DisplayClassPage(Class, CRN, Term):
         Restrictions = Descriptions[4]
         Registration = Descriptions[5]
         CrossListed = Descriptions[6]
+        Department = Descriptions[7]
+        Course_number = Descriptions[8]
+        section = Descriptions[9]
     elif Descriptions[1] == "Both":
         Prerequisites = Descriptions[2]
         Corequisites = Descriptions[3]
@@ -228,21 +231,45 @@ def DisplayClassPage(Class, CRN, Term):
         Restrictions = Descriptions[5]
         Registration = Descriptions[6]
         CrossListed = Descriptions[7]
+        Department = Descriptions[8]
+        Course_number = Descriptions[9]
+        section = Descriptions[10]
     elif  Descriptions[1] == 'Prerequisite Only':
         Prerequisites = Descriptions[2]
         Attributes = Descriptions[3]
         Restrictions = Descriptions[4]
         Registration = Descriptions[5]
         CrossListed = Descriptions[6]
+        Department = Descriptions[7]
+        Course_number = Descriptions[8]
+        section = Descriptions[9]
 
     else:
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
         Registration = Descriptions[4]
         CrossListed = Descriptions[5]
+        Department = Descriptions[6]
+        Course_number = Descriptions[7]
+        section = Descriptions[8]
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
+
+    ## Now scrap textbook data
+    url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
+    Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
+    ### In Textbooks
+        ## List of dictionaries, each dictionary has info of a textbook
+    ### In Required/Recommended Textbook info
+        ## List of lists of dictionaries
+            # each inner list represents a textbook
+            # each dictionary represents a buying option for the textbook 
+    print Required_textbook_info
+    print '\n\n\n'
+    print Textbooks
+    number_of_textbooks = len(Textbooks)
+    num_required = len(Required_textbook_info)
     # Spots = []
     # if CrossListed:
     #     CrossListed = CrossListed.split("\n\n\n")[1:-1]
@@ -257,7 +284,10 @@ def DisplayClassPage(Class, CRN, Term):
                            Prerequisites=Prerequisites, Corequisites=Corequisites,
                            CourseName=CourseName, CourseDescription=CourseDescription,
                            Textbook=Textbook, interest=interest,
-                           toughness=toughness, Attributes=Attributes)
+                           toughness=toughness, Attributes=Attributes,
+                           Textbooks = Textbooks, Required_textbook_info = Required_textbook_info,
+                            Recommended_textbook_info = Recommended_textbook_info, 
+                            number_of_textbooks = number_of_textbooks, num_required = num_required)
 
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
@@ -390,9 +420,9 @@ def ProfessorReview(ProfessorName):
         # Add to database
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
-        try:
-            department = ProfDepartments[ProfessorName]
-        except:
+
+        department = ProfDepartments.get(ProfessorName)
+        if not department:
             department = "Unknown"
 
         addProfReview(last_name, first_name, OptionalDescriptionProfessor, Workload, Grading, Quality, Accessibility, Syllabus, department, Professors[last_name + first_name], "username", "date")

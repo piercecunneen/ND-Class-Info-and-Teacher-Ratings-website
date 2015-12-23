@@ -3636,3 +3636,8 @@ Zhang, Xiaoyi; Departments:ENGL
 Crolley, Axton; Departments:HIST
 Wright, Benjamin; Departments:HIST
 Zhang, Xiaoyi; Departments:HIST
+Triebold, Ellen; Departments:LAW
+Rice, Kathleen; Departments:LAW
+Legarre, Santiago; Departments:LAW
+Squyres, Mary; Departments:LAW
+Nicgorski, Walter; Departments:PLS

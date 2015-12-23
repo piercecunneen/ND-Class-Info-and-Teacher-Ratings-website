@@ -309,11 +309,14 @@ def InstructorByDepartment(Department):
     #Teachers = sorted([prof for prof in Professors if Options[3][Department] in ProfDepartments.get(Professors.get(prof))])
     Teachers = []
 
+    ID_dict = {}
+
     Department_Name = Options[3][Department]
     for prof, ID in Professors.items():
         department = ProfDepartments.get(ID)
-        if department and  Department_Name in department:
+        if department and  Department_Name in department and ID not in ID_dict:
             Teachers.append(prof)
+            ID_dict[ID] = 1
     Teachers = sorted(Teachers)
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Professors = bestProf(Options[3][Department])

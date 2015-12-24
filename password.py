@@ -49,23 +49,23 @@ def change_password(username, password):
                "' where username = '" + str(username) + "'")
         c.execute(sql)
 
-def validate_user(username, password):
+def validate_user(username, password, email):
     """
     Attempts to verify a user login
 
-    returns True if a username with parameters
-    @username and @password exist in user database.
+    returns True if an email with parameters
+    @email and @password exist in user database.
     False otherwise.
     """
     conn = sqlite3.connect(db_path)
     with conn:
         c = conn.cursor()
-        sql = "select * from userInfo where username = " + "'" + username + "'"
+        sql = "select * from userInfo where email = " + "'" + email + "'"
         c.execute(sql)
         user = c.fetchone()
 
     if user is None:
-        return False, "Username not found"
+        return False, "User not found"
 
     if pbkdf2_sha256.verify(password, user[1]):
         return True, "Login Successful"

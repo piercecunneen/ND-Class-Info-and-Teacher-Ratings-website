@@ -9,7 +9,7 @@ import datetime
 
 from User import User
 app = Flask(__name__)
-app.secret_key = 'som_secret'
+app.secret_key = 'This is a secret'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -51,6 +51,7 @@ def register():
         if not Response:
             error = Message
         else:
+            
             return redirect(url_for('home'))
 
     return render_template('UserRegistration.html', error=error)
@@ -60,11 +61,12 @@ def login():
     error = None
     if request.method == "POST":
         if request.form.get("RememberMe"):
-            pass
-            ### Call function that remembers user
+            session.permanent = True
+            app.permanent_session_lifetime = datetime.timedelta(days=100)
         else:
-            pass
-            ### call function that sets timelimit on user
+            session.permanent = True
+            app.permanent_session_lifetime = datetime.timedelta(minutes=120)
+
         Response, Message = validate_user(request.form["username"], request.form["password"])
         if not Response:
             error = Message
@@ -76,6 +78,10 @@ def login():
 
 @app.route('/')
 def home():
+    user = session.get("username")
+    print user
+    if user == None:
+        print 'not logged in'
     return render_template('home.html')
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
@@ -482,4 +488,5 @@ def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000)

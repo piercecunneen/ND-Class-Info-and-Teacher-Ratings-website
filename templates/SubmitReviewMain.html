@@ -2,29 +2,28 @@
   
 {% block content %}
 <div>
-	<h1 align="center">Search for a Professor to Review</h1>
-	<p align="center">Select an instructor by department or name</p>
+	<h5 class="center-align padded">Search By Department</h5>
 </div>
 <div class="row">
-	<div class="col s6">
+	<div class="col s12 row">
 		<select class="browser-default" id="Department">
 			{% for key in DepartmentKeys %}
 				<option value = "{{key}}" > {{key}} </option>
 			{% endfor %}
 		</select>
-		<button type="button" onclick="GoToDepartment(document.getElementById('Department'));"> Search by Department </button>
+		<button type="button" class="col s4 offset-s4 padded btn btn-large blue lighten-2 waves-effect" onclick="GoToDepartment(document.getElementById('Department'));"> Search by Department </button>
 	</div>
-	<div class="col s6">
+	<div class="col s12 row">
+		<h5 class="center-align">Or Search By a Professor's Name</h5>
 		<form id="searchForm2">
-						<div class="input-field">
-							<input id="search2" type="search" required>
-							<label for="search"><i class="material-icons">search</i></label>
-							<i class="material-icons">close</i>
-						</div>
-					</form>
+			<div class="input-field col s12">
+				<input id="search2" type="text" required>
+				<label for="search2"><i class="material-icons">search</i></label>
+			</div>
+		</form>
 	</div>
-	<div id="SearchResults2" class="row">
-		<ul class="collection col s4 offset-s8" id="ResultList2" style="display:None;">
+	<div id="SearchResults2" class="row col s12">
+		<ul class="collection col s12" id="ResultList2" style="display:None;">
 		</ul>
 	</div>
 </div>

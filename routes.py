@@ -47,7 +47,7 @@ def register():
         if request.form["password"] != request.form["password confirmation"]:
             error = "Passwords did not match"
             return render_template('UserRegistration.html', error=error)
-        Response, Message = create_user(request.form["username"], request.form["password"])
+        Response, Message = create_user(request.form["username"], request.form["password"], request.form["email"])
         if not Response:
             error = Message
         else:
@@ -67,7 +67,7 @@ def login():
             session.permanent = True
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
 
-        Response, Message = validate_user(request.form["username"], request.form["password"])
+        Response, Message = validate_user(request.form["username"], request.form["password"], request.form["email"])
         if not Response:
             error = Message
         else:
@@ -378,14 +378,12 @@ def Instructor(ProfessorName):
     Semester_formatting = { value:key for key,value in Options[0].items()}
     month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
     for i in xrange(len(Individual_Reviews)):
-        print 'df'
         date = Individual_Reviews[i][11].split(" ")
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][11] = formatted_date
     
 
 
-    print "we made it"
 
     workload = OverallRatings[3]
     if type(workload) == float:

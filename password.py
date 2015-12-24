@@ -1,5 +1,5 @@
 """
-Functions for creatin and modifying users
+Functions for creating and modifying users
 """
 
 import sqlite3
@@ -7,12 +7,13 @@ from passlib.hash import pbkdf2_sha256
 
 db_path = "reviews.sqlite"
 
-def create_user(username, password):
+def create_user(username, password, email):
     """
     Adds a user to the database
     """
     # check for nd.edu email
-    address = username[-6:-1] + username[len(username) - 1]
+    address = email[-6:-1] + email[len(email) - 1]
+    print address
     if address == "nd.edu":
         # check for existence of username already
 
@@ -27,8 +28,8 @@ def create_user(username, password):
             else: # add user to the db
                 pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
                 #sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
-                data = [username, pass_hash]
-                c.executemany('INSERT INTO userInfo (username, password) VALUES(?,?)', (data,))
+                data = [username, pass_hash, email]
+                c.executemany('INSERT INTO userInfo (username, password, email) VALUES(?,?,?)', (data,))
                 #c.execute(sql)
                 return True, "User created successfully"
 

@@ -2,7 +2,6 @@
 #functions to deal with saving/retrieving reviews
 
 import sqlite3 as lite
-import sys
 from class_search_web_scrapping import Sort_dict, GetAllProfessors
 
 database = 'reviews.sqlite'
@@ -277,5 +276,14 @@ def easiestClass(department):
     courseDictSorted = Sort_dict(courseDict, 1)
    
     return courseDict, courseDictSorted
+
+def getPosts():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = "SELECT * FROM posts"
+        c.execute(query)
+        posts = c.fetchall()
+    return posts
     
 

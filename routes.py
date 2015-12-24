@@ -473,5 +473,13 @@ def SubmitReviewMain():
                            DepartmentOptions=Options[3],
                            Professors=Professors, ProfessorKeys=ProfessorKeys)
 
+@app.route('/feature_work/')
+def feature_work():
+    return render_template('feature_work.html')
+
+@app.route('/message_board/')
+def message_board():
+    return render_template('message_board.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

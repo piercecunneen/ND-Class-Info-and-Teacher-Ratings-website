@@ -28,7 +28,7 @@ def create_user(username, password):
                 pass_hash = pbkdf2_sha256.encrypt(password, rounds=200, salt_size=16)
                 #sql = 'insert into userInfo values("' + username + '", "' + pass_hash + '")'
                 data = [username, pass_hash]
-                c.executemany('INSERT INTO userInfo VALUES(?,?)', (data,))
+                c.executemany('INSERT INTO userInfo (username, password) VALUES(?,?)', (data,))
                 #c.execute(sql)
                 return True, "User created successfully"
 

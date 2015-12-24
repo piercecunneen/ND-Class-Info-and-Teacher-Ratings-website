@@ -27,8 +27,8 @@ def is_logged_in(id):
             return True
     return False
 
-def load_User(id):
-    return User.get(id)
+def load_User(id, is_email):
+    return User.get(id, is_email)
 
 def logout():
     session['username'] = None
@@ -69,7 +69,10 @@ def login():
         if not Response:
             error = Message
         else:
-            user = load_User(request.form["username"])
+            if email:
+                user = load_User(request.form["username"], True)
+            else:
+                user = load_User(request.form['username'], False)
             session['username'] = user.id
             return redirect(url_for('home'))
     return render_template('login.html', error=error)

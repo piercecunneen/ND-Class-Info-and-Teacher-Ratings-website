@@ -47,7 +47,7 @@ def register():
         if request.form["password"] != request.form["password confirmation"]:
             error = "Passwords did not match"
             return render_template('UserRegistration.html', error=error)
-        Response, Message = create_user(request.form["username"], request.form["password"])
+        Response, Message = create_user(request.form["username"], request.form["password"], request.form["email"])
         if not Response:
             error = Message
         else:
@@ -67,7 +67,7 @@ def login():
             session.permanent = True
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
 
-        Response, Message = validate_user(request.form["username"], request.form["password"])
+        Response, Message = validate_user(request.form["username"], request.form["password"], request.form["email"])
         if not Response:
             error = Message
         else:

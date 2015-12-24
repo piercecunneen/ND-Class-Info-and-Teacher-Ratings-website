@@ -482,4 +482,5 @@ def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000)

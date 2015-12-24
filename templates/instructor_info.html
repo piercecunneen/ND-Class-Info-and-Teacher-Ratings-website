@@ -36,18 +36,31 @@
 		</table>
 	</div>
 	<div class="row">
-		<h3 align="center">Reviews</h3>
-		{% if ReviewCount > 0 %}
-			{% for description in ProfessorDescriptions %}
-			{% if description %}
-			<div class="card col s12">
-				<p class="padded">{{description}}</p>
-			</div>
-			{% endif %}
-			{% endfor %}
-		{% else %}
-			<div class="card col s12"><p class="padded">No Reviews have been added yet</p></div>
-		{% endif %}
+		<ul class="collapsible" data-collapsible="accordian">
+			<li>
+				<div class="collapsible-header active"><i class="material-icons">add</i>Course Reviews</div>
+      				<div class="collapsible-body">
+					<ul class="collection">
+					{% for review in Individual_Reviews %}
+						<li class="collection-item">
+							<table>
+								<tr>
+									<td> Workload: {{review[3]}} </td>
+									<td> Grading: {{review[4]}}  </td>
+									<td> Quality: {{review[5]}}  </td>
+									<td> Accessibility: {{review[6]}}  </td>
+									<td> Date: {{review[11]}} </td>
+ 							 	</tr>
+								<tr>
+									{{review[2]}} 
+								</tr>
+							</table>
+						</li>
+					{% endfor %}
+					</ul>
+				</div>
+			</li>
+		</ul>
 	</div>
 	<div>
 		<h3 align="center">Courses Taught</h3>

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect, m
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
-from database_functions import easiestClass, bestClass, easiestProf, bestProf, getClassReviews, getProfReviews, addClassReview, addProfReview, calculateProfRatings, calculateClassRatings
+from database_functions import * 
 from password import create_user, validate_user
 import requests
 import datetime
@@ -479,7 +479,7 @@ def feature_work():
 
 @app.route('/message_board/')
 def message_board():
-    return render_template('message_board.html')
+    return render_template('message_board.html', all_posts=getPosts())
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,7 +10,6 @@ class User(UserMixin):
     @classmethod
     def get(cls, id):
         if Check_For_ID(id):
-            print "Boom"
             return User(id)
         else:
             return None

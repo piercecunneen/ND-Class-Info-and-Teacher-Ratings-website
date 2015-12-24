@@ -82,10 +82,6 @@ def isEmail(email):
 
 @app.route('/')
 def home():
-    user = session.get("username")
-    print user
-    if user == None:
-        print 'not logged in'
     return render_template('home.html')
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
@@ -209,11 +205,21 @@ def DisplayClassPage(Class, CRN, Term):
     CourseDescription = Descriptions[0]
     Reviews = getClassReviews('', Class)
     CourseRatings = calculateClassRatings(Reviews)
-    CourseTextReviews = [review[3] for review in Reviews[0] if review[3] != '']
+    
+
+    Individual_Reviews = [list(review) for review in Reviews[0] if review[3] != '']
+
+    Semester_formatting = { value:key for key,value in Options[0].items()}
+    month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
+    for i in xrange(len(Individual_Reviews)):
+        date = Individual_Reviews[i][12].split(" ")
+        formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
+        Individual_Reviews[i][12] = formatted_date
+        Individual_Reviews[i][9] = Semester_formatting[Individual_Reviews[i][9]]
+
     toughness = CourseRatings[3]
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
-
 
     if type(toughness) == str:
         Overall_Rating = ''
@@ -289,7 +295,7 @@ def DisplayClassPage(Class, CRN, Term):
     #         data = i.split("\n")
     #         Spots.append(data[2:])
     #         courseName = data[0]
-    return render_template('class_info.html', CourseTextReviews=CourseTextReviews,
+    return render_template('class_info.html', Individual_Reviews=Individual_Reviews,
                            CrossListed=CrossListed, Registration=Remaining,
                            Restrictions=Restrictions, Overall_Rating=Overall_Rating,
                            Prerequisites=Prerequisites, Corequisites=Corequisites,
@@ -329,7 +335,6 @@ def InstructorByDepartment(Department):
             ID_dict[ID] = 1
     Teachers = sorted(Teachers)
     Teachers_Sorted = Sort_dict(Teachers, False)
-    Best_Professors = bestProf(Options[3][Department])
     Best_Teachers, Best_Teachers_Sorted = bestProf(Options[3][Department])
     Easiest_Teachers, Easiest_Teachers_Sorted = easiestProf(Options[3][Department])
     Best_Classes, Best_Classes_Sorted = bestClass(Options[3][Department])
@@ -372,8 +377,17 @@ def Instructor(ProfessorName):
     Reviews = getProfReviews(Professors[last_name + first_name])
     OverallRatings = calculateProfRatings(Reviews)
 
-    ProfessorDescriptions = [review[2] for review in Reviews]
-    ReviewCount = len(Reviews)
+    Individual_Reviews = [list(review) for review in Reviews if review[2] != '']
+
+    Semester_formatting = { value:key for key,value in Options[0].items()}
+    month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
+    for i in xrange(len(Individual_Reviews)):
+        date = Individual_Reviews[i][11].split(" ")
+        formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
+        Individual_Reviews[i][11] = formatted_date
+    
+
+
 
     workload = OverallRatings[3]
     if type(workload) == float:
@@ -393,10 +407,10 @@ def Instructor(ProfessorName):
         accessibility = round(accessibility, 2)
 
     ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html', Courses=RevisedCoursesTaught,
-                           ProfessorDescriptions=ProfessorDescriptions, ProfessorName=ProfessorName,
-                           ProfReviews=ProfReviews, workload=workload, grading=grading, quality=quality,
-                           accessibility=accessibility, ReviewCount=ReviewCount)
+    return render_template('instructor_info.html', Individual_Reviews = Individual_Reviews,Courses=RevisedCoursesTaught,
+                           ProfessorName=ProfessorName,
+                            workload=workload, grading=grading, quality=quality,
+                           accessibility=accessibility)
 
 @app.route('/BestClassesFor/', methods=['GET', 'POST'])
 def BestClassesFor(page=1):

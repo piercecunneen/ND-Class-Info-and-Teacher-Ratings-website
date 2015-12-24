@@ -189,7 +189,9 @@ def bestProf(department):
             # change to add only names
             profs.append(prof)
     professors = GetAllProfessors()
-    interest_index = 5
+    workload_index = 3
+    grading_index = 4
+    quality_index = 5
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
     num_profs = len(profs)
@@ -201,7 +203,9 @@ def bestProf(department):
         # need to get prof ID
         id = professors[profName]
         profRatingList = calculateProfRatings(getProfReviews(id))
-        profRating = profRatingList[interest_index]
+
+        # Average of workload, grading, and quality
+        profRating = round((profRatingList[workload_index] + profRatingList[grading_index] + profRatingList[quality_index]) / 3.0,2)
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
    
@@ -218,6 +222,7 @@ def easiestProf(department):
             profs.append(prof)
     
     workload_index = 3
+    grading_index = 4
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
     num_profs = len(profs)
@@ -229,7 +234,9 @@ def easiestProf(department):
         profName = profLast +  profFirst
         id = professors[profName]
         profRatingList = calculateProfRatings(getProfReviews(id))
-        profRating = profRatingList[workload_index]
+
+        # Average of workload and grading
+        profRating = round((profRatingList[workload_index] + profRatingList[grading_index])/2.0,2)
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
    
@@ -242,7 +249,12 @@ def bestClass(department):
     courses = list(courses)
     crn_index = 6
     date_index = 7
-    rating_index = 4
+    
+    toughness_index = 4
+    interest_index = 5
+
+
+
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
     num_courses = len(courses)
@@ -251,7 +263,8 @@ def bestClass(department):
         courseName = courses[j]
         courseRatingList = calculateClassRatings(getClassReviews("",str(courseName)))
 
-        courseRating = [courseRatingList[rating_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
+        # Best determiend by average of toughess and interest
+        courseRating = [round((courseRatingList[toughness_index] + courseRatingList[interest_index])/2.0,2), int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating 
     courseDictSorted = Sort_dict(courseDict, 1)
    
@@ -263,7 +276,7 @@ def easiestClass(department):
     courses = list(courses)
     crn_index = 6
     date_index = 7
-    workload_index = 4
+    toughness_index = 4
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
     num_courses = len(courses)
@@ -271,7 +284,7 @@ def easiestClass(department):
     for j in range(0, num_courses):
         courseName = courses[j]
         courseRatingList = calculateClassRatings(getClassReviews("", str(courseName)))
-        courseRating = [courseRatingList[workload_index], int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
+        courseRating = [round(courseRatingList[toughness_index],2), int(courseRatingList[crn_index]), int(courseRatingList[date_index])]
         courseDict[courseName] = courseRating
     courseDictSorted = Sort_dict(courseDict, 1)
    

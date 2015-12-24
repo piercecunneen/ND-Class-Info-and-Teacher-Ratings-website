@@ -4,4 +4,11 @@
 
 <h1 align="middle"> Message Board </h1>
 
+<div id="posts" class="collection">
+    {% for post in all_posts %}
+		<p>{{post}}</p>
+		<br>
+	{% endfor %}
+</div>
+
 {% endblock %}

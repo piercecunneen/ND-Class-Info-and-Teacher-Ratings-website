@@ -20,9 +20,6 @@ Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
 
 
-
-
-
 def is_logged_in(id):
     user = load_User(id)
     if user != None:
@@ -51,7 +48,6 @@ def register():
         if not Response:
             error = Message
         else:
-            
             return redirect(url_for('home'))
 
     return render_template('UserRegistration.html', error=error)
@@ -66,8 +62,10 @@ def login():
         else:
             session.permanent = True
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
+        user_info = request.form["username"]
+        email = isEmail(user_info)
 
-        Response, Message = validate_user(request.form["username"], request.form["password"], request.form["email"])
+        Response, Message = validate_user(request.form["username"], request.form["password"], email)
         if not Response:
             error = Message
         else:
@@ -75,6 +73,12 @@ def login():
             session['username'] = user.id
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
+
+def isEmail(email):
+    for character in email:
+        if character == '@':
+            return True
+    return False
 
 @app.route('/')
 def home():
@@ -488,5 +492,5 @@ def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
 if __name__ == '__main__':
-    #app.run(debug=True)
-    app.run(host='0.0.0.0', port=8000)
+    app.run(debug=True)
+    #app.run(host='0.0.0.0', port=8000)

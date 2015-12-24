@@ -13,7 +13,12 @@ def create_user(username, password, email):
     """
     # check for nd.edu email
     address = email[-6:-1] + email[len(email) - 1]
-    print address
+    # validate legality of username
+    for letter in username:
+        print letter
+        if (not isLegal(letter)):
+            return False, "Please only include letters, numbers, and underscores in your username" 
+        print letter
     if address == "nd.edu":
         # check for existence of username already
 
@@ -49,7 +54,7 @@ def change_password(username, password):
                "' where username = '" + str(username) + "'")
         c.execute(sql)
 
-def validate_user(username, password, email):
+def validate_user(userinfo, password, email):
     """
     Attempts to verify a user login
 
@@ -57,17 +62,43 @@ def validate_user(username, password, email):
     @email and @password exist in user database.
     False otherwise.
     """
-    conn = sqlite3.connect(db_path)
-    with conn:
-        c = conn.cursor()
-        sql = "select * from userInfo where email = " + "'" + email + "'"
-        c.execute(sql)
-        user = c.fetchone()
+    if email: # then validate user via email
+        conn = sqlite3.connect(db_path)
+        with conn:
+            c = conn.cursor()
+            sql = "select * from userInfo where email = " + "'" + userinfo + "'"
+            c.execute(sql)
+            user = c.fetchone()
 
-    if user is None:
-        return False, "User not found"
+        if user is None:
+            return False, "User not found"
 
-    if pbkdf2_sha256.verify(password, user[1]):
-        return True, "Login Successful"
-    else:
-        return False, "Incorrect password"
+        if pbkdf2_sha256.verify(password, user[1]):
+            return True, "Login Successful"
+        else:
+            return False, "Incorrect password"
+
+    else: # then validate user via username
+        conn = sqlite3.connect(db_path)
+        with conn:
+            c = conn.cursor()
+            sql = "select * from userInfo where username = " + "'" + userinfo + "'"
+            c.execute(sql)
+            user = c.fetchone()
+
+        if user is None:
+            return False, "User not found"
+
+        if pbkdf2_sha256.verify(password, user[1]):
+            return True, "Login Successful"
+        else:
+            return False, "Incorrect password"
+
+def isLegal(letter):
+    """
+    checks to see if letter is a letter, number or  underscore
+    """
+    letter = ord(letter)
+    if (48 <= letter >= 57) or (65 <= letter <= 90) or (97 <= letter <= 122) or (letter == 95):
+        return True
+    return False

@@ -29,8 +29,20 @@
 				<div class="collapsible-header active"><i class="material-icons">add</i>Course Reviews</div>
       				<div class="collapsible-body">
 					<ul class="collection">
-					{% for i in CourseTextReviews %}
-						<li class="collection-item">{{i}}</li>
+					{% for review in Individual_Reviews %}
+						<li class="collection-item">
+							<table>
+								<tr>
+									<td> Toughness: {{review[4]}} </td>
+									<td> Interest: {{review[5]}}  </td>
+									<td> Date: {{review[12]}} </td>
+									<td> Semester: {{review[9]}} </td>
+ 							 	</tr>
+								<tr>
+									{{review[3]}} 
+								</tr>
+							</table>
+						</li>
 					{% endfor %}
 					</ul>
 				</div>

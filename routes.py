@@ -85,7 +85,15 @@ def isEmail(email):
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+
+    Featured_prof = get_random_prof()
+    prof_name = Featured_prof[1] + " " + Featured_prof[0].replace(',', '')
+    workload_rating = Featured_prof[3]
+    grading_rating = Featured_prof[4]
+    quality_rating = Featured_prof[5]
+    accessibility_rating = Featured_prof[6]
+    return render_template('home.html', prof_name = prof_name, workload_rating = workload_rating,
+    grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating)
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
 def QuickSearch(ATTR):

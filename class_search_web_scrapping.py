@@ -308,6 +308,8 @@ def GetClassDescriptionAndAll(CRN, Term):
         return [Course_Description, 'Neither', AttributeText, Restrictions, Registration, CrossListed, Department, Course_Num, section]
 
 
+
+
 def Sort_dict(data, isTerms):
     """ Takes the keys in a dictionary, sorts them by their corresponding value, and then puts
     the keys in an ordered list. For the Terms, want highest numbers first, so need to reverse the keys list"""
@@ -393,10 +395,16 @@ def GetCoursesTaught(Prof_ID):
         url_data = str(course.find_all('a')[0]).split("'")[1].split('P=')[0].replace('&amp;', '')
         url_data = url_data.split('CRN=')[1].split('TERM=')
         CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
-    for i in CoursesTaught:
-             i[2] = i[2].replace('/', ' and ')
+    for course in CoursesTaught:
+            course[2] = course[2].replace('/', ' and ')
+            temp = []
+            for letter in course[0]:
+                if letter.isdigit():
+                    break
+                else:
+                    temp.append(letter)
+            course.append(''.join(temp))
     return CoursesTaught
-
 def Professors_No_Repeats():
     f = open('TeacherList.txt', 'r')
     Professors = {}

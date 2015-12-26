@@ -314,5 +314,6 @@ def get_random_prof():
         Prof_reviews = getProfReviews(prof_id)
         Prof_ratings = calculateProfRatings(Prof_reviews)
         return Prof_ratings
+    
 
 

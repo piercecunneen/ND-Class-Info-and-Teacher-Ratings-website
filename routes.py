@@ -95,7 +95,6 @@ def isEmail(email):
 
 @app.route('/')
 def home():
-    print session.get('username')
     Featured_prof = get_random_prof()
     prof_name = Featured_prof[1] + " " + Featured_prof[0].replace(',', '')
     workload_rating = Featured_prof[3]
@@ -459,9 +458,10 @@ def BestClassesFor(page=1):
 def ProfessorReview(ProfessorName):
     if request.method == 'POST':
         # Instructor evaluation
-        CourseName = ' '.join(request.form['CoursesTaughtID'].split(' ')[:-2])
-        CRN = ''.join(request.form['CoursesTaughtID'].split(' ')[-2])
-        Term = ''.join(request.form['CoursesTaughtID'].split(' ')[-1])
+        CourseName = ' '.join(request.form['CoursesTaughtID'].split(' ')[:-3])
+        CRN = ''.join(request.form['CoursesTaughtID'].split(' ')[-3])
+        Term = ''.join(request.form['CoursesTaughtID'].split(' ')[-2])
+        department = [request.form['CoursesTaughtID'].split(' ')[-1]]
         Grading = int(request.form['GradingID'])
         Quality = int(request.form['QualityID'])
         Workload = int(request.form['WorkloadID'])
@@ -478,9 +478,6 @@ def ProfessorReview(ProfessorName):
         last_name = str(ProfessorName.split(',')[0]) + ','
         first_name = str(ProfessorName.split(',')[1])
 
-        department = ProfDepartments.get(Professors.get(ProfessorName))
-        if not department:
-            department = "Unknown"
 
         date = datetime.datetime.now()
         date_string = str(date.year) + " " + str(date.month) + " " + str(date.day)

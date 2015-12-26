@@ -48,6 +48,16 @@ def register():
         if not Response:
             error = Message
         else:
+            session.permanent = True
+            app.permanent_session_lifetime = datetime.timedelta(minutes=120)
+            user_info = request.form["username"]
+            email = isEmail(user_info)
+            if email:
+                user = load_User(request.form["username"], True)
+            else:
+                user = load_User(request.form['username'], False)
+            session['username'] = user.id
+
             return redirect(url_for('home'))
 
     return render_template('UserRegistration.html', error=error)
@@ -85,7 +95,7 @@ def isEmail(email):
 
 @app.route('/')
 def home():
-
+    print session.get('username')
     Featured_prof = get_random_prof()
     prof_name = Featured_prof[1] + " " + Featured_prof[0].replace(',', '')
     workload_rating = Featured_prof[3]

@@ -1,8 +1,20 @@
-# ND-Class-Info-and-Teacher-Ratings-website
-Website that will allow for students at Notre Dame to look up classes information as well as view and submit ratings for both teachers and courses
+# ND Reviews
+Website that allows for students at Notre Dame to look up classes information as well as view and submit ratings for both teachers and courses. 
 
-Requirements to run while still pre-release: python 2.7.6 (recommended is downloading Enthought Canopy 2.7.6 and making that your default), requests (python library), beautifulsoup4 (python library), lxml, passlib, flask-login. 
+Can be found at www.ndreviews.com
 
-To run locally, be sure to have all dependencies necessary for project on your path, pip install whatever is not currently available, navigate to project directory, and execute “python routes.py”. In browser go to http://localhost:8000/
+Features include:
+  1) View course information
+  2) View professor information
+  3) View/add professor reviews
+  4) View/add class reviews
+
+
+Features to come:
+  1) Message board for students to discuss classes
+  2) Ability for students looking to buy/sell textbooks to find other students via our site
+      2a) We may later expand to include more than just textbooks (futons, couches, fridges, etc)
+  3) Voting on reviews
+      3a) We plan to add a weighting system for reviews that favors users that input well liked reviews as voted on by the community
 
 

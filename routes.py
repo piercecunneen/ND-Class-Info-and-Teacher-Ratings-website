@@ -102,7 +102,10 @@ def home():
     quality_rating = Featured_prof[5]
     accessibility_rating = Featured_prof[6]
     review_count = count_reviews()
-    return render_template('home.html', prof_name = prof_name, workload_rating = workload_rating,
+    print prof_name
+    last_name = prof_name.split(" ")[-1] + ', '
+    first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
+    return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
     grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
@@ -507,7 +510,8 @@ def ProfessorReview(ProfessorName):
                 RevisedCoursesTaught.append(CoursesTaught[i])
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
-    return render_template('ProfessorReviewForm.html', ProfessorName=ProfessorName, CoursesTaught=RevisedCoursesTaught)
+
+    return render_template('ProfessorReviewForm.html' ,ProfessorName=ProfessorName, CoursesTaught=RevisedCoursesTaught)
 
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():
@@ -525,6 +529,12 @@ def feature_work():
 @app.route('/message_board/')
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
+
+
+
+@app.route('/Chandelier')
+def Henry_Long():
+    return render_template('Chandelier.html')
 
 if __name__ == '__main__':
     app.run(debug = True,host='0.0.0.0', port=8000)

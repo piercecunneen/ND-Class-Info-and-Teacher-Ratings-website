@@ -293,9 +293,7 @@ def easiestClass(department):
 def getPosts():
     conn = lite.connect(database)
     with conn:
-        c = c
-
-        onn.cursor()
+        c = conn.cursor()
         query = "SELECT * FROM posts"
         c.execute(query)
         posts = c.fetchall()
@@ -314,6 +312,18 @@ def get_random_prof():
         Prof_reviews = getProfReviews(prof_id)
         Prof_ratings = calculateProfRatings(Prof_reviews)
         return Prof_ratings
+
+def count_reviews():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = 'SELECT COUNT(*) from profReview'
+        c.execute(query)
+        a = c.fetchone()
+        query = 'SELECT COUNT(*) from classReview'
+        c.execute(query)
+        b = c.fetchone()
+    return a[0] + b[0]
     
 
 

@@ -171,8 +171,6 @@ def calculateClassRatings(classReviews):
         # get number of different courses then run calculateClassRatings() for each different course title
         course_title_list = [] #* len(classReviews[0])
         for i in range(0,len(classReviews[0]) + 1):
-            print classReviews
-            print classReviews[0][i][2]
             title = classReviews[0][i][2]
             if title not in course_title_list:
                 course_title_list.append(title)
@@ -183,12 +181,15 @@ def calculateClassRatings(classReviews):
     
 def bestProf(department):
     profList = getDepartmentReviews(department)
-    profs = []
-    for prof in profList:
-        if prof not in profs:
-            # change to add only names
-            profs.append(prof)
     professors = GetAllProfessors()
+    profs = []
+
+    profIDs = {}
+    for prof in profList:
+        if professors[prof[0] + prof[1]] not in profIDs:
+            profs.append(prof)
+            profIDs[professors[prof[0] + prof[1]]] = 1
+        
     workload_index = 3
     grading_index = 4
     quality_index = 5
@@ -250,8 +251,8 @@ def bestClass(department):
     crn_index = 6
     date_index = 7
     
-    toughness_index = 4
-    interest_index = 5
+    toughness_index = 3
+    interest_index = 4
 
 
 
@@ -276,7 +277,7 @@ def easiestClass(department):
     courses = list(courses)
     crn_index = 6
     date_index = 7
-    toughness_index = 4
+    toughness_index = 3
     # get each prof overall rating into dictionary, with key being the name
     courseDict = {}
     num_courses = len(courses)

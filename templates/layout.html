@@ -11,20 +11,20 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
-	<body>
-    <div class = "navbar-fixed">
+	<body >
+    <div class = "navbar-fixed" >
 	<nav class="blue lighten-2">
 		<div class="nav-wrapper">
-		    <a href="/" class="brand-logo ">ND Reviews</a>
-			<a href="#" data-activates="mobile-nav" class="button-collapse"><i class="material-icons">menu</i></a>
-			<ul class="right hide-on-med-and-down">
+		    <a href="/" class="brand-logo left">ND Reviews</a> 
+			<a href="#" data-activates="mobile-nav" class="right button-collapse"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down" style = "padding-left: 15%;" >
 			    <li><a href = "http://www.ndclassalert.com">ND Class Alert</a></li>
 				<li><a href = "/login">Login</a></li>
 				<li><a href="/SubmitReviewMain">View/Submit Reviews</a></li>
 				<li><a href="/class_search/">Search Classes</a></li>
 				<li><a href="/DepartmentsMain/">Departments</a></li>
 				<li><a href="/feature_work/">Message Board</a></li>
-				<li>
+				<li style = "width :15%;">
 					<form id="searchForm">
 						<div class="input-field">
 							<input id="search" type="search" required>
@@ -34,33 +34,25 @@
 					</form>
 				</li>
 			</ul>
-			<ul class="side-nav" id="mobile-nav">
+			<ul class="side-nav blue lighten-3 " id="mobile-nav">
                 <li><a href = "http://www.ndclassalert.com">ND Class Alert</a></li>
 				<li><a href = "/login">Login</a></li>
 				<li><a href="/SubmitReviewMain">View/Submit Reviews</a></li>
 				<li><a href="/class_search/">Search Classes</a></li>
 				<li><a href="/DepartmentsMain/">Departments</a></li>
 				<li><a href="/feature_work/">Message Board</a></li>
-				<li>
-					<form id="searchForm">
-						<div class="input-field">
-							<input id="search" type="search" required>
-							<label for="search"><i class="material-icons">search</i></label>
-							<i class="material-icons">close</i>
-						</div>
-					</form>
-				</li>
             </ul>
+		</div>
+		<div id="SearchResults" class="row">
+		<ul class="collection col s4 offset-s8" id="ResultList" style="display:None;">
+		</ul>
 		</div>
 	</nav>
 	</div>
-	<div id="SearchResults" class="row">
-		<ul class="collection col s4 offset-s8" id="ResultList" style="display:None;">
-		</ul>
-	</div>
+	
 
-	<div class="container">
-		<div class="padded">
+	<div style = "padding: 5%">
+		<div >
 			{% block content%}
 			{% endblock %}
 		</div>

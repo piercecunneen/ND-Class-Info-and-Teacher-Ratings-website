@@ -253,8 +253,8 @@ def DisplayClassPage(Class, CRN, Term):
         interest = round(interest, 2)
     if type(Textbook) == float:
         Textbook = round(Textbook, 2)
-    Prerequisites = ''
-    Corequisites = ''
+    Prerequisites = 'None listed'
+    Corequisites = 'None listed'
     if Descriptions[1] == "Corequisite Only":
         Corequisites = Descriptions[2]
         Attributes = Descriptions[3]
@@ -353,6 +353,7 @@ def InstructorByDepartment(Department):
         if department and  Department_Name in department and ID not in ID_dict:
             Teachers.append(prof)
             ID_dict[ID] = 1
+
     Teachers = sorted(Teachers)
     Teachers_Sorted = Sort_dict(Teachers, False)
     Best_Teachers, Best_Teachers_Sorted = bestProf(Options[3][Department])
@@ -398,6 +399,7 @@ def Instructor(ProfessorName):
     OverallRatings = calculateProfRatings(Reviews)
 
     Individual_Reviews = [list(review) for review in Reviews if review[2] != '']
+
 
     Semester_formatting = { value:key for key,value in Options[0].items()}
     month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}

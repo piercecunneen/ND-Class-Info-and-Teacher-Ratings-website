@@ -3,7 +3,7 @@
 
 <div class="row">
 	<form class="col s12 row" id="ClassSearchForm" method="post">
-		<div class="col s6">
+		<div class="col s5">
 			<label>Term</label>
 			<select class="browser-default" id="TermOptions" name="TermOptions">
 				{% for key in TermOptionKeys %}
@@ -13,7 +13,7 @@
 
 			</select>
 		</div>
-		<div class="col s6">
+		<div class="col s5">
 			<label>Division</label>
 			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
 				{% for key in DivisionOptionKeys %}
@@ -21,7 +21,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s6">
+		<div class="col s5">
 			<label>Campus</label>
 			<select class="browser-default" id="CampusOptions" name="CampusOptions">
 				{% for key in CampusOptionKeys %}
@@ -29,7 +29,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s6">
+		<div class="col s5">
 			<label>Subject</label>
 			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
 				{% for key in SubjectOptionKeys %}
@@ -37,7 +37,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s6">
+		<div class="col s5">
 			<label>Attribute</label>
 			<select class="browser-default" id="AttributeOptions" name="AttributeOptions">
 				{% for key in AttributeOptionKeys %}
@@ -45,7 +45,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s6">
+		<div class="col s5">
 			<label>Credits</label>
 			<select class="browser-default" id="CreditsOptions" name="CreditsOptions">
 				{% for key in CreditsOptionKeys %}
@@ -55,7 +55,7 @@
 		</div>
 		<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Search Classes"></input>
 	</form>
-	<div class="col s6">
+	<div class="col s5">
 			<label>Quick Search for University Requirements</label>
 			<select class="browser-default" id="QuickSearch" name="QuickSearch">
 				{% for key in ['2nd Theology', '2nd Philosophy', 'Social Science',  'Natural Science (req)', 'Fine Arts', 'Literature', 'History', "Sophomore Business Courses", "Junior Business Courses"] %}

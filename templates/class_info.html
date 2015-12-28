@@ -95,6 +95,7 @@
 							Title: {{ Textbooks[i]["title"] }} <br>
 							Author: {{ Textbooks[i]["author"] }}<br>
 							ISBN: {{ Textbooks[i]["isbn"] }} <br> 
+							<a href ="http://www.amazon.com/gp/search/ref=sr_adv_b/?search-alias=stripbooks&unfiltered=1&field-keywords=&field-author=&field-title=&field-isbn={{Textbooks[i]['isbn'] }}&field-publisher=&node=&field-p_n_condition-type=&p_n_feature_browse-bin=&field-subject=&field-language=&field-dateop=During&field-datemod=&field-dateyear=&sort=relevanceexprank&Adv-Srch-Books-Submit.x=47&Adv-Srch-Books-Submit.y=1" target = "_blank"> Find textbook on Amazon </a><br>
 							{% if i < num_required %} 
 								<br>Required <br>
 							{% else %}
@@ -140,5 +141,6 @@
 		</ul>
 	</div>
 </div>
+
 
 {% endblock %}

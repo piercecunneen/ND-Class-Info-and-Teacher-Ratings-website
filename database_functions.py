@@ -293,9 +293,7 @@ def easiestClass(department):
 def getPosts():
     conn = lite.connect(database)
     with conn:
-        c = c
-
-        onn.cursor()
+        c = conn.cursor()
         query = "SELECT * FROM posts"
         c.execute(query)
         posts = c.fetchall()

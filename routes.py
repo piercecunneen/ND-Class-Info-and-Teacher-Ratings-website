@@ -101,8 +101,9 @@ def home():
     grading_rating = Featured_prof[4]
     quality_rating = Featured_prof[5]
     accessibility_rating = Featured_prof[6]
+    review_count = count_reviews()
     return render_template('home.html', prof_name = prof_name, workload_rating = workload_rating,
-    grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating)
+    grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
 def QuickSearch(ATTR):

@@ -293,10 +293,27 @@ def easiestClass(department):
 def getPosts():
     conn = lite.connect(database)
     with conn:
-        c = conn.cursor()
+        c = c
+
+        onn.cursor()
         query = "SELECT * FROM posts"
         c.execute(query)
         posts = c.fetchall()
     return posts
     
+
+
+def get_random_prof():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = 'SELECT * FROM profReview ORDER BY RANDOM() LIMIT 1'
+        c.execute(query)
+        random_prof = c.fetchall()[0]
+        prof_id = random_prof[9]
+        Prof_reviews = getProfReviews(prof_id)
+        Prof_ratings = calculateProfRatings(Prof_reviews)
+        return Prof_ratings
+    
+
 

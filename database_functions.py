@@ -63,7 +63,7 @@ def getDepartmentReviews(department):
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()
-        query = 'SELECT * FROM profReview WHERE Department LIKE "%' + department + '%"'
+        query = 'SELECT * FROM profReview WHERE Department = "' + department + '"'
         c.execute(query)
         profReviews = c.fetchall()
         return profReviews    
@@ -74,7 +74,7 @@ def getClassReviews(department, title):
         conn = lite.connect(database)
         with conn:
             c = conn.cursor()
-            query = 'SELECT * FROM classReview WHERE Department LIKE "%' + department + '%"'
+            query = 'SELECT * FROM classReview WHERE Department = "' + department + '"'
             c.execute(query)
             classList = c.fetchall()
             return [classList, "department"]
@@ -206,7 +206,7 @@ def bestProf(department):
         profRatingList = calculateProfRatings(getProfReviews(id))
 
         # Average of workload, grading, and quality
-        profRating = round((profRatingList[workload_index] + profRatingList[grading_index] + profRatingList[quality_index]) / 3.0,2)
+        profRating = round(profRatingList[quality_index]),2)
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
    

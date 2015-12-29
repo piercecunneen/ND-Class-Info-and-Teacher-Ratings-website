@@ -50,6 +50,9 @@
 									<td> Quality: {{review[5]}}  </td>
 									<td> Accessibility: {{review[6]}}  </td>
 									<td> Date: {{review[11]}} </td>
+									{% if review[12] %}
+										<td> Course: {{review[12]}} </td>
+									{% endif %}
  							 	</tr>
 								<tr>
 									{{review[2]}} 

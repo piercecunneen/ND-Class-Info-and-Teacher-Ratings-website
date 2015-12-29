@@ -11,15 +11,14 @@
  <div class="col s6">
     <div class="card teal lighten-3">
         <div class="card-content white-text">
-            <span class="card-title">Featured Professor:  {{prof_name}} </span>
+            <span class="card-title" <a onclick="location.href='/instructor_info/{{last_name + first_name}}'"></a>Featured Professor: {{prof_name}} </span>
                 <p> workload: {{workload_rating}} </p>
                 <p> grading: {{grading_rating}} </p>
                 <p> quality: {{quality_rating}} </p>
                 <p> accessibility: {{accessibility_rating}} </p> <br>
                 <table>
                   <tr> 
-                   <a class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </a> 
-                    
+                   <a class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </a>   
                   </tr>
                 </table>
         </div>

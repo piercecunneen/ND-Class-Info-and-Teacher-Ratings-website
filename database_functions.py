@@ -217,18 +217,18 @@ def easiestProf(department):
     #return a
     profList = getDepartmentReviews(department)
     profs = []
+    profIDs = {}
+    professors = GetAllProfessors()
     for prof in profList:
-        if prof not in profs:
-            # change to add only names
+        if professors[prof[0] + prof[1]] not in profIDs:
             profs.append(prof)
-    
+            profIDs[professors[prof[0] + prof[1]]] = 1
     workload_index = 3
     grading_index = 4
     # get each prof overall rating into dictionary, with key being the name
     profDict = {}
     num_profs = len(profs)
     profRating = [] * num_profs
-    professors = GetAllProfessors()
     for j in range(0, num_profs):
         profFirst = profs[j][1]
         profLast = profs[j][0]

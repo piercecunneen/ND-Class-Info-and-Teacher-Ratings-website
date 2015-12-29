@@ -99,6 +99,6 @@ def isLegal(letter):
     checks to see if letter is a letter, number or  underscore
     """
     letter = ord(letter)
-    if (48 <= letter >= 57) or (65 <= letter <= 90) or (97 <= letter <= 122) or (letter == 95):
+    if (48 <= letter <= 57) or (65 <= letter <= 90) or (97 <= letter <= 122) or (letter == 95):
         return True
     return False

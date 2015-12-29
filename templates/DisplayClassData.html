@@ -13,7 +13,7 @@
 
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s5 ">
 			<label>Division</label>
 			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
 				{% for key in DivisionOptionKeys %}
@@ -67,7 +67,7 @@
 <div class = "row">
 	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
 </div>
-<table border="1" class="responsive-table ClassData striped centered">
+<table border="1" class="table ClassData striped centered">
 	<thead>
         	<tr>
 			{% for key in Keys %}
@@ -104,5 +104,6 @@
 	{% endfor %}
 	</tbody>
 </table>
+
 </form>
 {% endblock %}

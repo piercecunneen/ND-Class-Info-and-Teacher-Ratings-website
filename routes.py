@@ -135,9 +135,23 @@ def Search(query):
             unicode_profs[prof_name] = '/instructor_info/' + prof_name
     return jsonify(unicode_profs)
 
+
+@app.route('/Department-search/<query>/', methods = ["POST"])
+def Department_Search(query):
+    print "testing 123"
+    print query
+    unicode_subjects = {}
+    for subject_key, subject_value in Options[3].items():
+        subject_key = unicode(subj, "utf-8")
+        if query.lower() in subject_key.lower():
+            unicode_subjects[subject_key] = subject_value
+    print unicode_subjects
+    return jsonify(unicode_subjects)
+
 @app.route('/class_search/', methods=['GET', 'POST'])
 def ClassSearch():
     if request.method == 'POST':
+        print "hello"
         Term = request.form['TermOptions']
         Subject = request.form.getlist('SubjectOptions')
         Credit = request.form['CreditsOptions']
@@ -374,7 +388,10 @@ def InstructorByDepartment(Department):
     for option in DepartmentOptions:
         if DepartmentOptions[option] == Department:
             Department = option
-    return render_template('Department.html', Teachers_Sorted=Teachers_Sorted,
+
+    number_of_courses = len(Easiest_Classes_Sorted)
+    number_of_teachers = len(Best_Teachers_Sorted)
+    return render_template('Department.html', number_of_teachers = number_of_teachers, number_of_courses = number_of_courses, Teachers_Sorted=Teachers_Sorted,
                            Best_Teachers_Sorted=Best_Teachers_Sorted, Best_Teachers=Best_Teachers,
                            Easiest_Teachers=Easiest_Teachers, Easiest_Teachers_Sorted=Easiest_Teachers_Sorted,
                            Department=Department, Teachers=Teachers, Best_Classes=Best_Classes,
@@ -403,6 +420,18 @@ def Instructor(ProfessorName):
     OverallRatings = calculateProfRatings(Reviews)
 
     Individual_Reviews = [list(review) for review in Reviews if review[2] != '']
+
+    review_courses = []
+    for review in Individual_Reviews:
+        course_name = ''
+        description = review[2].split("Course:::")
+        if len(description) > 1:
+            course_name = description[-1]
+            description = description[0]
+        else:
+            description = review[2]
+        review.append(course_name)
+        review[2] = description
 
 
     Semester_formatting = { value:key for key,value in Options[0].items()}
@@ -473,7 +502,9 @@ def ProfessorReview(ProfessorName):
         Workload = int(request.form['WorkloadID'])
         Accessibility = request.form['AccessibilityID']
         Syllabus = int(request.form['SyllabusID'])
-        OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor'])
+        OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor']) + "Course:::" + str(CourseName) 
+
+
         # Course Evaluation
         CourseToughness = int(request.form['ToughnessID'])
         CourseInterest = int(request.form['InterestID'])
@@ -530,6 +561,20 @@ def feature_work():
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
+
+@app.route('/Textbooks')
+def textbook_board():
+    return render_template('TextBooksBoard.html')
+
+@app.route('/Textbooks/NewTextbook', methods = ["GET", "POST"])
+def add_Textbook():
+    DepartmentsByCollege = GetSubjectsInDepartments()
+    Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
+
+    if request.method == "POST":
+        return render_template('Add_Textbook_Form.html', DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
+    else:
+        return render_template('Add_Textbook_Form.html',  DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
 
 
 @app.route('/Chandelier')

@@ -4,18 +4,24 @@
     <h2>Welcome to the ND Student Site<h2>
     <h5> <i> Search for Classes </h5>
     <h5> View Course and Professor Reviews</h5>
-    <h5> Submit Reviews for others to view </i></h5>
+    <h5> Submit Reviews for others to view  </h5>
+    <h5> Use ND Class Alert to receive a text alert when a spot opens up in a full class</i></h5>
   </div> <br><br>
 <div class = "row">
  <div class="col s6">
     <div class="card teal lighten-3">
         <div class="card-content white-text">
-            <span class="card-title">Featured Professor: {{prof_name}}</span>
+            <span class="card-title">Featured Professor:  {{prof_name}} </span>
                 <p> workload: {{workload_rating}} </p>
                 <p> grading: {{grading_rating}} </p>
                 <p> quality: {{quality_rating}} </p>
                 <p> accessibility: {{accessibility_rating}} </p> <br>
-             <button class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </button>
+                <table>
+                  <tr> 
+                   <a class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </a> 
+                    
+                  </tr>
+                </table>
         </div>
     </div>
 </div>
@@ -25,6 +31,7 @@
               <span class="card-title">Reviews on NDreviews.com</span>
               <p>Total number of reviews on ndreviews.com: {{review_count}} </p> <br>
               <button class="btn waves-effect blue lighten-2 " onclick="location.href='/SubmitReviewMain'"> Add Your Own Review! </button>
+
               </div>
             </div>
           </div>

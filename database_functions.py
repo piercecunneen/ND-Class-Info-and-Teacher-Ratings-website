@@ -206,7 +206,7 @@ def bestProf(department):
         profRatingList = calculateProfRatings(getProfReviews(id))
 
         # Average of workload, grading, and quality
-        profRating = round(profRatingList[quality_index]),2)
+        profRating = round(profRatingList[quality_index],2)
         profDict[profName] = profRating
     profDictSorted = Sort_dict(profDict, 1)
    

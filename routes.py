@@ -3,6 +3,9 @@ from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import * 
+from TextbookDB import *
+from textbookemail import *
+
 from password import create_user, validate_user
 import requests
 import datetime
@@ -93,12 +96,11 @@ def isEmail(email):
 def home():
     Featured_prof = get_random_prof()
     prof_name = Featured_prof[1] + " " + Featured_prof[0].replace(',', '')
-    workload_rating = Featured_prof[3]
-    grading_rating = Featured_prof[4]
-    quality_rating = Featured_prof[5]
-    accessibility_rating = Featured_prof[6]
+    workload_rating = round(float(Featured_prof[3]),2)
+    grading_rating = round(float(Featured_prof[4]),2)
+    quality_rating = round(float(Featured_prof[5]),2)
+    accessibility_rating = round(float(Featured_prof[6]),2)
     review_count = count_reviews()
-    print prof_name
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
     return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
@@ -134,20 +136,16 @@ def Search(query):
 
 @app.route('/Department-search/<query>/', methods = ["POST"])
 def Department_Search(query):
-    print "testing 123"
-    print query
     unicode_subjects = {}
     for subject_key, subject_value in Options[3].items():
         subject_key = unicode(subj, "utf-8")
         if query.lower() in subject_key.lower():
             unicode_subjects[subject_key] = subject_value
-    print unicode_subjects
     return jsonify(unicode_subjects)
 
 @app.route('/class_search/', methods=['GET', 'POST'])
 def ClassSearch():
     if request.method == 'POST':
-        print "hello"
         Term = request.form['TermOptions']
         Subject = request.form.getlist('SubjectOptions')
         Credit = request.form['CreditsOptions']
@@ -562,20 +560,73 @@ def send_alert(number, crn):
     # TODO: Add row to database
     return str(number) + " " + str(crn)
 
-@app.route('/Textbooks')
+@app.route('/Textbooks/')
 def textbook_board():
-    return render_template('TextBooksBoard.html')
+    textbook_info = Get_Textbooks()
+    textbooks = []
+    for i in textbook_info:
+        new_textbook = {}
+        new_textbook['ID'] = i[0]
+        new_textbook['title'] = i[1]
+        new_textbook['email'] = i[2]
+        new_textbook['price'] = i[3]
+        new_textbook['description'] = i[4]
+        new_textbook['department'] = i[5]
+        new_textbook['course'] = i[6]
+        new_textbook['date'] = i[7]
+        textbooks.append(new_textbook)
+    return render_template('TextbooksBoard.html', textbooks = textbooks)
 
 @app.route('/Textbooks/NewTextbook', methods = ["GET", "POST"])
 def add_Textbook():
+
     DepartmentsByCollege = GetSubjectsInDepartments()
     Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
 
     if request.method == "POST":
-        return render_template('Add_Textbook_Form.html', DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
-    else:
-        return render_template('Add_Textbook_Form.html',  DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
+        seller = {}
+        seller['email'] = request.form['Email']
+        
+        department = request.form.getlist('DepartmentSelect')
+        if len(department) == 0:
+            department = "None chosen"
+        else:
+            department = department[0]
+        seller['textbook_department'] = department
+        seller['textbook_title'] = request.form['TextbookName']
+        seller['price'] = request.form['price']
+        seller['textbook_description'] = request.form['TextbookDescription']
+        seller['course'] = request.form['course']
+        Insert_Textbook(seller)
+        return redirect(url_for('textbook_board'))
 
+    else:
+        return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
+            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
+
+
+@app.route('/Textbooks/ID=<ID>', methods = ["GET", "POST"])
+def contact_seller(ID):
+    Textbook_info = Get_Textbook(ID)
+    textbook = {}
+    textbook['ID'] = Textbook_info[0]
+    textbook['title'] = Textbook_info[1]
+    textbook['email'] = Textbook_info[2]
+    textbook['price'] = Textbook_info[3]
+    textbook['description'] = Textbook_info[4]
+    textbook['department'] = Textbook_info[5]
+    textbook['course'] = Textbook_info[6]
+    textbook['date'] = Textbook_info[7]
+
+    if request.method == "POST":
+        seller = textbook
+        buyer = {}
+        buyer['name'] = request.form['name']
+        buyer['email'] = request.form['email']
+        buyer['message'] = request.form['message']
+        Send_Textbook_Email(buyer, seller)
+        return redirect(url_for('textbook_board'))
+    return render_template('Contact_seller.html', textbook = textbook)
 
 @app.route('/Chandelier')
 def Henry_Long():

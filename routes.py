@@ -22,7 +22,6 @@ Sorted_Profs_No_Repeats = Professors_No_Repeats()
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
 
-
 def is_logged_in(id):
     user = load_User(id)
     if user != None:
@@ -91,10 +90,7 @@ def login():
     return render_template('login.html', error=error)
 
 def isEmail(email):
-    for character in email:
-        if character == '@':
-            return True
-    return False
+    return bool('@' in email)
 
 @app.route('/')
 def home():
@@ -164,9 +160,6 @@ def ClassSearch():
                            SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
                            AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
                            CreditsOptionKeys=Sort_dict(Options[5], False), CreditsOptions=Options[5])
-
-
-
 
 @app.route('/instructor_eval/')
 def eval():

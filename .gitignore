@@ -8,3 +8,6 @@
 
 # Our database
 reviews.sqlite
+
+# Email script
+textbookemail.pyc

@@ -3,66 +3,16 @@
 {% block content %}
 <h3 align = "center"> Add Your Textbook to the message board!</h3>
 
-
-<form id="formID" method="post">
-  
-
-<div class="row">
-<div class = "col s9"> 
-	<div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s15"><a href="#college1">A&L</a></li>
-        <li class="tab col s15"><a href="#college2">EG</a></li>
-        <li class="tab col s15"><a href="#college3">SCI</a></li>
-        <li class="tab col s15"><a href="#college4">BUS</a></li> 
-        <li class="tab col s15"><a href="#college5">FY</a></li>
-        <li class="tab col s15"><a href="#college6">Law</a></li>
-        <li class="tab col s15"><a href="#college7">SM</a></li>
-        <li class="tab col s15"><a href="#college8">Other</a></li>
-      </ul>
-    </div>
-    <div id="college1" class="collection">
-    	{% for department in DepartmentsByCollege[0][1:] %}
-    		<li class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college2" class="collection">
-    	{% for department in DepartmentsByCollege[1][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college3" class="collection">
-    	{% for department in DepartmentsByCollege[2][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college4" class="collection">
-    	{% for department in DepartmentsByCollege[3][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college5" class="collection">
-    	{% for department in DepartmentsByCollege[4][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college6" class="collection">
-    	{% for department in DepartmentsByCollege[5][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college7" class="collection">
-    	{% for department in DepartmentsByCollege[6][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
-    <div id="college8" class="collection">
-    	{% for department in DepartmentsByCollege[7][1:] %}
-    		<a href = "/Department/{{department}}" class="collection-item"> {{department}} </a>
-    	{% endfor %}
-    </div>
+<form  id="TextbookSubmit" method="post">
+<div class = "row">
+<label>Select the department that your textbook falls under</label>
+  <select required class="browser-default" id="DepartmentSelect" name="DepartmentSelect">
+    <option value="" disabled selected>Choose your option</option>
+    {% for key in SubjectOptionKeys %}
+        <option value = "{{SubjectOptions[key]}}"> {{key}} </option>
+    {% endfor %}
+  </select>
 </div>
-
 
 <div class = "col s3"> 
 		<div class="input-field col s12">
@@ -73,21 +23,21 @@
 <div class = "col s3"> 
 
 		<div class="input-field col s12">
-				<textarea id="TextbookPrice" name="TextbookPrice" class="materialize-textarea"></textarea>
-				<label for="TextbookPrice">Textbook Price (Include only numbers, no decimal point or dollar sign </label>
+				<textarea id="price" name="price" class="materialize-textarea"></textarea>
+				<label for="price">Textbook Price (Include only numbers, no decimal point or dollar sign </label>
 		</div>
 
 </div> 
 <div class = "col s3"> 
 		<div class="input-field col s12">
-				<textarea id="CourseFor" name="CourseFor" class="materialize-textarea"></textarea>
-				<label for="CourseFor">What Course is this textbook for?</label>
-		</div><br> <br><br> <br>
+				<textarea id="course" name="course" class="materialize-textarea"></textarea>
+				<label for="course">What Course is this textbook for?</label>
+		</div>
 </div>
 <div class = "col s3"> 
 		<div class="input-field col s12">
 				<textarea id="Email" name="Email" class="materialize-textarea"></textarea>
-				<label for="Email">Email (Don't worry, we won't show this publically</label>
+				<label for="Email">Email (Don't worry, we won't show this publically)</label>
 		</div>
 
 

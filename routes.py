@@ -410,7 +410,7 @@ def Instructor(ProfessorName):
     Reviews = getProfReviews(Professors[last_name + first_name])
     OverallRatings = calculateProfRatings(Reviews)
 
-    Individual_Reviews = [list(review) for review in Reviews if review[2] != '']
+    Individual_Reviews = [list(review) for review in Reviews[::-1] if review[2] != '']
 
     review_courses = []
     for review in Individual_Reviews:
@@ -571,12 +571,17 @@ def textbook_board():
     return render_template('TextbooksBoard.html', textbooks = textbooks)
 
 @app.route('/Textbooks/NewTextbook', methods = ["GET", "POST"])
-def add_Textbook():
+def add_Textbook(error = None):
 
     DepartmentsByCollege = GetSubjectsInDepartments()
     Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
 
     if request.method == "POST":
+        # if error:
+        #     return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
+        #     DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges, error = error)
+
+
         seller = {}
         seller['email'] = request.form['Email']
         
@@ -595,7 +600,7 @@ def add_Textbook():
 
     else:
         return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
-            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
+            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges, error = error)
 
 
 @app.route('/Textbooks/ID=<ID>', methods = ["GET", "POST"])

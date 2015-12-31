@@ -103,6 +103,51 @@ function CreateRatingsSelect(elementID){
 	}
 }
 
+function CheckSellerInfoBeforeSubmitting(){
+
+	if (document.getElementById('TextbookName').value == '' || document.getElementById('TextbookName').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('price').value == '' || document.getElementById('price').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('course').value == '' || document.getElementById('course').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('Email').value == '' || document.getElementById('Email').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('TextbookDescription').value == '' || document.getElementById('TextbookDescription').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('DepartmentSelect').value == '' ){
+		alert("Please fill out all fields")
+		return false;
+	}
+	return true;
+}
+
+function Check_Buyer_info(){
+	if (document.getElementById('name').value == '' || document.getElementById('name').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('email').value == '' || document.getElementById('email').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	if (document.getElementById('message').value == '' || document.getElementById('message').value == ' '){
+		alert("Please fill out all fields")
+		return false;
+	}
+	return true;
+}
+
 function CheckBeforeSubmitting(){
 	var form = document.getElementById('formID'); 
 	

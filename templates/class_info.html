@@ -3,6 +3,9 @@
 {% block content %}
 
 <h1 align="center">{{CourseName}}</h1>
+<div class="row">
+	<button data-target="modal1" class="btn modal-trigger col s4 offset-s4">Watch Class</button>
+</div>
 <div id = "Sections">
 	<table>
 		<thead>
@@ -132,15 +135,33 @@
 			</li>
 			<li>
 				<div class="collapsible-header"><i class="material-icons">add</i>Registration</div>
-      				<div class="collapsible-body"> 
-      					<p> Maximum: {{Registration[0]}} <br> 
-      					Enrolled: {{Registration[1]}} <br>
-      					Remaining: {{Registration[2]}} <br> </p>
-      				</div>
+      		<div class="collapsible-body"> 
+      			<p> Maximum: {{Registration[0]}} <br> 
+      			Enrolled: {{Registration[1]}} <br>
+      			Remaining: {{Registration[2]}} <br> </p>
+      		</div>
 			</li>
 		</ul>
 	</div>
 </div>
 
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content row">
+      <form id="modal-form" class="col s12" method="POST">
+			<div class="row">
+				<div class="input-field col s12">
+					<input placeholder="123456789" id="phone_number" type="tel" class="validate" length="10">
+					<label for="phone_number">Phone Number:</label>
+				</div>
+				<input id="modal-crn" type="hidden" value="{{crn}}">
+			</div>
+			<div class="modal-footer">
+				<button id="modal-submit" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</button>
+			</div>
+		</form>
+    </div>
+  </div>
 
 {% endblock %}

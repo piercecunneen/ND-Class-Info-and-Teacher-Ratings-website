@@ -236,7 +236,6 @@ def DisplayClassPage(Class, CRN, Term):
     CourseDescription = Descriptions[0]
     Reviews = getClassReviews('', Class)
     CourseRatings = calculateClassRatings(Reviews)
-    
 
     Individual_Reviews = [list(review) for review in Reviews[0] if review[3] != '']
 
@@ -294,7 +293,6 @@ def DisplayClassPage(Class, CRN, Term):
         Department = Descriptions[7]
         Course_number = Descriptions[8]
         section = Descriptions[9]
-
     else:
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
@@ -307,7 +305,7 @@ def DisplayClassPage(Class, CRN, Term):
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
 
-    ## Now scrap textbook data
+    ## Now scrape textbook data
     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
     Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
     ### In Textbooks
@@ -331,7 +329,7 @@ def DisplayClassPage(Class, CRN, Term):
                            Restrictions=Restrictions, Overall_Rating=Overall_Rating,
                            Prerequisites=Prerequisites, Corequisites=Corequisites,
                            CourseName=CourseName, CourseDescription=CourseDescription,
-                           Textbook=Textbook, interest=interest,
+                           Textbook=Textbook, interest=interest, crn=CRN,
                            toughness=toughness, Attributes=Attributes,
                            Textbooks = Textbooks, Required_textbook_info = Required_textbook_info,
                             Recommended_textbook_info = Recommended_textbook_info, 
@@ -554,6 +552,15 @@ def feature_work():
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
+@app.route('/alert/<number>/<crn>/', methods=['POST'])
+def send_alert(number, crn):
+    """
+    Adds an entry to the class alerts texting database
+    for a user with phone number @number and for the
+    crn @crn
+    """
+    # TODO: Add row to database
+    return str(number) + " " + str(crn)
 
 @app.route('/Textbooks')
 def textbook_board():

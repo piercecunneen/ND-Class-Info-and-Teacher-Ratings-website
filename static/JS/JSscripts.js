@@ -1,4 +1,5 @@
 $(".button-collapse").sideNav();
+$('.modal-trigger').leanModal();
 
 function DefaultSelect(element_ID,value){
 	var option = document.getElementById(element_ID);

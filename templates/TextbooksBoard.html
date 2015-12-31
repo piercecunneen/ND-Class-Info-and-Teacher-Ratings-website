@@ -4,9 +4,11 @@
 <h3 align = "center"> Buy and Sell textbooks here </h3>
 
 <div class = "row">
-	  <a class="waves-effect waves-light btn-large" align = "center" href= "/Textbooks/NewTextbook"> <i class="material-icons">add</i> Add your textbook </a>
+<input class="btn btn-large blue lighten-2 centerButton" style="display:block;" onclick = "window.location = '/Textbooks/NewTextbook';"value="Add Textbook listing"></input>
 </div>
 <h3 align = "center"> Textbook Listings </h3>
+
+
 <ul class="collection">
       {% for textbook in textbooks %}
       	<li class = 'collection-item'> 
@@ -14,8 +16,8 @@
       		Course: {{textbook['course']}}<br>
       		Price listed: {{textbook['price']}}<br>
       		Textbook description: {{textbook['description']}}<br>
-      		Date Listed: {{textbook['date']}}
-      		<a href="/Textbooks/ID={{textbook['ID']}}" class="secondary-content"><i class="material-icons">send</i> Click here to contact the seller!</a>
+      		Date Listed: {{textbook['date']}}<br>
+      		<a href="/Textbooks/ID={{textbook['ID']}}" class="secondary-content"><i class="material-icons">send</i> Click here to contact the seller!</a><br><br>
       	</li>
       {% endfor %}
 </ul>

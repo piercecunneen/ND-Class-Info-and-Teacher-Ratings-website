@@ -13,24 +13,27 @@
       	</li>
 </ul>
 <br>
-<form  id="SendEmail" method="post">
+<form  onsubmit="return Check_Buyer_info();" id="SendEmail" method="post">
 <h5 align = "center"> Fill out the below information, and we will send the seller an email with your information! </h5>
 <div class="input-field col s12">
+      <i class="material-icons prefix">person_pin</i>
 	<textarea id="name" name="name" class="materialize-textarea"></textarea>
 	<label for="name">Name</label>
 </div>
 
 <div class="input-field col s12">
+      <i class="material-icons prefix">email</i>
 	<textarea id="email" name="email" class="materialize-textarea"></textarea>
-	<label for="email">Email (only the seller will see your email address)</label>
+	<label for="email"> Email (only the seller will see your email address)</label>
 </div>
 
 <div class="input-field col s12">
+      <i class="material-icons prefix">description</i>
 	<textarea id="message" name="message" class="materialize-textarea"></textarea>
 	<label for="message">Message for seller</label>
 </div>
 
 
-<input class="btn btn-large blue lighten-2 centerButton" style="display:block;" type="submit" value="Send Email"></input>
+<input class="btn btn-large blue lighten-2 centerButton" style="display:block;" type="submit" value="Send Email"></input> 
 </form>
 {% endblock %}

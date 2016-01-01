@@ -5,6 +5,23 @@ Used to backup all of the data in the current database, make schema changes, and
 
 import sqlite3 as lite
 
+def getName():
+	"""
+	get current db version and then update it 
+	"""
+	
+	f = open('database_version.txt', 'r')
+	version = f.read()
+	f = open('database_version.txt', 'w')
+	f.close()
+	db_name = 'reviews' + str(version) + '.sqlite'
+	# update version
+	version = int(version)
+	version += 1
+	f.write(str(version))
+	f.close()
+	return db_name
+
 db_name = 'reviews.sqlite'
 
 def getTables():
@@ -24,4 +41,14 @@ def getTables():
 def table_schema():
 	tables = getTables()
 	table_number = len(tables)
+	data = [] 
+	conn = lite.connect(db_name)
+	with conn:
+		c = conn.cursor()
+		for i in xrange(table_number): # get schema of each table
+			sql = 'SELECT * FROM ' + str(tables[i]) 
+			c.execute(sql)
+			data.append(c.fetchall())
+	print data
+>>>>>>> f54a81e4c82157f19b87d41857bb177e1f4298fa
 	

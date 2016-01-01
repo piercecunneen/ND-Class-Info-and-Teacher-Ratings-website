@@ -76,7 +76,6 @@ def login():
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
         user_info = request.form["username"]
         email = isEmail(user_info)
-
         Response, Message = validate_user(request.form["username"], request.form["password"], email)
         if not Response:
             error = Message
@@ -103,6 +102,7 @@ def home():
     review_count = count_reviews()
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
+    recent_reviews = recentReviews()
     return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
     grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
 
@@ -227,7 +227,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 #     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
 
 
-@app.route('/class_info/<Class>-<CRN>-<Term>', methods=['GET', 'POST'])
+@app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
@@ -248,8 +248,6 @@ def DisplayClassPage(Class, CRN, Term):
     toughness = CourseRatings[3]
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
-    Department = Descriptions[-1]
-    print Department
 
     if type(toughness) == str:
         Overall_Rating = ''
@@ -410,7 +408,7 @@ def Instructor(ProfessorName):
     Reviews = getProfReviews(Professors[last_name + first_name])
     OverallRatings = calculateProfRatings(Reviews)
 
-    Individual_Reviews = [list(review) for review in Reviews if review[2] != '']
+    Individual_Reviews = [list(review) for review in Reviews[::-1] if review[2] != '']
 
     review_courses = []
     for review in Individual_Reviews:
@@ -580,7 +578,7 @@ def textbook_board():
     return render_template('TextbooksBoard.html', textbooks = textbooks)
 
 @app.route('/Textbooks/NewTextbook', methods = ["GET", "POST"])
-def add_Textbook():
+def add_Textbook(error = None):
 
     DepartmentsByCollege = GetSubjectsInDepartments()
     Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
@@ -604,7 +602,7 @@ def add_Textbook():
 
     else:
         return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
-            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges)
+            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges, error = error)
 
 
 @app.route('/Textbooks/ID=<ID>', methods = ["GET", "POST"])

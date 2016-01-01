@@ -332,7 +332,8 @@ def recentReviews():
         c = conn.cursor()
         query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 5'
         c.execute(query)
-        return c.fetchall()
+	reviews = c.fetchall()
+        return reviews
     
 
 

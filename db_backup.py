@@ -12,10 +12,10 @@ def getName():
 	
 	f = open('database_version.txt', 'r')
 	version = f.read()
+	f = open('database_version.txt', 'w')
 	f.close()
 	db_name = 'reviews' + str(version) + '.sqlite'
 	# update version
-	f = open('database_version.txt', 'w')
 	version = int(version)
 	version += 1
 	f.write(str(version))

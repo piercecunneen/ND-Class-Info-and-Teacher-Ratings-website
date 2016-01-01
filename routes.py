@@ -103,6 +103,7 @@ def home():
     review_count = count_reviews()
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
+    recent_reviews = recentReviews()
     return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
     grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
 

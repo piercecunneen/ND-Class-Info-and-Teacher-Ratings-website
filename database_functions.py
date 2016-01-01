@@ -325,6 +325,14 @@ def count_reviews():
         c.execute(query)
         b = c.fetchone()
     return a[0] + b[0]
+
+def recentReviews():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 5'
+        c.execute(query)
+        return c.fetchall()
     
 
 

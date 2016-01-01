@@ -227,7 +227,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 #     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
 
 
-@app.route('/class_info/<Class>-<CRN>-<Term>')
+@app.route('/class_info/<Class>-<CRN>-<Term>', methods=['GET', 'POST'])
 def DisplayClassPage(Class, CRN, Term):
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
@@ -248,6 +248,8 @@ def DisplayClassPage(Class, CRN, Term):
     toughness = CourseRatings[3]
     interest = CourseRatings[4]
     Textbook = CourseRatings[5]
+    Department = Descriptions[-1]
+    print Department
 
     if type(toughness) == str:
         Overall_Rating = ''
@@ -557,8 +559,8 @@ def send_alert(number, crn):
     for a user with phone number @number and for the
     crn @crn
     """
-    # TODO: Add row to database
-    return str(number) + " " + str(crn)
+    addNumber(number, crn)
+    return 'Success! Keep an eye out for a text'
 
 @app.route('/Textbooks/')
 def textbook_board():

@@ -76,15 +76,6 @@ function GoToDepartment(element) {
 	location.href = "".concat("../Department/" + department);
 }
 		
-function IframeTeacherSearch(element){
-	var teacher = element.options[element.selectedIndex].value;
-	location.href = "".concat("../instructor_info/", teacher);
-}
-
-function IframeClassSearch(element){
-	var course = element.options[element.selectedIndex].value;
-	location.href = "".concat("../class_info/", course);
-}
 function GoToURL(element){
 	var course = element.options[element.selectedIndex].value;
 	location.href = "".concat("../class_info/", course);

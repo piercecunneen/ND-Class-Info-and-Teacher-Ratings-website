@@ -3,8 +3,20 @@
 
 import sqlite3 as lite
 from class_search_web_scrapping import Sort_dict, GetAllProfessors
+from Get_Sorted_CRNs import Get_CRN_List, is_Valid
 
 database = 'reviews.sqlite'
+
+def addNumber(number, crn):
+	""" Watches the crn @crn
+		 for phone number @number
+	"""
+	data = [crn, number, 0]
+	conn = lite.connect(database)
+	with conn:
+		c = conn.cursor()
+		c.executemany('INSERT INTO textAlerts VALUES(?,?,?)', (data,))
+		print "Inserted phone number and crn into database"
 
 def addProfReview(lastName, firstName, review, workload, grading, quality, accessibility, syllabus, department, id, username, submit_date):
     # department comes in as list, needs to be changed to string

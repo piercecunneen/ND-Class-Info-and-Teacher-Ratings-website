@@ -5,7 +5,14 @@ Used to backup all of the data in the current database, make schema changes, and
 
 import sqlite3 as lite
 
-db_name = 'reviews.sqlite'
+def getName():
+	f = open('database_version.txt')
+	version = f.read()
+	f.close()
+	db_name = 'reviews' + str(version) + '.sqlite'
+	return db_name
+
+db_name = getName()
 
 def getTables():
 	conn = lite.connect(db_name)

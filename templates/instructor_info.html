@@ -2,7 +2,9 @@
   
 {% block content %}
 <h2 align = "center">{{ProfessorName}}</h2>
-<button class="btn waves-effect blue lighten-2 " id="SubmitProfessorReview" onclick="location.href='/ProfessorReviewForm/{{ProfessorName}}'">Submit review for this Professor</button>
+<div class="row">
+	<button class="col s4 offset-s4 btn btn-large waves-effect blue lighten-2 " id="SubmitProfessorReview" onclick="location.href='/ProfessorReviewForm/{{ProfessorName}}'">Submit review for this Professor</button>
+</div>
 <p>{{ID}}</p>
 
 <div id="Sections">

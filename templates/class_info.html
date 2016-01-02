@@ -89,44 +89,11 @@
 			<li> 
 				<div class = "collapsible-header"> <i class = "material-icons">add</i>Bookstore Textbook info</div>
 					<div class = "collapsible-body">
-						<ul class="collection">
-						{% for i in range(number_of_textbooks) %}
-							<li class="collection-item"> 
-							Title: {{ Textbooks[i]["title"] }} <br>
-							Author: {{ Textbooks[i]["author"] }}<br>
-							ISBN: {{ Textbooks[i]["isbn"] }} <br> 
-							<a href ="http://www.amazon.com/gp/search/ref=sr_adv_b/?search-alias=stripbooks&unfiltered=1&field-keywords=&field-author=&field-title=&field-isbn={{Textbooks[i]['isbn'] }}&field-publisher=&node=&field-p_n_condition-type=&p_n_feature_browse-bin=&field-subject=&field-language=&field-dateop=During&field-datemod=&field-dateyear=&sort=relevanceexprank&Adv-Srch-Books-Submit.x=47&Adv-Srch-Books-Submit.y=1" target = "_blank"> Find textbook on Amazon </a><br>
-							{% if i < num_required %} 
-								<br>Required <br>
-							{% else %}
-								<br>Recommended <br>
-							{% endif %}
-							<table> 
-								<thead>
-									<tr>
-										<th> New/Used </th>	
-										<th> Price </th>	
-										<th> Buy/Rent </th> 
-										<th> Type </th>
-									</tr>
-								</thead>
-								<tbody>
-									{%  for option in Required_textbook_info[i] %}
-									<tr> 
-										<td> {{ option["Option"]}} </td>
-										<td> {{ option["Price"]}} </td>
-										<td> {{ option["Buy/Rent"]}} </td>
-										<td> {{ option["Type"]}} </td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-							</li>
-						{% endfor %}
+						<ul class="collection" id = "Textbook-collection">
+  							<div class="progress" id = "progressBar">
+    						  <div class="indeterminate"></div>
+ 							</div>
 						</ul>
-						{% if number_of_textbooks == 0 %}
-							<p> No textbook information available at this time </p>
-						{% endif %}
 					</div>
 
 			</li>
@@ -141,6 +108,142 @@
 		</ul>
 	</div>
 </div>
+<script> 
+
+
+window.onload =  function(){
+	setTimeout(GetTextbookData)
+	
+};
+function GetTextbookData(){
+	var url = "/class_info/Textbook_info/{{Term}}-{{Department}}-{{Course_number}}-{{section}}"
+	var test = document.getElementById("Textbook-collection")
+
+	
+	$.ajax({
+		type: "POST",
+		url: url,
+		data: {},
+		contentType: 'application/json;charset=UTF-8',
+		success: function(data)
+		{
+				
+			var progressBar = document.getElementById('progressBar');
+			progressBar.parentNode.removeChild(progressBar);
+			if (data["Textbooks"].length == 0){
+				var noTextbooks = document.createElement('p');
+				noTextbooks.appendChild(document.createTextNode('No textbook information available at this time'));
+				test.appendChild(noTextbooks);
+			}
+			for (var i = 0; i < data["Textbooks"].length; i++){
+				Textbook = data["Textbooks"][i];
+				var newTextbook = document.createElement("li");
+				newTextbook.setAttribute("class", "collection-item");
+				
+
+
+				newTextbook.appendChild(document.createTextNode("Title: " + Textbook["title"]));
+				newTextbook.appendChild(document.createElement("br"));
+
+				newTextbook.appendChild(document.createTextNode("Author: " + Textbook["author"]));
+				newTextbook.appendChild(document.createElement("br"));
+
+				newTextbook.appendChild(document.createTextNode("Author: " + Textbook["isbn"]));
+				newTextbook.appendChild(document.createElement("br"));
+
+				amazonLink = document.createElement('a');
+				amazonLink.appendChild(document.createTextNode('Search for textbook on Amazon'));
+
+				amazonLink.setAttribute('href', 'http://www.amazon.com/gp/search/ref=sr_adv_b/?search-alias=stripbooks&unfiltered=1&field-keywords=&field-author=&field-title=&field-isbn=' + Textbook["isbn"] + '&field-publisher=&node=&field-p_n_condition-type=&p_n_feature_browse-bin=&field-subject=&field-language=&field-dateop=During&field-datemod=&field-dateyear=&sort=relevanceexprank&Adv-Srch-Books-Submit.x=47&Adv-Srch-Books-Submit.y=1');
+				amazonLink.setAttribute('target', "_blank");
+
+				newTextbook.appendChild(amazonLink);
+				newTextbook.appendChild(document.createElement("br"));
+				if (i < data["Required_textbook_info"].length){
+					TextbookTable = data["Required_textbook_info"][i];
+					newTextbook.appendChild(document.createTextNode("Required"));
+				}
+				else{
+					TextbookTable = data["Recommended_textbook_info"][i - data["Required_textbook_info"].length];
+					newTextbook.appendChild(document.createTextNode("Recommended"));
+
+				}
+
+				newTextbook.appendChild(document.createElement("br"));
+
+				newTable = document.createElement('table');
+				header = document.createElement('thead');
+				
+
+				headerRow = document.createElement('tr');
+
+				headerCol = document.createElement('th');
+				headerCol.appendChild(document.createTextNode("New/Used"));
+				headerRow.appendChild(headerCol);
+
+				headerCol = document.createElement('th');
+				headerCol.appendChild(document.createTextNode("Price"));
+				headerRow.appendChild(headerCol);
+
+				headerCol = document.createElement('th');
+				headerCol.appendChild(document.createTextNode("Buy/Rent"));
+				headerRow.appendChild(headerCol);
+
+				headerCol = document.createElement('th');
+				headerCol.appendChild(document.createTextNode("Type"));
+				headerRow.appendChild(headerCol);
+
+				header.appendChild(headerRow);
+				newTable.appendChild(header);
+
+				tableBody = document.createElement('tbody');
+				for (var j = 0; j < TextbookTable.length; j++){
+					newRow = document.createElement('tr');
+					var option = TextbookTable[j];
+
+					Col = document.createElement('td');
+					Col.appendChild(document.createTextNode(option["Option"]))
+					newRow.appendChild(Col);
+
+					Col = document.createElement('td');
+					Col.appendChild(document.createTextNode(option["Price"]))
+					newRow.appendChild(Col);
+
+					Col = document.createElement('td');
+					Col.appendChild(document.createTextNode(option["Buy/Rent"]))
+					newRow.appendChild(Col);
+
+					Col = document.createElement('td');
+					Col.appendChild(document.createTextNode(option["Type"]))
+					newRow.appendChild(Col);
+
+					tableBody.appendChild(newRow);
+
+				}
+				newTable.appendChild(tableBody);
+				newTextbook.appendChild(newTable);
+
+				test.appendChild(newTextbook);
+				
+
+			}
+
+		
+		},
+		error: function(data)
+		{
+			var progressBar = document.getElementById('progressBar');
+			progressBar.parentNode.removeChild(progressBar);
+			var noTextbooks = document.createElement('p');
+			noTextbooks.appendChild(document.createTextNode('No textbook information available at this time'));
+			test.appendChild(noTextbooks);
+		}
+	});
+};
+
+
+
+</script>
 
 
 {% endblock %}

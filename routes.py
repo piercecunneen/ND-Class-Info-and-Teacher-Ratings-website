@@ -226,6 +226,12 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 # def DisplayTextBookInformation(term, div, department, courseID, section):
 #     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
 
+@app.route('/class_info/Textbook_info/<Term>-<Department>-<Course_number>-<section>', methods = ["POST"])
+def get_textbook_info(Term, Department, Course_number, section):
+    print "Working"
+    url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
+    Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
+    return jsonify({ "Textbooks" : Textbooks, "Required_textbook_info":Required_textbook_info, "Recommended_textbook_info":Recommended_textbook_info})
 
 @app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
@@ -305,35 +311,16 @@ def DisplayClassPage(Class, CRN, Term):
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
 
-    ## Now scrap textbook data
-    url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
-    Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
-    ### In Textbooks
-        ## List of dictionaries, each dictionary has info of a textbook
-    ### In Required/Recommended Textbook info
-        ## List of lists of dictionaries
-            # each inner list represents a textbook
-            # each dictionary represents a buying option for the textbook 
-    number_of_textbooks = len(Textbooks)
-    num_required = len(Required_textbook_info)
-    # Spots = []
-    # if CrossListed:
-    #     CrossListed = CrossListed.split("\n\n\n")[1:-1]
-    #     temp = []
-    #     for i in CrossListed:
-    #         data = i.split("\n")
-    #         Spots.append(data[2:])
-    #         courseName = data[0]
-    return render_template('class_info.html', Individual_Reviews=Individual_Reviews,
-                           CrossListed=CrossListed, Registration=Remaining,
-                           Restrictions=Restrictions, Overall_Rating=Overall_Rating,
-                           Prerequisites=Prerequisites, Corequisites=Corequisites,
-                           CourseName=CourseName, CourseDescription=CourseDescription,
-                           Textbook=Textbook, interest=interest,
-                           toughness=toughness, Attributes=Attributes,
-                           Textbooks = Textbooks, Required_textbook_info = Required_textbook_info,
-                            Recommended_textbook_info = Recommended_textbook_info, 
-                            number_of_textbooks = number_of_textbooks, num_required = num_required)
+    
+    return render_template('class_info.html', Individual_Reviews=Individual_Reviews, Term = Term, Department = Department, 
+                        Course_number = Course_number, section = section,
+                        CrossListed= CrossListed, Registration=Remaining,
+                        Restrictions=Restrictions, Overall_Rating=Overall_Rating,
+                        Prerequisites=Prerequisites, Corequisites=Corequisites,
+                        CourseName=CourseName, CourseDescription=CourseDescription,
+                        Textbook=Textbook, interest=interest,
+                        toughness=toughness, Attributes=Attributes
+                        )
 
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():

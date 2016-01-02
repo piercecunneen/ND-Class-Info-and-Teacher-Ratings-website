@@ -76,7 +76,6 @@ def login():
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
         user_info = request.form["username"]
         email = isEmail(user_info)
-
         Response, Message = validate_user(request.form["username"], request.form["password"], email)
         if not Response:
             error = Message
@@ -103,6 +102,7 @@ def home():
     review_count = count_reviews()
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
+    recent_reviews = recentReviews()
     return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
     grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
 
@@ -240,7 +240,6 @@ def DisplayClassPage(Class, CRN, Term):
     CourseDescription = Descriptions[0]
     Reviews = getClassReviews('', Class)
     CourseRatings = calculateClassRatings(Reviews)
-    
 
     Individual_Reviews = [list(review) for review in Reviews[0] if review[3] != '']
 
@@ -298,7 +297,6 @@ def DisplayClassPage(Class, CRN, Term):
         Department = Descriptions[7]
         Course_number = Descriptions[8]
         section = Descriptions[9]
-
     else:
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
@@ -310,7 +308,6 @@ def DisplayClassPage(Class, CRN, Term):
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
-
     
     return render_template('class_info.html', Individual_Reviews=Individual_Reviews, Term = Term, Department = Department, 
                         Course_number = Course_number, section = section,
@@ -319,7 +316,7 @@ def DisplayClassPage(Class, CRN, Term):
                         Prerequisites=Prerequisites, Corequisites=Corequisites,
                         CourseName=CourseName, CourseDescription=CourseDescription,
                         Textbook=Textbook, interest=interest,
-                        toughness=toughness, Attributes=Attributes
+                        toughness=toughness, Attributes=Attributes, crn=CRN
                         )
 
 @app.route('/DepartmentsMain/')
@@ -411,16 +408,12 @@ def Instructor(ProfessorName):
         review.append(course_name)
         review[2] = description
 
-
     Semester_formatting = { value:key for key,value in Options[0].items()}
     month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
     for i in xrange(len(Individual_Reviews)):
         date = Individual_Reviews[i][11].split(" ")
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][11] = formatted_date
-    
-
-
 
     workload = OverallRatings[3]
     if type(workload) == float:
@@ -539,6 +532,18 @@ def feature_work():
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
+@app.route('/alert/<crn>/<number>/', methods=['POST'])
+def send_alert(crn, number="void"):
+    """
+    Adds an entry to the class alerts texting database
+    for a user with phone number @number and for the
+    crn @crn
+    """
+    if number!='void':
+        addNumber(number, crn)
+        return 'Success! Keep an eye out for a text'
+    else:
+        return 'Error: Must include a phone number'
 
 @app.route('/Textbooks/')
 def textbook_board():

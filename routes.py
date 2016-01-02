@@ -546,15 +546,18 @@ def feature_work():
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
-@app.route('/alert/<number>/<crn>/', methods=['POST'])
-def send_alert(number, crn):
+@app.route('/alert/<crn>/<number>/', methods=['POST'])
+def send_alert(crn, number="void"):
     """
     Adds an entry to the class alerts texting database
     for a user with phone number @number and for the
     crn @crn
     """
-    addNumber(number, crn)
-    return 'Success! Keep an eye out for a text'
+    if number!='void':
+        addNumber(number, crn)
+        return 'Success! Keep an eye out for a text'
+    else:
+        return 'Error: Must include a phone number'
 
 @app.route('/Textbooks/')
 def textbook_board():

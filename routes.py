@@ -422,16 +422,12 @@ def Instructor(ProfessorName):
         review.append(course_name)
         review[2] = description
 
-
     Semester_formatting = { value:key for key,value in Options[0].items()}
     month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
     for i in xrange(len(Individual_Reviews)):
         date = Individual_Reviews[i][11].split(" ")
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][11] = formatted_date
-    
-
-
 
     workload = OverallRatings[3]
     if type(workload) == float:

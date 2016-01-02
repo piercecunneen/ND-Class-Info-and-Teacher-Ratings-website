@@ -50,5 +50,3 @@ def table_schema():
 			c.execute(sql)
 			data.append(c.fetchall())
 	print data
->>>>>>> f54a81e4c82157f19b87d41857bb177e1f4298fa
-	

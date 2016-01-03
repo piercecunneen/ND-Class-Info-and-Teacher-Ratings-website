@@ -50,7 +50,4 @@ def table_schema():
 			c.execute(sql)
 			data.append(c.fetchall())
 	print data
-<<<<<<< HEAD
-	
-=======
->>>>>>> upstream/master
+

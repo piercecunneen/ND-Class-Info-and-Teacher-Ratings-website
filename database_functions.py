@@ -337,7 +337,6 @@ def count_reviews():
         c.execute(query)
         b = c.fetchone()
     return a[0] + b[0]
-<<<<<<< HEAD
 
 def recentReviews():
     conn = lite.connect(database)
@@ -347,10 +346,7 @@ def recentReviews():
         c.execute(query)
 	reviews = c.fetchall()
         return reviews
-    
 
-=======
->>>>>>> upstream/master
 
 def recentReviews():
     conn = lite.connect(database)

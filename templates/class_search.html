@@ -3,8 +3,9 @@
 {% block content %}
 
 <div class="row">
+	<h4 align="center">Standard Search</h4>
 	<form class="col s12 row" id="ClassSearchForm" method="post">
-		<div class="col s5">
+		<div class="col s6">
 			<label>Term</label>
 			<select class="browser-default" id="TermOptions" name="TermOptions">
 				{% for key in TermOptionKeys %}
@@ -14,7 +15,7 @@
 
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Division</label>
 			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
 				{% for key in DivisionOptionKeys %}
@@ -22,7 +23,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Campus</label>
 			<select class="browser-default" id="CampusOptions" name="CampusOptions">
 				{% for key in CampusOptionKeys %}
@@ -30,7 +31,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Subject (Tip: begin typing subject to find the subject faster!!)</label>
 			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
 				{% for key in SubjectOptionKeys %}
@@ -38,7 +39,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Attribute</label>
 			<select class="browser-default" id="AttributeOptions" name="AttributeOptions">
 				{% for key in AttributeOptionKeys %}
@@ -46,7 +47,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Credits</label>
 			<select class="browser-default" id="CreditsOptions" name="CreditsOptions">
 				{% for key in CreditsOptionKeys %}
@@ -54,20 +55,27 @@
 				{% endfor %}
 			</select>
 		</div>
-	<input class="blue lighten-1 btn waves-effect padded" type="submit" onclick = "BeforePost();" value="Search Classes"> </input>
+	<div class="col s12 row">
+		<input class="blue lighten-1 btn btn-large waves-effect padded col s4 offset-s4" type="submit" onclick = "BeforePost();" value="Search Classes"> </input>
+	</div>
+	<div class="col s12 row">
+		<div class="divider"></div>
+		<h4 align="center">Search by University Requirement</h4>
+	</div>
 	</form>
-	<div class="col s5">
+</div>
+<div class="row">
+	<div class="col offset-s4 s4">
 			<label>Quick Search for University Requirements</label>
 			<select class="browser-default" id="QuickSearch" name="QuickSearch">
 				{% for key in ['2nd Theology', '2nd Philosophy', 'Social Science',  'Natural Science (req)', 'Fine Arts', 'Literature', 'History', "Sophomore Business Courses", "Junior Business Courses"] %}
    				<option value='{{key}}'>{{key}}</option>
 				{% endfor %}
 			</select>
-		</div>
+	</div>
 </div>
-<div class = "row">
-	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
+<div class="row">
+	<input class="blue lighten-1 btn btn-large waves-effect padded col s4 offset-s4" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
 </div>
-
 
 {% endblock %}

@@ -76,7 +76,6 @@ def login():
             app.permanent_session_lifetime = datetime.timedelta(minutes=120)
         user_info = request.form["username"]
         email = isEmail(user_info)
-
         Response, Message = validate_user(request.form["username"], request.form["password"], email)
         if not Response:
             error = Message
@@ -227,6 +226,12 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 # def DisplayTextBookInformation(term, div, department, courseID, section):
 #     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
 
+@app.route('/class_info/Textbook_info/<Term>-<Department>-<Course_number>-<section>', methods = ["POST"])
+def get_textbook_info(Term, Department, Course_number, section):
+    print "Working"
+    url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
+    Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
+    return jsonify({ "Textbooks" : Textbooks, "Required_textbook_info":Required_textbook_info, "Recommended_textbook_info":Recommended_textbook_info})
 
 @app.route('/class_info/<Class>-<CRN>-<Term>')
 def DisplayClassPage(Class, CRN, Term):
@@ -235,7 +240,6 @@ def DisplayClassPage(Class, CRN, Term):
     CourseDescription = Descriptions[0]
     Reviews = getClassReviews('', Class)
     CourseRatings = calculateClassRatings(Reviews)
-    
 
     Individual_Reviews = [list(review) for review in Reviews[0] if review[3] != '']
 
@@ -293,7 +297,6 @@ def DisplayClassPage(Class, CRN, Term):
         Department = Descriptions[7]
         Course_number = Descriptions[8]
         section = Descriptions[9]
-
     else:
         Attributes = Descriptions[2]
         Restrictions = Descriptions[3]
@@ -305,36 +308,16 @@ def DisplayClassPage(Class, CRN, Term):
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
-
-    ## Now scrap textbook data
-    url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
-    Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
-    ### In Textbooks
-        ## List of dictionaries, each dictionary has info of a textbook
-    ### In Required/Recommended Textbook info
-        ## List of lists of dictionaries
-            # each inner list represents a textbook
-            # each dictionary represents a buying option for the textbook 
-    number_of_textbooks = len(Textbooks)
-    num_required = len(Required_textbook_info)
-    # Spots = []
-    # if CrossListed:
-    #     CrossListed = CrossListed.split("\n\n\n")[1:-1]
-    #     temp = []
-    #     for i in CrossListed:
-    #         data = i.split("\n")
-    #         Spots.append(data[2:])
-    #         courseName = data[0]
-    return render_template('class_info.html', Individual_Reviews=Individual_Reviews,
-                           CrossListed=CrossListed, Registration=Remaining,
-                           Restrictions=Restrictions, Overall_Rating=Overall_Rating,
-                           Prerequisites=Prerequisites, Corequisites=Corequisites,
-                           CourseName=CourseName, CourseDescription=CourseDescription,
-                           Textbook=Textbook, interest=interest,
-                           toughness=toughness, Attributes=Attributes,
-                           Textbooks = Textbooks, Required_textbook_info = Required_textbook_info,
-                            Recommended_textbook_info = Recommended_textbook_info, 
-                            number_of_textbooks = number_of_textbooks, num_required = num_required)
+    
+    return render_template('class_info.html', Individual_Reviews=Individual_Reviews, Term = Term, Department = Department, 
+                        Course_number = Course_number, section = section,
+                        CrossListed= CrossListed, Registration=Remaining,
+                        Restrictions=Restrictions, Overall_Rating=Overall_Rating,
+                        Prerequisites=Prerequisites, Corequisites=Corequisites,
+                        CourseName=CourseName, CourseDescription=CourseDescription,
+                        Textbook=Textbook, interest=interest,
+                        toughness=toughness, Attributes=Attributes, crn=CRN
+                        )
 
 @app.route('/DepartmentsMain/')
 def DepartmentsMainPage():
@@ -425,16 +408,12 @@ def Instructor(ProfessorName):
         review.append(course_name)
         review[2] = description
 
-
     Semester_formatting = { value:key for key,value in Options[0].items()}
     month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
     for i in xrange(len(Individual_Reviews)):
         date = Individual_Reviews[i][11].split(" ")
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][11] = formatted_date
-    
-
-
 
     workload = OverallRatings[3]
     if type(workload) == float:
@@ -553,6 +532,18 @@ def feature_work():
 def message_board():
     return render_template('message_board.html', all_posts=getPosts())
 
+@app.route('/alert/<crn>/<number>/', methods=['POST'])
+def send_alert(crn, number="void"):
+    """
+    Adds an entry to the class alerts texting database
+    for a user with phone number @number and for the
+    crn @crn
+    """
+    if number!='void':
+        addNumber(number, crn)
+        return 'Success! Keep an eye out for a text'
+    else:
+        return 'Error: Must include a phone number'
 
 @app.route('/Textbooks/')
 def textbook_board():

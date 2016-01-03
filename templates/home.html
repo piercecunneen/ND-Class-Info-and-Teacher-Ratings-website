@@ -1,34 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="center-align">
-    <h2>Welcome to the ND Student Site<h2>
-    <h5> <i> Search for Classes </h5>
-    <h5> View Course and Professor Reviews</h5>
-    <h5> Submit Reviews for others to view  </h5>
-    <h5> Use ND Class Alert to receive a text alert when a spot opens up in a full class</i></h5>
-  </div> <br><br>
-<div class = "row">
- <div class="col s6">
-    <div class="card teal lighten-3">
-        <div class="card-content white-text">
-            <span class="card-title" <a onclick="location.href='/instructor_info/{{last_name + first_name}}'"></a>Featured Professor: {{prof_name}} </span>
-                <p> workload: {{workload_rating}} </p>
-                <p> grading: {{grading_rating}} </p>
-                <p> quality: {{quality_rating}} </p>
-                <p> accessibility: {{accessibility_rating}} </p> <br>
-                <table>
-                  <tr> 
-                   <a class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </a>   
-                  </tr>
-                </table>
-        </div>
-    </div>
-</div>
+
+
+
 <div class="col s6">
           <div class="card light-green lighten-2">
-            <div class="card-content white-text">
-              <span class="card-title">Reviews on NDreviews.com</span>
-              <p>Total number of reviews on ndreviews.com: {{review_count}} </p> <br>
+            <div class="card-content white-text center-align">
+              <span class="card-title"> <h4> Welcome to ND Reviews </h4> </span>
+              <p># of reviews: {{review_count}} </p> <br>
               <button class="btn waves-effect blue lighten-2 " onclick="location.href='/SubmitReviewMain'"> Add Your Own Review! </button>
 
               </div>
@@ -36,15 +15,19 @@
           </div>
         </div>
       </div>
-  </div>
+</div>
 
 <style>
   div.recent_reviews {
-    padding:30px;
+    padding-left:30px;
+    padding-right:30px;
+    padding-bottom:30px;
+
 }
 </style>
-  <div class="card lighten-2 recent_reviews">
-    <h3 align="center">Recent reviews</h3>
+<div class = "row">
+  <div class="card lighten-2 recent_reviews col s9">
+    <h3 align="center">Recent professor reviews</h3>
    <table class="striped">
      <thead>
        <tr>
@@ -58,35 +41,37 @@
      </thead>
 
      <tbody>
-      <tr>
-        <td>{{prof_one_name}}</td>
-        <td>{{prof_one_review}}</td>
-        <td>{{prof_one_workload}}</td>
-        <td>{{prof_one_grading}}</td>
-        <td>{{prof_one_quality}}</td>
-        <td>{{prof_one_accessibility}}</td>
-      </tr>
-     <tr>
-       <td>{{prof_two_name}}</td>
-       <td>{{prof_two_review}}</td>
-       <td>{{prof_two_workload}}</td>
-       <td>{{prof_two_grading}}</td>
-       <td>{{prof_two_quality}}</td>
-       <td>{{prof_two_accessibility}}</td>
-     </tr>
-     <tr>
-       <td>{{prof_three_name}}</td>
-       <td>{{prof_three_review}}</td>
-       <td>{{prof_three_workload}}</td>
-       <td>{{prof_three_grading}}</td>
-       <td>{{prof_three_quality}}</td>
-       <td>{{prof_three_accessibility}}</td>
-     </tr>
+      {% for i in range(num_recent_reviews) %}
+          <tr>
+            <td> <a href = "/instructor_info/{{recent_reviews[i][0] + recent_reviews[i][1]}}"> {{prof_names[i]}}</a></td>
+            <td> {{recent_reviews[i][2]}}</td>
+            <td> {{recent_reviews[i][3]}}</td>
+            <td> {{recent_reviews[i][4]}}</td>
+            <td> {{recent_reviews[i][5]}}</td>
+            <td> {{recent_reviews[i][6]}}</td>
+
+          </tr>
+      {% endfor %}
    </table>
+  </div>
+   <div class="col s3">
+    <div class="card teal lighten-3">
+        <div class="card-content white-text">
+            <span class="card-title" <a onclick="location.href='/instructor_info/{{last_name + first_name}}' ">  </a> Featured Professor:<br>{{prof_name}} </span>
+                <p> workload: {{workload_rating}} </p>
+                <p> grading: {{grading_rating}} </p>
+                <p> quality: {{quality_rating}} </p>
+                <p> accessibility: {{accessibility_rating}} </p> <br>
+                <table>
+                  <tr> 
+                   <a class="btn waves-effect blue lighten-2 " onclick="location.href='/ProfessorReviewForm/{{last_name + first_name}}'"> Review this professor! </a>   
+                  </tr>
+                </table>
+        </div>
+    </div>
   </div>
 
 <br>
 <br>
-
 
 {% endblock %}

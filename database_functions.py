@@ -342,17 +342,8 @@ def recentReviews():
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()
-        query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 5'
+        prof_count = 0
+        query = 'SELECT * FROM profReview WHERE Review NOT LIKE "Course:::%" ORDER BY submit_date DESC Limit 5'
         c.execute(query)
-	reviews = c.fetchall()
-        return reviews
-
-
-def recentReviews():
-    conn = lite.connect(database)
-    with conn:
-        c = conn.cursor()
-        query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 3'
-        c.execute(query)
-	reviews = c.fetchall()
+        reviews = c.fetchall()
         return reviews

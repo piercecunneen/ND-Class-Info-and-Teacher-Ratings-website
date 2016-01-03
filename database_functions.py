@@ -352,7 +352,7 @@ def recentReviews():
     conn = lite.connect(database)
     with conn:
         c = conn.cursor()
-        query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 5'
+        query = 'SELECT * FROM profReview ORDER BY submit_date DESC LIMIT 3'
         c.execute(query)
 	reviews = c.fetchall()
         return reviews

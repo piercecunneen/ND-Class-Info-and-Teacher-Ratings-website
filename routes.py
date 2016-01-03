@@ -4,7 +4,7 @@ from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import * 
 from TextbookDB import *
-from textbookemail import *
+#from textbookemail import *
 
 from password import create_user, validate_user
 import requests
@@ -91,6 +91,7 @@ def login():
 def isEmail(email):
     return bool('@' in email)
 
+
 @app.route('/')
 def home():
     Featured_prof = get_random_prof()
@@ -103,8 +104,21 @@ def home():
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
     recent_reviews = recentReviews()
+    rec1 = recent_reviews[0]
+    rec2 = recent_reviews[1]
+    rec3 = recent_reviews[2]
+    prof_one_name = recent_reviews[0][1] + " " + recent_reviews[0][0].replace(',', '')
+    prof_two_name = recent_reviews[1][1] + " " + recent_reviews[1][0].replace(',', '')
+    prof_three_name = recent_reviews[2][1] + " " + recent_reviews[2][0].replace(',', '')
+
     return render_template('home.html',last_name = last_name, first_name = first_name, prof_name = prof_name, workload_rating = workload_rating,
-    grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count)
+    grading_rating = grading_rating, quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count,
+    prof_one_name = prof_one_name, prof_two_name = prof_two_name, prof_three_name = prof_three_name,
+    prof_one_review = rec1[2], prof_two_review = rec2[2], prof_three_review = rec3[2],
+    prof_one_workload = rec1[3], prof_two_workload = rec2[3], prof_three_workload = rec3[3],
+    prof_one_grading = rec1[4], prof_two_grading = rec2[4], prof_three_grading = rec3[4],
+    prof_one_quality = rec1[5], prof_two_quality = rec2[5], prof_three_quality = rec3[5],
+    prof_one_accessiblity = rec1[6], prof_two_accessibility = rec2[6], prof_three_accessibility = rec3[6])
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
 def QuickSearch(ATTR):

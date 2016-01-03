@@ -38,48 +38,52 @@
       </div>
   </div>
 
-<h3 align="center">Recent reviews</h3>
-<br>
-<br>
+<style>
+  div.recent_reviews {
+    padding:30px;
+}
+</style>
+  <div class="card lighten-2 recent_reviews">
+    <h3 align="center">Recent reviews</h3>
+   <table class="striped">
+     <thead>
+       <tr>
+         <th data-field="prof_name">Name</th>
+         <th data-field="prof_review">Review</th>
+         <th data-filed="prof_workload">Workload</th>
+         <th data-field="prof_grading">Grading</th>
+         <th data-field="prof_quality">Quality</th>
+         <th data-field="prof_accessibility">Accessibilty</th>
+       </tr>
+     </thead>
 
-<table class="striped">
-  <thead>
-    <tr>
-      <th data-field="prof_name">Name</th>
-      <th data-field="prof_review">Review</th>
-      <th data-filed="prof_workload">Workload</th>
-      <th data-field="prof_grading">Grading</th>
-      <th data-field="prof_quality">Quality</th>
-      <th data-field="prof_accessibility">Accessibilty</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td>{{prof_one_name}}</td>
-      <td>{{prof_one_review}}</td>
-      <td>{{prof_one_workload}}</td>
-      <td>{{prof_one_grading}}</td>
-      <td>{{prof_one_quality}}</td>
-      <td>{{prof_one_accessiblity}}</td>
-    </tr>
-    <tr>
-      <td>{{prof_two_name}}</td>
-      <td>{{prof_two_review}}</td>
-      <td>{{prof_two_workload}}</td>
-      <td>{{prof_two_grading}}</td>
-      <td>{{prof_two_quality}}</td>
-      <td>{{prof_two_accessiblity}}</td>
-    </tr>
-    <tr>
-      <td>{{prof_three_name}}</td>
-      <td>{{prof_three_review}}</td>
-      <td>{{prof_three_workload}}</td>
-      <td>{{prof_three_grading}}</td>
-      <td>{{prof_three_quality}}</td>
-      <td>{{prof_three_accessiblity}}</td>
-    </tr>
-</table>
+     <tbody>
+      <tr>
+        <td>{{prof_one_name}}</td>
+        <td>{{prof_one_review}}</td>
+        <td>{{prof_one_workload}}</td>
+        <td>{{prof_one_grading}}</td>
+        <td>{{prof_one_quality}}</td>
+        <td>{{prof_one_accessibility}}</td>
+      </tr>
+     <tr>
+       <td>{{prof_two_name}}</td>
+       <td>{{prof_two_review}}</td>
+       <td>{{prof_two_workload}}</td>
+       <td>{{prof_two_grading}}</td>
+       <td>{{prof_two_quality}}</td>
+       <td>{{prof_two_accessibility}}</td>
+     </tr>
+     <tr>
+       <td>{{prof_three_name}}</td>
+       <td>{{prof_three_review}}</td>
+       <td>{{prof_three_workload}}</td>
+       <td>{{prof_three_grading}}</td>
+       <td>{{prof_three_quality}}</td>
+       <td>{{prof_three_accessibility}}</td>
+     </tr>
+   </table>
+  </div>
 
 <br>
 <br>

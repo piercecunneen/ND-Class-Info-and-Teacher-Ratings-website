@@ -42,6 +42,24 @@ def addClassReview(lastName, firstName, title, review, toughness, interest, text
         c = conn.cursor()    
         c.executemany('INSERT INTO classReview VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',(data,))
 
+def getAllProfReviews():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        sql = "SELECT * FROM profReview"
+        c.execute(sql)
+        reviews = c.fetchall()
+    return reviews
+
+def getAllClassReviews():
+    conn = lite.connect(database)
+    with conn:
+        c = conn.cursor()
+        sql = "SELECT * FROM classReview"
+        c.execute(sql)
+        reviews = c.fetchall()
+    return reviews
+
 def getProfReviews(id):
     '''if lastName != "":
         # pull list of professors by last name

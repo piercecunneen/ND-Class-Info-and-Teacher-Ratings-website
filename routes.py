@@ -4,7 +4,7 @@ from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import * 
 from TextbookDB import *
-from textbookemail import *
+#from textbookemail import *
 
 from password import create_user, validate_user
 import requests
@@ -38,6 +38,21 @@ def logout():
 
 def GetCurrentSemester():
     return '201520'
+
+@app.route('/internal_tooling', methods=["GET", "POST"])
+def internal_tooling():
+    login = True
+    error = None
+    if request.method == "post":
+        login, error = validate_user("zjanicki@nd.edu", request.form["password"], True)
+        if login:
+            return render_template('internal_tooling.html', login = login, error = error)
+    prof_reviews = getAllProfReviews()
+    num_prof_reviews = len(prof_reviews)
+    class_reviews = getAllClassReviews()
+    num_class_reviews = len(class_reviews)
+    return render_template('internal_tooling.html', login = login, error = error, prof_reviews = prof_reviews, num_prof_reviews = num_prof_reviews,
+        class_reviews = class_reviews, num_class_reviews = num_class_reviews)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():

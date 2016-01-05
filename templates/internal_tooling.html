@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% if not login %} <!-- render login screen, else show page -->
+	<div class="row">
+		<form class="col s12 row" id="interal_tooling_form" method="post">
+			<div class= "input-field col s12"> 
+				<input placeholder = "Password"id = "password" name = "password" type = "text" class = "validate">
+				<label for = "password"> Password </label>
+			</div>
+			<div class="col s12">
+				<input class="btn btn-default" type="submit" value="Login">
+			</div>
+		</form>
+{% endif %}
+
+{% if login %} <!-- render everything -->
+<h3 align="center">Admin Tools page</h3>
+<div class="card lighten-2 recent_reviews col s9">
+<div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s15"><a href="#all_prof_reviews">Professor Reviews</a></li>
+        <li class="tab col s15"><a href="#all_class_reviews">Class Reviews</a></li>
+      </ul>
+</div>
+<div id="all_prof_reviews" class="collection">
+   <table class="striped">
+     <thead>
+       <tr>
+         <th data-field="prof_last">Last Name</th>
+         <th data-field="prof_first">First Name</th>
+         <th data-field="prof_review">Review</th>
+         <th data-filed="prof_workload">Workload</th>
+         <th data-field="prof_grading">Grading</th>
+         <th data-field="prof_quality">Quality</th>
+         <th data-field="prof_accessibility">Accessibilty</th>
+         <th data-field="syllabus">Syllabus</th>
+         <th data-field="department">Department</th>
+         <th data-field="id">Prof ID</th>
+         <th data-field="username">User Name</th>
+         <th data-field="date">Date</th>
+       </tr>
+     </thead>
+
+     <tbody>
+      {% for i in range(num_prof_reviews) %}
+          <tr>
+            <td> {{prof_reviews[i][0]}}</td>
+            <td> {{prof_reviews[i][1]}}</td>
+            <td> {{prof_reviews[i][2]}}</td>
+            <td> {{prof_reviews[i][3]}}</td>
+            <td> {{prof_reviews[i][4]}}</td>
+            <td> {{prof_reviews[i][5]}}</td>
+            <td> {{prof_reviews[i][6]}}</td>
+            <td> {{prof_reviews[i][7]}}</td>
+            <td> {{prof_reviews[i][8]}}</td>
+            <td> {{prof_reviews[i][9]}}</td>
+            <td> {{prof_reviews[i][10]}}</td>
+            <td> {{prof_reviews[i][11]}}</td>
+          </tr>
+      {% endfor %}
+   </table>
+  </div>
+</div>
+
+<div id="all_class_reviews" class="collection">
+   <table class="striped">
+     <thead>
+       <tr>
+         <th data-field="prof_last">Last Name</th>
+         <th data-field="prof_first">First Name</th>
+         <th data-field="class_title">Title</th>
+         <th data-filed="class_review">Review</th>
+         <th data-field="class_toughness">Toughness</th>
+         <th data-field="class_interest">Interest</th>
+         <th data-field="class_textbook">Textbook</th>
+         <th data-field="department">Department</th>
+         <th data-field="crn">CRN</th>
+         <th data-field="class_date">Class Date Code</th>
+         <th data-field="id">Prof ID</th>
+         <th data-field="username">User Name</th>
+         <th data-field="date">Date Submitted</th>
+       </tr>
+     </thead>
+
+     <tbody>
+      {% for i in range(num_prof_reviews) %}
+          <tr>
+            <td> {{class_reviews[i][0]}}</td>
+            <td> {{class_reviews[i][1]}}</td>
+            <td> {{class_reviews[i][2]}}</td>
+            <td> {{class_reviews[i][3]}}</td>
+            <td> {{class_reviews[i][4]}}</td>
+            <td> {{class_reviews[i][5]}}</td>
+            <td> {{class_reviews[i][6]}}</td>
+            <td> {{class_reviews[i][7]}}</td>
+            <td> {{class_reviews[i][8]}}</td>
+            <td> {{class_reviews[i][9]}}</td>
+            <td> {{class_reviews[i][10]}}</td>
+            <td> {{class_reviews[i][11]}}</td>
+            <td> {{class_reviews[i][12]}}</td>
+          </tr>
+      {% endfor %}
+   </table>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

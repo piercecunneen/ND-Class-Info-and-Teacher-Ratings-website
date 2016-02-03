@@ -18,3 +18,8 @@ Features to come:
       3a) We plan to add a weighting system for reviews that favors users that input well liked reviews as voted on by the community
 
 
+#ToDo
+--------
+- [ ] testing
+- [x] testing
+- [ ] testing

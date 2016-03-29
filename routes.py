@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
-from flask.ext.login import LoginManager, UserMixin, login_required, login_user
 
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
-from database_functions import * 
+from database_functions import *
 from TextbookDB import *
 from textbookemail import *
 
@@ -10,12 +9,10 @@ from password import create_user, validate_user
 import requests
 import datetime
 
-from User import User
 app = Flask(__name__)
 app.secret_key = 'This is a secret'
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+
 
 Options = GetOptions()
 Sorted_Profs_No_Repeats = Professors_No_Repeats()
@@ -37,7 +34,7 @@ def logout():
     return
 
 def GetCurrentSemester():
-    return '201520'
+    return '201610'
 
 @app.route('/internal_tooling', methods=["GET", "POST"])
 def internal_tooling():
@@ -128,12 +125,12 @@ def home():
     num_recent_reviews = len(prof_names)
     for review in recent_reviews:
         review[2] = cleanCourseFromReview(review[2])
-    return render_template('home.html',last_name = last_name, first_name = first_name, 
-        prof_name = prof_name, workload_rating = workload_rating, grading_rating = grading_rating, 
+    return render_template('home.html',last_name = last_name, first_name = first_name,
+        prof_name = prof_name, workload_rating = workload_rating, grading_rating = grading_rating,
         quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count,
         prof_names = prof_names, recent_reviews = recent_reviews, num_recent_reviews = num_recent_reviews
         )
-        
+
 
 @app.route('/class_search/quick-search=<ATTR>', methods=["POST", "GET"])
 def QuickSearch(ATTR):
@@ -241,7 +238,7 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
         didAddDept = False
     # Keys specifies what exactly we want to show up on our class search
 
-    Keys = ['Title', 'Course - Sec', 'View_Books', 'Cr', 'Max', 'Opn', 'CRN', 'Teacher_Info', 'Instructor', 'When', 'Begin', 'End', 'Where']
+    Keys = ['Title', 'Course - Sec','Instructor', 'View_Books', 'Cr', 'Max', 'Opn', 'CRN', 'Teacher_Info', 'When', 'Begin', 'End', 'Where']
     return render_template('DisplayClassData.html', TermOptionKeys=Sort_dict(Options[0], True),
                            TermOptions=Options[0],
                            DivisionOptionKeys=Sort_dict(Options[1], False), DivisionOptions=Options[1],
@@ -337,8 +334,8 @@ def DisplayClassPage(Class, CRN, Term):
     Restrictions = ["Must " + i for i in Restrictions.split("Must")[1:]]
     Remaining = Registration.split("TOTAL")[1]
     Remaining = Remaining.split("\n")[1:-1]
-    
-    return render_template('class_info.html', Individual_Reviews=Individual_Reviews, Term = Term, Department = Department, 
+
+    return render_template('class_info.html', Individual_Reviews=Individual_Reviews, Term = Term, Department = Department,
                         Course_number = Course_number, section = section,
                         CrossListed= CrossListed, Registration=Remaining,
                         Restrictions=Restrictions, Overall_Rating=Overall_Rating,
@@ -502,7 +499,7 @@ def ProfessorReview(ProfessorName):
         Workload = int(request.form['WorkloadID'])
         Accessibility = request.form['AccessibilityID']
         Syllabus = int(request.form['SyllabusID'])
-        OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor']) + "Course:::" + str(CourseName) 
+        OptionalDescriptionProfessor = str(request.form['OptionalResponseProfessor']) + "Course:::" + str(CourseName)
 
 
         # Course Evaluation
@@ -605,7 +602,7 @@ def add_Textbook(error = None):
 
         seller = {}
         seller['email'] = request.form['Email']
-        
+
         department = request.form.getlist('DepartmentSelect')
         if len(department) == 0:
             department = "None chosen"

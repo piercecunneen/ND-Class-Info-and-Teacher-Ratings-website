@@ -12,16 +12,16 @@ def CleanUpString(string):
     return string.replace('\t', '').replace('\r', '').replace('\n', '').replace('  ', '')
 
 def GetCurrentSemester():
-    return "201520"
+    return "201610"
 
 def GetTextBookInfo(url):
-    """ 
+    """
     Gets ISBN and Textbook info from Notre Dame bookstore
 
 
     """
     response = requests.get(url)
-    soup = BeautifulSoup(response.content)
+    soup = BeautifulSoup(response.content, "lxml")
     isbn_info = [i.text for i in soup.find_all('span', attrs = {'id': 'materialISBN'})]
     isbns = [str(isbn.split("ISBN: ")[1]) for isbn in isbn_info]
 
@@ -34,7 +34,7 @@ def GetTextBookInfo(url):
         Titles_info[i] = Titles_info[i].replace("Edition", " Edition")
         if "Choice of Titles" in Titles_info[i]:
             choice_of_titles_index = i
-    
+
     if choice_of_titles_index != -1:
         Titles_info.pop(choice_of_titles_index)
 
@@ -68,8 +68,8 @@ def GetTextBookInfo(url):
             new_option["Price"] = price[0].text
             new_textbook.append(new_option)
         Required_Textbook_Info.append(new_textbook)
-    
-    
+
+
     Recommended_books = soup.find_all("li", attrs = {"id":"material-group_RECOMMENDED"})
     if len(Recommended_books):
         textbook_info  = Recommended_books[0].find_all("div", attrs = {"class":"material-group-table"})
@@ -387,7 +387,7 @@ def GetAllProfessorDepartments():
 def GetCoursesTaught(Prof_ID):
     url = 'https://class-search.nd.edu/reg/srch/InstructorClassesServlet?TERM=' + GetCurrentSemester() +'&P=' + str(Prof_ID)
     response = requests.get(url)
-    soup = BeautifulSoup(response.content)
+    soup = BeautifulSoup(response.content, "lxml")
     rows = soup.find_all('tr')[2:]
     CoursesTaught = []
     for course in rows:
@@ -430,7 +430,3 @@ def Professors_No_Repeats():
             Professors[ID] = i
         line = f.readline()
     return sorted(Professors.values())
-
-
-
-

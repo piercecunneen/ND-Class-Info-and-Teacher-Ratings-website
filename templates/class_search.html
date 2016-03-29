@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-  
+
 {% block content %}
 
 <div class="row">
@@ -11,7 +11,6 @@
 				{% for key in TermOptionKeys %}
 				<option value='{{ TermOptions[key] }}'>{{key}}</option>
 				{% endfor %}
-				<script> document.getElementById("TermOptions").selectedIndex = "1"; </script>
 
 			</select>
 		</div>
@@ -55,8 +54,8 @@
 				{% endfor %}
 			</select>
 		</div>
-	<div class="col s12 row">
-		<input class="blue lighten-1 btn btn-large waves-effect padded col s2 offset-s5" type="submit" onclick = "BeforePost();" value="Search Classes"> </input>
+	<div class="col s6 m6">
+		<input class="blue lighten-1 btn btn-large waves-effect padded" type="submit" onclick = "BeforePost();" value="Search Classes"> </input>
 	</div>
 	<div class="col s12 row">
 		<div class="divider"></div>
@@ -65,17 +64,17 @@
 	</form>
 </div>
 <div class="row">
-	<div class="col offset-s4 s4">
+	<div class="col s12">
 			<label>Quick Search for University Requirements</label>
 			<select class="browser-default" id="QuickSearch" name="QuickSearch">
 				{% for key in ['2nd Theology', '2nd Philosophy', 'Social Science',  'Natural Science (req)', 'Fine Arts', 'Literature', 'History', "Sophomore Business Courses", "Junior Business Courses"] %}
    				<option value='{{key}}'>{{key}}</option>
 				{% endfor %}
 			</select>
+            <input class="blue lighten-1 btn btn-large waves-effect padded" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
+
 	</div>
 </div>
-<div class="row">
-	<input class="blue lighten-1 btn btn-large waves-effect padded col s2 offset-s5" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
-</div>
+
 
 {% endblock %}

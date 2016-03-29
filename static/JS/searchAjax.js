@@ -1,7 +1,6 @@
 var typingTimer;
 var doneTypingInterval = 500;
 list = ''
-
 $("#searchForm2").keyup(function(e) {
 	clearTimeout(typingTimer);
 	if ($('#myInput').val) {
@@ -15,6 +14,8 @@ $("#searchForm").keyup(function(e) {
 		typingTimer = setTimeout(doneTyping, doneTypingInterval);
 	}
 });
+
+
 
 function doneTyping2(e) {
 

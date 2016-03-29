@@ -3,17 +3,16 @@
 
 <div class="row">
 	<form class="col s12 row" id="ClassSearchForm" method="post">
-		<div class="col s5">
+		<div class="col s6">
 			<label>Term</label>
 			<select class="browser-default" id="TermOptions" name="TermOptions">
 				{% for key in TermOptionKeys %}
 				<option value='{{ TermOptions[key] }}'>{{key}}</option>
 				{% endfor %}
-				<script> document.getElementById("TermOptions").selectedIndex = "1"; </script>
 
 			</select>
 		</div>
-		<div class="col s5 ">
+		<div class="col s6 ">
 			<label>Division</label>
 			<select class="browser-default" id="DivisionOptions" name="DivisionOptions">
 				{% for key in DivisionOptionKeys %}
@@ -21,7 +20,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Campus</label>
 			<select class="browser-default" id="CampusOptions" name="CampusOptions">
 				{% for key in CampusOptionKeys %}
@@ -29,7 +28,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Subject (Tip: begin typing subject to find the subject faster!!)</label>
 			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
 				{% for key in SubjectOptionKeys %}
@@ -37,7 +36,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Attribute</label>
 			<select class="browser-default" id="AttributeOptions" name="AttributeOptions">
 				{% for key in AttributeOptionKeys %}
@@ -45,7 +44,7 @@
 				{% endfor %}
 			</select>
 		</div>
-		<div class="col s5">
+		<div class="col s6">
 			<label>Credits</label>
 			<select class="browser-default" id="CreditsOptions" name="CreditsOptions">
 				{% for key in CreditsOptionKeys %}
@@ -55,7 +54,7 @@
 		</div>
 		<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Search Classes"></input>
 	</form>
-	<div class="col s5">
+	<div class="col s6">
 			<label>Quick Search for University Requirements</label>
 			<select class="browser-default" id="QuickSearch" name="QuickSearch">
 				{% for key in ['2nd Theology', '2nd Philosophy', 'Social Science',  'Natural Science (req)', 'Fine Arts', 'Literature', 'History', "Sophomore Business Courses", "Junior Business Courses"] %}
@@ -67,7 +66,7 @@
 <div class = "row">
 	<input class="blue lighten-1 btn waves-effect padded" type="submit" value="Quick Search" onclick = "QuickSearch();"> </input>
 </div>
-<table border="1" class="table ClassData striped centered">
+<table border="1" class="table ClassData striped centered responsive-table" style = "overflow-y: scroll;">
 	<thead>
         	<tr>
 			{% for key in Keys %}
@@ -79,14 +78,14 @@
         </thead>
 	<tbody>
 	{% for class in ClassList %}
-		<tr> 
+		<tr>
 			{% for i in Keys %}
 				{% if i == 'Title' %}
 					<td>  <a HREF ="/class_info/{{class[i]}}-{{class['CRN']}}-{{class['Term']}}" target="_blank"> {{class[i]}} </a> </td>
 				{% elif i == 'View_Books' %}
 					<td> <a href="{{class[i]}}" target="_blank" > View Books </a> </td>
 				{% elif i == 'Instructor' %}
-					<td> 
+					<td>
 					{% if class[i] %}
 						{% for name in class[i] %}
 							<a href ="/instructor_info/{{name}}" target="_blank"> {{name}} </a> <br>

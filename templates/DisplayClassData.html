@@ -31,10 +31,13 @@
 		<div class="col s6">
 			<label>Subject (Tip: begin typing subject to find the subject faster!!)</label>
 			<select class="browser-default" id="SubjectOptions" name="SubjectOptions">
+				<option value = "All"> All &nbsp &nbsp &nbsp(warning, may take some time to process) </option>
 				{% for key in SubjectOptionKeys %}
    				<option value='{{SubjectOptions[key]}}'>{{key}}</option>
 				{% endfor %}
-			</select>
+				<script> document.getElementById("SubjectOptions").selectedIndex = "1";
+				</script>
+				</select>
 		</div>
 		<div class="col s6">
 			<label>Attribute</label>

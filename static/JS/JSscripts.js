@@ -14,7 +14,7 @@ function QuickSearch(){
 	var selected_attribute = document.getElementById('QuickSearch').value;
 	location.href = ''.concat('/class_search/quick-search=', selected_attribute);
 }
-	
+
 function SearchClasses(DataPresent){
 	if (DataPresent){
 		var term_element = document.getElementById('TermOptionsTwo');
@@ -27,12 +27,12 @@ function SearchClasses(DataPresent){
 			}
 		}
 		var credit_element = document.getElementById('CreditsOptionsTwo');
-		var credit = credit_element[credit_element.selectedIndex].value;		
+		var credit = credit_element[credit_element.selectedIndex].value;
 
 		var attribute_element = document.getElementById('AttributeOptionsTwo');
-		var attribute = attribute_element.options[attribute_element.selectedIndex].value;		
+		var attribute = attribute_element.options[attribute_element.selectedIndex].value;
 		var division_element = document.getElementById('DivisionOptionsTwo');
-		var division = division_element.options[division_element.selectedIndex].value;		
+		var division = division_element.options[division_element.selectedIndex].value;
 		var campus_element = document.getElementById('CampusOptionsTwo');
 		var campus = campus_element.options[campus_element.selectedIndex].value;
 		var url = ''.concat('www.ndreviews.com/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
@@ -44,19 +44,19 @@ function SearchClasses(DataPresent){
 		var subject_element = document.getElementById('SubjectOptions');
 		var subject = subject_element.options[subject_element.selectedIndex].value;
 		var credit_element = document.getElementById('CreditsOptions');
-		var credit = credit_element[credit_element.selectedIndex].value;		
+		var credit = credit_element[credit_element.selectedIndex].value;
 
 		var attribute_element = document.getElementById('AttributeOptions');
-		var attribute = attribute_element.options[attribute_element.selectedIndex].value;		
+		var attribute = attribute_element.options[attribute_element.selectedIndex].value;
 		var division_element = document.getElementById('DivisionOptions');
-		var division = division_element.options[division_element.selectedIndex].value;		
+		var division = division_element.options[division_element.selectedIndex].value;
 		var campus_element = document.getElementById('CampusOptions');
 		var campus = campus_element.options[campus_element.selectedIndex].value;
 		var url = ''.concat('www.ndreviews.com/class_search/Term=', term,'/Subject=',subject,'/Credit=',credit, '/Attr=', attribute, '/Division=' , division, '/Campus=', campus);
 		location.replace(url)
 	}
 }
-	
+
 function SearchInstructorByCollege() {
 	var instr_element = document.getElementById('College');
 	var instr = instr_element.options[instr_element.selectedIndex].value;
@@ -75,7 +75,7 @@ function GoToDepartment(element) {
 	var department = element.options[element.selectedIndex].value;
 	location.href = "".concat("../Department/" + department);
 }
-		
+
 function GoToURL(element){
 	var course = element.options[element.selectedIndex].value;
 	location.href = "".concat("../class_info/", course);
@@ -141,36 +141,12 @@ function Check_Buyer_info(){
 }
 
 function CheckBeforeSubmitting(){
-	var form = document.getElementById('formID'); 
-	
-	var ToughnessElement = document.getElementById('ToughnessID');
-	var Toughness = ToughnessElement.options[ToughnessElement.selectedIndex].value;
-	var GradingElement = document.getElementById('GradingID');
-	var Grading = GradingElement.options[GradingElement.selectedIndex].value;
-	var InterestLevelElement = document.getElementById('InterestID');
-	var InterestLevel = InterestLevelElement.options[InterestLevelElement.selectedIndex].value;
-	var WorkloadElement = document.getElementById('WorkloadID');
-	var Workload = WorkloadElement.options[WorkloadElement.selectedIndex].value;
-	var QualityElement = document.getElementById('QualityID');
-	var Quality = QualityElement.options[QualityElement.selectedIndex].value;
-			
-	var TextbookElement = document.getElementById('TextbookNeeded');
-	var Textbook = TextbookElement.options[TextbookElement.selectedIndex].value;
-	
+	alert('fsd');
 	var CourseElement = document.getElementById('CoursesTaughtID');
-	var Course = CourseElement.options[CourseElement.selectedIndex].value;
-	
-	var SyllabusElement = document.getElementById('SyllabusID');
-	var Syllabus = SyllabusElement.options[SyllabusElement.selectedIndex].value;		
-
-	var AccessibilityElement = document.getElementById('AccessibilityID');
-	var Accessibility = AccessibilityElement.options[AccessibilityElement.selectedIndex].value;
-	
-	var defaultstring = '-- select an option --';
-       	if (Textbook === defaultstring || Workload === defaultstring || Quality === defaultstring ||InterestLevel === defaultstring ||
-	Grading === defaultstring || Toughness == defaultstring  || Course == defaultstring || Accessibility == defaultstring || Syllabus == defaultstring) {
-       		alert('Please fill out all required forms'); // error message
+	var course = CourseElement.options[CourseElement.selectedIndex].value;
+	if (course === 'No course choosen'){
+		alert('Please fill out all required forms');
 		return true;
-       	}
+	}
 	return false;
 }

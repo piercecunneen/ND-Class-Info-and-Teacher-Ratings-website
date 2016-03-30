@@ -19,6 +19,8 @@ Sorted_Profs_No_Repeats = Professors_No_Repeats()
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
 
+
+
 def is_logged_in(id):
     user = load_User(id)
     if user != None:
@@ -112,19 +114,24 @@ def cleanCourseFromReview(review):
 def home():
     Featured_prof = get_random_prof()
     prof_name = Featured_prof[1] + " " + Featured_prof[0].replace(',', '')
-    workload_rating = round(float(Featured_prof[3]),2)
-    grading_rating = round(float(Featured_prof[4]),2)
-    quality_rating = round(float(Featured_prof[5]),2)
-    accessibility_rating = round(float(Featured_prof[6]),2)
+    workload_rating = convert_num_to_letter_grade(round(float(Featured_prof[3]),2))
+    grading_rating = convert_num_to_letter_grade(round(float(Featured_prof[4]),2))
+    quality_rating = convert_num_to_letter_grade(round(float(Featured_prof[5]),2))
+    accessibility_rating = convert_num_to_letter_grade(round(float(Featured_prof[6]),2))
     review_count = count_reviews()
     last_name = prof_name.split(" ")[-1] + ', '
     first_name = ' '.join(i for i in prof_name.split(" ")[:-1] if i != '' and i != ' ')
     recent_reviews = [list(i) for i in recentReviews()]
     prof_names = [prof[1] + " " + prof[0].split(',')[0] for prof in recent_reviews]
-    print prof_names
     num_recent_reviews = len(prof_names)
     for review in recent_reviews:
         review[2] = cleanCourseFromReview(review[2])
+        review[3] = convert_num_to_letter_grade(review[3])
+        review[4] = convert_num_to_letter_grade(review[4])
+        review[5] = convert_num_to_letter_grade(review[5])
+        review[6] = convert_num_to_letter_grade(review[6])
+
+
     return render_template('home.html',last_name = last_name, first_name = first_name,
         prof_name = prof_name, workload_rating = workload_rating, grading_rating = grading_rating,
         quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count,
@@ -174,6 +181,8 @@ def ClassSearch():
     if request.method == 'POST':
         Term = request.form['TermOptions']
         Subject = request.form.getlist('SubjectOptions')
+        if Subject[0] == "All":
+            Subject = Options[3].values()
         Credit = request.form['CreditsOptions']
         Attribute = request.form['AttributeOptions']
         Division = request.form['DivisionOptions']
@@ -198,7 +207,6 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
     ClassList = GetClasses(term, subject, credit, attr, divs, campus)
     didAddProf = False
     didAddDept = False
-
     # Checks to see if every instructor is is Professors dictionary. If they
     # are not, we add their names to the text file, and recalculate the Professors dictionary
     ProfsAdded = []
@@ -276,6 +284,8 @@ def DisplayClassPage(Class, CRN, Term):
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][12] = formatted_date
         Individual_Reviews[i][9] = Semester_formatting[Individual_Reviews[i][9]]
+        Individual_Reviews[i][4] = convert_num_to_letter_grade(Individual_Reviews[i][4])
+        Individual_Reviews[i][5] = convert_num_to_letter_grade(Individual_Reviews[i][5])
 
     toughness = CourseRatings[3]
     interest = CourseRatings[4]
@@ -284,13 +294,13 @@ def DisplayClassPage(Class, CRN, Term):
     if type(toughness) == str:
         Overall_Rating = ''
     else:
-        Overall_Rating = round((toughness + interest) / 2.0, 2)
+        Overall_Rating = convert_num_to_letter_grade(round((toughness + interest) / 2.0, 2))
 
     # Round numbers
     if type(toughness) == float:
-        toughness = round(toughness, 2)
+        toughness = convert_num_to_letter_grade(round(toughness, 2))
     if type(interest) == float:
-        interest = round(interest, 2)
+        interest = convert_num_to_letter_grade(round(interest, 2))
     if type(Textbook) == float:
         Textbook = round(Textbook, 2)
     Prerequisites = 'None listed'
@@ -379,12 +389,25 @@ def InstructorByDepartment(Department):
     Easiest_Teachers, Easiest_Teachers_Sorted = easiestProf(Options[3][Department])
     Best_Classes, Best_Classes_Sorted = bestClass(Options[3][Department])
 
+    for course in Best_Classes:
+        Best_Classes[course][0] = convert_num_to_letter_grade( Best_Classes[course][0])
+    for course in Easiest_Teachers:
+        Easiest_Teachers[course] = convert_num_to_letter_grade( Easiest_Teachers[course])
+    for course in Best_Teachers:
+        Best_Teachers[course] = convert_num_to_letter_grade( Best_Teachers[course])
+    print Best_Classes
+    print Easiest_Teachers
+    print Best_Teachers
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]
         Crn_and_Term[Course[2]] = ((Course[-2], Course[-1]))
 
     Easiest_Classes, Easiest_Classes_Sorted = easiestClass(Options[3][Department])
+    for course in Easiest_Classes:
+        Easiest_Classes[course][0] = convert_num_to_letter_grade( Easiest_Classes[course][0])
+
+    print Easiest_Classes
     DepartmentOptions = Options[3]
     for option in DepartmentOptions:
         if DepartmentOptions[option] == Department:
@@ -440,6 +463,10 @@ def Instructor(ProfessorName):
         date = Individual_Reviews[i][11].split(" ")
         formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
         Individual_Reviews[i][11] = formatted_date
+        Individual_Reviews[i][3] = convert_num_to_letter_grade(Individual_Reviews[i][3])
+        Individual_Reviews[i][4] = convert_num_to_letter_grade(Individual_Reviews[i][4])
+        Individual_Reviews[i][5] = convert_num_to_letter_grade(Individual_Reviews[i][5])
+        Individual_Reviews[i][6] = convert_num_to_letter_grade(Individual_Reviews[i][6])
 
     workload = OverallRatings[3]
     if type(workload) == float:
@@ -456,13 +483,13 @@ def Instructor(ProfessorName):
         accessibility = round(accessibility, 2)
     syllabus = OverallRatings[7]
     if type(syllabus) == float:
-        accessibility = round(accessibility, 2)
+        syllabus = round(syllabus, 2)
 
     ProfReviews = OverallRatings[2]
     return render_template('instructor_info.html', Individual_Reviews = Individual_Reviews,Courses=RevisedCoursesTaught,
                            ProfessorName=ProfessorName,
-                            workload=workload, grading=grading, quality=quality,
-                           accessibility=accessibility)
+                            workload=convert_num_to_letter_grade(workload), grading=convert_num_to_letter_grade(grading), quality=convert_num_to_letter_grade(quality),
+                           accessibility=convert_num_to_letter_grade(accessibility))
 
 @app.route('/BestClassesFor/', methods=['GET', 'POST'])
 def BestClassesFor(page=1):
@@ -648,5 +675,17 @@ def contact_seller(ID):
 def Henry_Long():
     return render_template('Chandelier.html')
 
+def convert_num_to_letter_grade(num):
+    if num == "" or num == " ":
+        return num
+    if type(num) == str:
+        num = float(num)
+    grades = ["F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"]
+    grade_diff = 10.0 / len(grades)
+    count = 0
+    while num > grade_diff:
+        count += 1
+        num -= grade_diff
+    return grades[count]
 if __name__ == '__main__':
     app.run(debug = True,host='0.0.0.0', port=8000)

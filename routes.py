@@ -149,8 +149,7 @@ def QuickSearch(ATTR):
         Division = request.form['DivisionOptions']
         Campus = request.form['CampusOptions']
         return DisplayClasses(Term, Subject, Credit, Attribute, Division, Campus)
-    Attributes = {'2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
-    #SelectSubjects = {'2nd Theology':['THEO'], '2nd Philosophy':['PHIL'], 'Social Science': ["ECON", "POLS", "ANTH", "SOC", "PSY"], 'Natural Science (req)': ['BIOS', 'CHEM'], 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
+    Attributes = {'University Seminar (freshman)':"USEM",'1st Theology': 'THEO' , '1st Philosophy': 'PHIL','2nd Theology':'THE2', '2nd Philosophy':'PHI2', 'Social Science': 'SOSC', 'Natural Science (req)': 'NASC', 'Fine Arts':'FNAR', 'Literature':'LIT', 'History': 'HIST', "University Seminar":"USEM", "Sophomore Business Courses":"BA02", "Junior Business Courses": "BA03"}
 
     Subjects = GetOptions()[3].values()
     Semester = GetCurrentSemester()

@@ -261,7 +261,6 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
 
 @app.route('/class_info/Textbook_info/<Term>-<Department>-<Course_number>-<section>', methods = ["POST"])
 def get_textbook_info(Term, Department, Course_number, section):
-    print "Working"
     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ Term + '&div-1=&dept-1='+ Department + '&course-1='+ Course_number + '&section-1=' + section
     Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
     return jsonify({ "Textbooks" : Textbooks, "Required_textbook_info":Required_textbook_info, "Recommended_textbook_info":Recommended_textbook_info})
@@ -394,9 +393,6 @@ def InstructorByDepartment(Department):
         Easiest_Teachers[course] = convert_num_to_letter_grade( Easiest_Teachers[course])
     for course in Best_Teachers:
         Best_Teachers[course] = convert_num_to_letter_grade( Best_Teachers[course])
-    print Best_Classes
-    print Easiest_Teachers
-    print Best_Teachers
     Crn_and_Term = {}
     for course in Best_Classes_Sorted:
         Course = getClassReviews('', course)[0][0]
@@ -406,7 +402,6 @@ def InstructorByDepartment(Department):
     for course in Easiest_Classes:
         Easiest_Classes[course][0] = convert_num_to_letter_grade( Easiest_Classes[course][0])
 
-    print Easiest_Classes
     DepartmentOptions = Options[3]
     for option in DepartmentOptions:
         if DepartmentOptions[option] == Department:
@@ -679,12 +674,33 @@ def convert_num_to_letter_grade(num):
         return num
     if type(num) == str:
         num = float(num)
-    grades = ["F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"]
-    grade_diff = 10.0 / len(grades)
-    count = 0
-    while num > grade_diff:
-        count += 1
-        num -= grade_diff
-    return grades[count]
+    if num < 2:
+        return 'F'
+    elif num < 2.6:
+        return 'D-'
+    elif num < 3.3:
+        return 'D'
+    elif num < 4:
+        return 'D+'
+    elif num < 4.6:
+        return 'C-'
+    elif num < 5.8:
+        return 'C'
+    elif num <  6.4:
+        return 'C+'
+    elif num < 7.4:
+        return 'B-'
+    elif num < 8.2:
+        return 'B'
+    elif num < 8.6:
+        return 'B+'
+    elif num < 9:
+        return 'A-'
+    elif num < 9.4:
+        return 'A'
+    else:
+        return 'A+'
+
 if __name__ == '__main__':
     app.run(debug = True,host='0.0.0.0', port=8000)
+    

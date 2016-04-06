@@ -244,6 +244,7 @@ def GetClasses(term, subj, credit, Attr, divs, campus):
         # Clean up Course - sec in Classlist
         for i in Classlist:
             i["Title"] = i["Title"].replace('/', ' and ')
+            i["Title"] = i["Title"].replace("?", "")
             i['Course - Sec'] = i['Course - Sec'].replace('*View Books', '').replace('View Books', '')
 
         return Classlist
@@ -397,6 +398,7 @@ def GetCoursesTaught(Prof_ID):
         CoursesTaught.append(course.text.split('\n')[1:-1] + url_data)
     for course in CoursesTaught:
             course[2] = course[2].replace('/', ' and ')
+            course[2] = course[2].replace('?', '')
             temp = []
             for letter in course[0]:
                 if letter.isdigit():

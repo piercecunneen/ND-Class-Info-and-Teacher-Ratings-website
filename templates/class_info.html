@@ -2,7 +2,30 @@
   
 {% block content %}
 
+<div id="phone-modal" class="modal">
+	<div class="modal-content row">
+		<form method="POST" action="http://www.ndclassalert.com/" class="col s12">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">phone</i>
+				<input id="phone_number" name="phone_number" type="tel" pattern="[0-9]{10}" class="validate" required="">
+				<label for="phone_number" data-error="Enter number as 0123456789" data-success="Sweet!">Telephone</label>
+			</div>
+			<div class="input-field col s12">
+				<i class="material-icons prefix">dialpad</i>
+				<input id="crn" name="crn" type="tel" pattern="[0-9]{5}" disabled class="validate" required="true" placeholder="{{crn}}">
+		   		<label for="crn" data-error="A CRN must be 5 digits" data-success="Sweet!">CRN:</label>
+		    	</div>	
+			<button class="col s4 offset-s4 blue lighten-2 btn waves-effect waves-light" type="submit" name="action">Submit
+				<i class="material-icons right">send</i>
+			</button>	
+		</form>
+	</div>
+</div>
+
 <h1 align="center">{{CourseName}}</h1>
+<div class="col s12 row">
+	<button class="blue col offset-s3 s6 btn btn-large waves-effect modal-trigger" href="#phone-modal" style="margin-left:25%;">Watch Class</button>
+</div>
 <div id = "Sections">
 	<table>
 		<thead>

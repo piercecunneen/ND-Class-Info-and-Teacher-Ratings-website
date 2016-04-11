@@ -21,19 +21,6 @@ ProfDepartments = GetAllProfessorDepartments()
 
 
 
-def is_logged_in(id):
-    user = load_User(id)
-    if user != None:
-        if user.authenticated == True:
-            return True
-    return False
-
-def load_User(id, is_email):
-    return User.get(id, is_email)
-
-def logout():
-    session['username'] = None
-    return
 
 def GetCurrentSemester():
     return '201610'

@@ -366,10 +366,6 @@ def InstructorByCollege(College):
 
 @app.route('/Department/<Department>')
 def InstructorByDepartment(Department):
-    # Place holder lists
-    #Teachers = set([''.join([i[0], i[1]]) for i in getProfReviews('', '', Options[3][Department], '')])
-
-    #Teachers = sorted([prof for prof in Professors if Options[3][Department] in ProfDepartments.get(Professors.get(prof))])
     Teachers = []
 
     ID_dict = {}
@@ -552,15 +548,13 @@ def ProfessorReview(ProfessorName):
 
     num_items = len(CoursesTaught[0]) - 1
     RevisedCoursesTaught = []
-
     for i in xrange(len(CoursesTaught)):
         if i != 0:
             if (CoursesTaught[i][2] != CoursesTaught[i-1][2]) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
                 RevisedCoursesTaught.append(CoursesTaught[i])
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
-
-    return render_template('ProfessorReviewForm.html' ,ProfessorName=ProfessorName, CoursesTaught=RevisedCoursesTaught)
+    return render_template('ProfessorReviewForm.html' ,ProfessorName=ProfessorName, CoursesTaught=RevisedCoursesTaught, num_items = num_items)
 
 @app.route('/SubmitReviewMain/')
 def SubmitReviewMain():
@@ -703,4 +697,3 @@ def convert_num_to_letter_grade(num):
 
 if __name__ == '__main__':
     app.run(debug = True,host='0.0.0.0', port=8000)
-    

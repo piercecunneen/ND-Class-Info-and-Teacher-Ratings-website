@@ -200,8 +200,9 @@ def get_textbook_info(Term, Department, Course_number, section):
     Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
     return jsonify({ "Textbooks" : Textbooks, "Required_textbook_info":Required_textbook_info, "Recommended_textbook_info":Recommended_textbook_info})
 
-@app.route('/class_info/<Class>-<CRN>-<Term>')
+@app.route('/class_info/<Class>-<CRN>-<Term>', methods = ["GET"])
 def DisplayClassPage(Class, CRN, Term):
+
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)
     CourseDescription = Descriptions[0]
@@ -365,56 +366,60 @@ def Instructor(ProfessorName):
 
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])
-    Reviews = getProfReviews(Professors[last_name + first_name])
-    OverallRatings = calculateProfRatings(Reviews)
+    try:
+        Reviews = getProfReviews(Professors[last_name + first_name])
+        OverallRatings = calculateProfRatings(Reviews)
 
-    Individual_Reviews = [list(review) for review in Reviews[::-1] if review[2] != '']
+        Individual_Reviews = [list(review) for review in Reviews[::-1] if review[2] != '']
 
-    review_courses = []
-    for review in Individual_Reviews:
-        course_name = ''
-        description = review[2].split("Course:::")
-        if len(description) > 1:
-            course_name = description[-1]
-            description = description[0]
-        else:
-            description = review[2]
-        review.append(course_name)
-        review[2] = description
+        review_courses = []
+        for review in Individual_Reviews:
+            course_name = ''
+            description = review[2].split("Course:::")
+            if len(description) > 1:
+                course_name = description[-1]
+                description = description[0]
+            else:
+                description = review[2]
+            review.append(course_name)
+            review[2] = description
 
-    Semester_formatting = { value:key for key,value in Options[0].items()}
-    month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
-    for i in xrange(len(Individual_Reviews)):
-        date = Individual_Reviews[i][11].split(" ")
-        formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
-        Individual_Reviews[i][11] = formatted_date
-        Individual_Reviews[i][3] = convert_num_to_letter_grade(Individual_Reviews[i][3])
-        Individual_Reviews[i][4] = convert_num_to_letter_grade(Individual_Reviews[i][4])
-        Individual_Reviews[i][5] = convert_num_to_letter_grade(Individual_Reviews[i][5])
-        Individual_Reviews[i][6] = convert_num_to_letter_grade(Individual_Reviews[i][6])
+        Semester_formatting = { value:key for key,value in Options[0].items()}
+        month_formatting_dictionary = {1:'January', 2:"February", 3:'March', 4:"April",5:'May', 6:"June",7:'July', 8:"August",9:'September', 10:"October",11:'November', 12:"December"}
+        for i in xrange(len(Individual_Reviews)):
+            date = Individual_Reviews[i][11].split(" ")
+            formatted_date = str(month_formatting_dictionary[int(date[1])]) + " " + str(date[2]) + ", " + str(date[0])
+            Individual_Reviews[i][11] = formatted_date
+            Individual_Reviews[i][3] = convert_num_to_letter_grade(Individual_Reviews[i][3])
+            Individual_Reviews[i][4] = convert_num_to_letter_grade(Individual_Reviews[i][4])
+            Individual_Reviews[i][5] = convert_num_to_letter_grade(Individual_Reviews[i][5])
+            Individual_Reviews[i][6] = convert_num_to_letter_grade(Individual_Reviews[i][6])
 
-    workload = OverallRatings[3]
-    if type(workload) == float:
-        workload = round(workload, 2)
+        workload = OverallRatings[3]
+        if type(workload) == float:
+            workload = round(workload, 2)
 
-    grading = OverallRatings[4]
-    if type(grading) == float:
-        grading = round(grading, 2)
-    quality = OverallRatings[5]
-    if type(quality) == float:
-        quality = round(quality, 2)
-    accessibility = OverallRatings[6]
-    if type(accessibility) == float:
-        accessibility = round(accessibility, 2)
-    syllabus = OverallRatings[7]
-    if type(syllabus) == float:
-        syllabus = round(syllabus, 2)
+        grading = OverallRatings[4]
+        if type(grading) == float:
+            grading = round(grading, 2)
+        quality = OverallRatings[5]
+        if type(quality) == float:
+            quality = round(quality, 2)
+        accessibility = OverallRatings[6]
+        if type(accessibility) == float:
+            accessibility = round(accessibility, 2)
+        syllabus = OverallRatings[7]
+        if type(syllabus) == float:
+            syllabus = round(syllabus, 2)
 
-    ProfReviews = OverallRatings[2]
-    return render_template('instructor_info.html', Individual_Reviews = Individual_Reviews,Courses=RevisedCoursesTaught,
-                           ProfessorName=ProfessorName,
-                            workload=convert_num_to_letter_grade(workload), grading=convert_num_to_letter_grade(grading), quality=convert_num_to_letter_grade(quality),
-                           accessibility=convert_num_to_letter_grade(accessibility))
+        ProfReviews = OverallRatings[2]
+        return render_template('instructor_info.html', Individual_Reviews = Individual_Reviews,Courses=RevisedCoursesTaught,
+                               ProfessorName=ProfessorName,
+                                workload=convert_num_to_letter_grade(workload), grading=convert_num_to_letter_grade(grading), quality=convert_num_to_letter_grade(quality),
+                               accessibility=convert_num_to_letter_grade(accessibility))
+    except KeyError:
+        return render_template('instructor_info.html', Courses=RevisedCoursesTaught,
+                               ProfessorName=ProfessorName)
 
 @app.route('/BestClassesFor/', methods=['GET', 'POST'])
 def BestClassesFor(page=1):

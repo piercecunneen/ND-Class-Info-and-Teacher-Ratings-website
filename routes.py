@@ -40,54 +40,6 @@ def internal_tooling():
     return render_template('internal_tooling.html', login = login, error = error, prof_reviews = prof_reviews, num_prof_reviews = num_prof_reviews,
         class_reviews = class_reviews, num_class_reviews = num_class_reviews)
 
-@app.route('/register', methods=["GET", "POST"])
-def register():
-    error = None
-    if request.method == "POST":
-        if request.form["password"] != request.form["password confirmation"]:
-            error = "Passwords did not match"
-            return render_template('UserRegistration.html', error=error)
-        Response, Message = create_user(request.form["username"], request.form["password"], request.form["email"])
-        if not Response:
-            error = Message
-        else:
-            session.permanent = True
-            app.permanent_session_lifetime = datetime.timedelta(minutes=120)
-            user_info = request.form["username"]
-            email = isEmail(user_info)
-            if email:
-                user = load_User(request.form["username"], True)
-            else:
-                user = load_User(request.form['username'], False)
-            session['username'] = user.id
-
-            return redirect(url_for('home'))
-
-    return render_template('UserRegistration.html', error=error)
-
-@app.route('/login', methods=["GET", "POST"])
-def login():
-    error = None
-    if request.method == "POST":
-        if request.form.get("RememberMe"):
-            session.permanent = True
-            app.permanent_session_lifetime = datetime.timedelta(days=100)
-        else:
-            session.permanent = True
-            app.permanent_session_lifetime = datetime.timedelta(minutes=120)
-        user_info = request.form["username"]
-        email = isEmail(user_info)
-        Response, Message = validate_user(request.form["username"], request.form["password"], email)
-        if not Response:
-            error = Message
-        else:
-            if email:
-                user = load_User(request.form["username"], True)
-            else:
-                user = load_User(request.form['username'], False)
-            session['username'] = user.id
-            return redirect(url_for('home'))
-    return render_template('login.html', error=error)
 
 def isEmail(email):
     return bool('@' in email)
@@ -241,10 +193,6 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
                            AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
                            CreditsOptionKeys=Sort_dict(Options[5], False),
                            CreditsOptions=Options[5], ClassList=ClassList, Keys=Keys)
-
-# @app.route('/Textbook_info/<term>-<div>-<department>-<courseID>-<section>')
-# def DisplayTextBookInformation(term, div, department, courseID, section):
-#     url = 'http://www.bkstr.com/webapp/wcs/stores/servlet/booklookServlet?bookstore_id-1=700&term_id-1='+ str(term) + '&div-1=&dept-1=CSE&course-1=48901&section-1=05'
 
 @app.route('/class_info/Textbook_info/<Term>-<Department>-<Course_number>-<section>', methods = ["POST"])
 def get_textbook_info(Term, Department, Course_number, section):
@@ -683,4 +631,4 @@ def convert_num_to_letter_grade(num):
         return 'A+'
 
 if __name__ == '__main__':
-    app.run(debug = True,host='0.0.0.0', port=8000)
+    app.run()

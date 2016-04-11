@@ -17,7 +17,7 @@
 		<select class="browser-default" id="CoursesTaughtID" name="CoursesTaughtID">
 			<option value = "No course choosen"> Please Choose a course </option>
 			{% for course in CoursesTaught %}
-			<option value="{{course[2]}} {{course[3]}} {{course[4]}} {{course[5]}}">{{course[2]}} {{course[1]}}</option>
+			<option value="{{course[2]}} {{course[3]}} {{course[4]}} {{course[5]}}">{{course[2]}} {{course[1]}} {{course[num_items]}}</option>
 			{% endfor %}
 		</select>
 	</div>

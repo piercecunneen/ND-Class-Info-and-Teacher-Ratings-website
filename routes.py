@@ -359,12 +359,17 @@ def Instructor(ProfessorName):
     except IndexError:
         CoursesTaught = []
     RevisedCoursesTaught = []
+    prev_course_id = ""
     for i in xrange(len(CoursesTaught)):
+        
+        current_course_id = "{} {}".format(CoursesTaught[i][0].split()[0], CoursesTaught[i][1])
+        print current_course_id 
         if i != 0:
-            if (CoursesTaught[i][0].split()[0] != CoursesTaught[i-1][0].split()[0]) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
+            if (prev_course_id != current_course_id) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
                 RevisedCoursesTaught.append(CoursesTaught[i])
         else:
             RevisedCoursesTaught.append(CoursesTaught[i])
+        prev_course_id = current_course_id
 
     last_name = str(ProfessorName.split(',')[0]) + ','
     first_name = str(ProfessorName.split(',')[1])

@@ -356,6 +356,8 @@ def Instructor(ProfessorName):
         num_items = len(CoursesTaught[0]) - 1 # need this to be index of semester code
     except KeyError:
         CoursesTaught = []
+    except IndexError:
+        CoursesTaught = []
     RevisedCoursesTaught = []
     for i in xrange(len(CoursesTaught)):
         if i != 0:
@@ -536,6 +538,7 @@ def textbook_board():
         new_textbook['title'] = i[1]
         new_textbook['email'] = i[2]
         new_textbook['price'] = i[3]
+        new_textbook['price'].replace("$$", "$")
         new_textbook['description'] = i[4]
         new_textbook['department'] = i[5]
         new_textbook['course'] = i[6]

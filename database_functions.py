@@ -341,7 +341,7 @@ def recentReviews():
     with conn:
         c = conn.cursor()
         prof_count = 0
-        query = 'SELECT * FROM profReview WHERE Review NOT LIKE "Course:::%" ORDER BY submit_date DESC Limit 5'
+        query = 'SELECT * FROM profReview ORDER BY submit_date DESC Limit 5'
         c.execute(query)
         reviews = c.fetchall()
         return reviews

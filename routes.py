@@ -375,6 +375,7 @@ def Instructor(ProfessorName):
     first_name = str(ProfessorName.split(',')[1])
     try:
         Reviews = getProfReviews(Professors[last_name + first_name])
+        num_reviews = len(Reviews)
         OverallRatings = calculateProfRatings(Reviews)
 
         Individual_Reviews = [list(review) for review in Reviews[::-1] if review[2] != '']
@@ -421,11 +422,11 @@ def Instructor(ProfessorName):
 
         ProfReviews = OverallRatings[2]
         return render_template('instructor_info.html', Individual_Reviews = Individual_Reviews,Courses=RevisedCoursesTaught,
-                               ProfessorName=ProfessorName,
+                               ProfessorName=ProfessorName,num_reviews = num_reviews,
                                 workload=convert_num_to_letter_grade(workload), grading=convert_num_to_letter_grade(grading), quality=convert_num_to_letter_grade(quality),
                                accessibility=convert_num_to_letter_grade(accessibility))
     except KeyError:
-        return render_template('instructor_info.html', Courses=RevisedCoursesTaught,
+        return render_template('instructor_info.html', Courses=RevisedCoursesTaught,num_reviews = 0,
                                ProfessorName=ProfessorName)
 
 @app.route('/BestClassesFor/', methods=['GET', 'POST'])

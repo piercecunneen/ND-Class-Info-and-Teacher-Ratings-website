@@ -363,7 +363,6 @@ def Instructor(ProfessorName):
     for i in xrange(len(CoursesTaught)):
         
         current_course_id = "{} {}".format(CoursesTaught[i][0].split()[0], CoursesTaught[i][1])
-        print current_course_id 
         if i != 0:
             if (prev_course_id != current_course_id) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
                 RevisedCoursesTaught.append(CoursesTaught[i])

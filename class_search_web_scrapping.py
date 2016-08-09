@@ -21,7 +21,7 @@ def GetTextBookInfo(url):
 
     """
     try:
-        response = requests.get(url, timout = 8.0)
+        response = requests.get(url, timeout = 8.0)
         soup = BeautifulSoup(response.content, "lxml")
         isbn_info = [i.text for i in soup.find_all('span', attrs = {'id': 'materialISBN'})]
         isbns = [str(isbn.split("ISBN: ")[1]) for isbn in isbn_info]

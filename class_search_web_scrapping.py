@@ -20,77 +20,79 @@ def GetTextBookInfo(url):
 
 
     """
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "lxml")
-    isbn_info = [i.text for i in soup.find_all('span', attrs = {'id': 'materialISBN'})]
-    isbns = [str(isbn.split("ISBN: ")[1]) for isbn in isbn_info]
+    try:
+        response = requests.get(url, timout = 8.0)
+        soup = BeautifulSoup(response.content, "lxml")
+        isbn_info = [i.text for i in soup.find_all('span', attrs = {'id': 'materialISBN'})]
+        isbns = [str(isbn.split("ISBN: ")[1]) for isbn in isbn_info]
 
-    author_info = [i.text for i in soup.find_all('span', attrs = {'id':'materialAuthor'})]
-    authors = [str(author.split("Author: ")[1]) for author in author_info]
+        author_info = [i.text for i in soup.find_all('span', attrs = {'id':'materialAuthor'})]
+        authors = [str(author.split("Author: ")[1]) for author in author_info]
 
-    Titles_info = [str(i.text) for i in soup.find_all("h3", attrs = {'class':'material-group-title'})]
-    choice_of_titles_index = -1
-    for i in xrange(len(Titles_info)):
-        Titles_info[i] = Titles_info[i].replace("Edition", " Edition")
-        if "Choice of Titles" in Titles_info[i]:
-            choice_of_titles_index = i
+        Titles_info = [str(i.text) for i in soup.find_all("h3", attrs = {'class':'material-group-title'})]
+        choice_of_titles_index = -1
+        for i in xrange(len(Titles_info)):
+            Titles_info[i] = Titles_info[i].replace("Edition", " Edition")
+            if "Choice of Titles" in Titles_info[i]:
+                choice_of_titles_index = i
 
-    if choice_of_titles_index != -1:
-        Titles_info.pop(choice_of_titles_index)
+        if choice_of_titles_index != -1:
+            Titles_info.pop(choice_of_titles_index)
 
-    Textbooks = []
-    for i in xrange(len(authors)):
-        new_textbook = {}
-        new_textbook['author'] = CleanUpString(authors[i])
-        new_textbook['isbn'] = CleanUpString(isbns[i])
-        new_textbook['title'] = CleanUpString(Titles_info[i])
-        Textbooks.append(new_textbook)
+        Textbooks = []
+        for i in xrange(len(authors)):
+            new_textbook = {}
+            new_textbook['author'] = CleanUpString(authors[i])
+            new_textbook['isbn'] = CleanUpString(isbns[i])
+            new_textbook['title'] = CleanUpString(Titles_info[i])
+            Textbooks.append(new_textbook)
 
-    required_books = soup.find_all("li", attrs = {"id":"material-group_REQUIRED"})
-    if len(required_books):
-        textbook_info  = required_books[0].find_all("div", attrs = {"class":"material-group-table"})
-    else:
-        textbook_info = []
-
-
-
-    Headers = ["Type", "Buy/Rent", "Option", "Rental Period", "Provider"]
-    Required_Textbook_Info = []
-    for textbook in textbook_info:
-        new_textbook = []
-        textbook_options = textbook.find_all("tr", attrs = {"class": "print_background"})
-        for i in xrange(len(textbook_options)):
-            new_option = {}
-            info = textbook_options[i].find_all("td", attrs = {'class':None})
-            for j in xrange(len(info)):
-                new_option[Headers[j]] = info[j].text
-            price = textbook_options[i].find_all("td", attrs = {'class': 'align_right right_border'})
-            new_option["Price"] = price[0].text
-            new_textbook.append(new_option)
-        Required_Textbook_Info.append(new_textbook)
+        required_books = soup.find_all("li", attrs = {"id":"material-group_REQUIRED"})
+        if len(required_books):
+            textbook_info  = required_books[0].find_all("div", attrs = {"class":"material-group-table"})
+        else:
+            textbook_info = []
 
 
-    Recommended_books = soup.find_all("li", attrs = {"id":"material-group_RECOMMENDED"})
-    if len(Recommended_books):
-        textbook_info  = Recommended_books[0].find_all("div", attrs = {"class":"material-group-table"})
-    else:
-        textbook_info = []
 
-    Recommended_Textbook_Info = []
-    for textbook in textbook_info:
-        new_textbook = []
-        textbook_options = textbook.find_all("tr", attrs = {"class": "print_background"})
-        for i in xrange(len(textbook_options)):
-            new_option = {}
-            info = textbook_options[i].find_all("td", attrs = {'class':None})
-            for j in xrange(len(info)):
-                new_option[Headers[j]] = info[j].text
-            price = textbook_options[i].find_all("td", attrs = {'class': 'align_right right_border'})
-            new_option["Price"] = price[0].text
-            new_textbook.append(new_option)
-        Recommended_Textbook_Info.append(new_textbook)
-    return Textbooks, Required_Textbook_Info, Recommended_Textbook_Info
+        Headers = ["Type", "Buy/Rent", "Option", "Rental Period", "Provider"]
+        Required_Textbook_Info = []
+        for textbook in textbook_info:
+            new_textbook = []
+            textbook_options = textbook.find_all("tr", attrs = {"class": "print_background"})
+            for i in xrange(len(textbook_options)):
+                new_option = {}
+                info = textbook_options[i].find_all("td", attrs = {'class':None})
+                for j in xrange(len(info)):
+                    new_option[Headers[j]] = info[j].text
+                price = textbook_options[i].find_all("td", attrs = {'class': 'align_right right_border'})
+                new_option["Price"] = price[0].text
+                new_textbook.append(new_option)
+            Required_Textbook_Info.append(new_textbook)
 
+
+        Recommended_books = soup.find_all("li", attrs = {"id":"material-group_RECOMMENDED"})
+        if len(Recommended_books):
+            textbook_info  = Recommended_books[0].find_all("div", attrs = {"class":"material-group-table"})
+        else:
+            textbook_info = []
+
+        Recommended_Textbook_Info = []
+        for textbook in textbook_info:
+            new_textbook = []
+            textbook_options = textbook.find_all("tr", attrs = {"class": "print_background"})
+            for i in xrange(len(textbook_options)):
+                new_option = {}
+                info = textbook_options[i].find_all("td", attrs = {'class':None})
+                for j in xrange(len(info)):
+                    new_option[Headers[j]] = info[j].text
+                price = textbook_options[i].find_all("td", attrs = {'class': 'align_right right_border'})
+                new_option["Price"] = price[0].text
+                new_textbook.append(new_option)
+            Recommended_Textbook_Info.append(new_textbook)
+        return Textbooks, Required_Textbook_Info, Recommended_Textbook_Info
+    except requests.exceptions.Timeout:
+        return [], [], []
 
 
 def GetOptions():

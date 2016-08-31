@@ -9,7 +9,13 @@
 				{% for key in TermOptionKeys %}
 				<option value='{{ TermOptions[key] }}'>{{key}}</option>
 				{% endfor %}
-
+			<script>
+				var index = document.getElementById('TermOptions').selectedIndex;
+				var text = document.getElementById('TermOptions')[index].textContent;
+				if ( text.indexOf("Fall Semester") === -1 && text.indexOf("Spring Semester") === -1) {
+					document.getElementById("TermOptions").selectedIndex = "1"
+				}
+			</script>
 			</select>
 		</div>
 		<div class="col s6 ">

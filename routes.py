@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect, m
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import *
 from TextbookDB import *
-from textbookemail import *
 
 from password import create_user, validate_user
 import requests

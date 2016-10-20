@@ -4,7 +4,6 @@ from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllP
 from database_functions import *
 from TextbookDB import *
 
-from password import create_user, validate_user
 import requests
 import datetime
 
@@ -24,14 +23,10 @@ ProfDepartments = GetAllProfessorDepartments()
 def GetCurrentSemester():
     return '201610'
 
-@app.route('/internal_tooling', methods=["GET", "POST"])
+@app.route('/internal_tooling', methods=["GET"])
 def internal_tooling():
     login = True
     error = None
-    if request.method == "post":
-        login, error = validate_user("zjanicki@nd.edu", request.form["password"], True)
-        if login:
-            return render_template('internal_tooling.html', login = login, error = error)
     prof_reviews = getAllProfReviews()
     num_prof_reviews = len(prof_reviews)
     class_reviews = getAllClassReviews()
@@ -39,9 +34,6 @@ def internal_tooling():
     return render_template('internal_tooling.html', login = login, error = error, prof_reviews = prof_reviews, num_prof_reviews = num_prof_reviews,
         class_reviews = class_reviews, num_class_reviews = num_class_reviews)
 
-
-def isEmail(email):
-    return bool('@' in email)
 
 def cleanCourseFromReview(review):
     end = review.find("Course:::")
@@ -133,9 +125,6 @@ def ClassSearch():
                            AttributeOptionKeys=Sort_dict(Options[4], False), AttributeOptions=Options[4],
                            CreditsOptionKeys=Sort_dict(Options[5], False), CreditsOptions=Options[5])
 
-@app.route('/instructor_eval/')
-def eval():
-    return render_template('instructor_eval.html', DepartmentKeys=Sort_dict(GetOptions()[3], False), DepartmentOptions=GetOptions()[3])
 
 @app.route('/class_search/')
 def DisplayClasses(term, subject, credit, attr, divs, campus):
@@ -360,7 +349,6 @@ def Instructor(ProfessorName):
     RevisedCoursesTaught = []
     prev_course_id = ""
     for i in xrange(len(CoursesTaught)):
-        
         current_course_id = "{} {}".format(CoursesTaught[i][0].split()[0], CoursesTaught[i][1])
         if i != 0:
             if (prev_course_id != current_course_id) or (CoursesTaught[i][num_items] != CoursesTaught[i-1][num_items]):
@@ -515,10 +503,6 @@ def SubmitReviewMain():
 def feature_work():
     return render_template('feature_work.html')
 
-@app.route('/message_board/')
-def message_board():
-    return render_template('message_board.html', all_posts=getPosts())
-
 @app.route('/alert/<crn>/<number>/', methods=['POST'])
 def send_alert(crn, number="void"):
     """
@@ -532,83 +516,6 @@ def send_alert(crn, number="void"):
     else:
         return 'Error: Must include a phone number'
 
-@app.route('/Textbooks/')
-def textbook_board():
-    textbook_info = Get_Textbooks()
-    textbooks = []
-    for i in textbook_info:
-        new_textbook = {}
-        new_textbook['ID'] = i[0]
-        new_textbook['title'] = i[1]
-        new_textbook['email'] = i[2]
-        new_textbook['price'] = i[3]
-        new_textbook['price'].replace("$$", "$")
-        new_textbook['description'] = i[4]
-        new_textbook['department'] = i[5]
-        new_textbook['course'] = i[6]
-        new_textbook['date'] = i[7]
-        textbooks.append(new_textbook)
-    return render_template('TextbooksBoard.html', textbooks = textbooks)
-
-@app.route('/Textbooks/NewTextbook', methods = ["GET", "POST"])
-def add_Textbook(error = None):
-
-    DepartmentsByCollege = GetSubjectsInDepartments()
-    Colleges = ['College of Arts & Letters', 'College of Engineering', 'College of Science', 'Mendoza College of Business', 'First Year of Studies', 'The Law School', "St. Mary's College", 'Other', 'School of Architecture']
-
-    if request.method == "POST":
-        # if error:
-        #     return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
-        #     DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges, error = error)
-
-
-        seller = {}
-        seller['email'] = request.form['Email']
-
-        department = request.form.getlist('DepartmentSelect')
-        if len(department) == 0:
-            department = "None chosen"
-        else:
-            department = department[0]
-        seller['textbook_department'] = department
-        seller['textbook_title'] = request.form['TextbookName']
-        seller['price'] = request.form['price']
-        seller['textbook_description'] = request.form['TextbookDescription']
-        seller['course'] = request.form['course']
-        Insert_Textbook(seller)
-        return redirect(url_for('textbook_board'))
-
-    else:
-        return render_template('Add_Textbook_Form.html', SubjectOptionKeys=Sort_dict(Options[3], False), SubjectOptions=Options[3],
-            DepartmentsByCollege = DepartmentsByCollege, Colleges = Colleges, error = error)
-
-
-@app.route('/Textbooks/ID=<ID>', methods = ["GET", "POST"])
-def contact_seller(ID):
-    Textbook_info = Get_Textbook(ID)
-    textbook = {}
-    textbook['ID'] = Textbook_info[0]
-    textbook['title'] = Textbook_info[1]
-    textbook['email'] = Textbook_info[2]
-    textbook['price'] = Textbook_info[3]
-    textbook['description'] = Textbook_info[4]
-    textbook['department'] = Textbook_info[5]
-    textbook['course'] = Textbook_info[6]
-    textbook['date'] = Textbook_info[7]
-
-    if request.method == "POST":
-        seller = textbook
-        buyer = {}
-        buyer['name'] = request.form['name']
-        buyer['email'] = request.form['email']
-        buyer['message'] = request.form['message']
-        Send_Textbook_Email(buyer, seller)
-        return redirect(url_for('textbook_board'))
-    return render_template('Contact_seller.html', textbook = textbook)
-
-@app.route('/Chandelier')
-def Henry_Long():
-    return render_template('Chandelier.html')
 
 def convert_num_to_letter_grade(num):
     if num == "" or num == " ":

@@ -21,7 +21,7 @@ ProfDepartments = GetAllProfessorDepartments()
 
 
 def GetCurrentSemester():
-    return '201610'
+    return '201620'
 
 @app.route('/internal_tooling', methods=["GET"])
 def internal_tooling():

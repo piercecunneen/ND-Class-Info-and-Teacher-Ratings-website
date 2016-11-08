@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, make_response, session
-
 from class_search_web_scrapping import GetTextBookInfo,GetCoursesTaught, GetAllProfessors, GetOptions, Sort_dict, GetClasses, GetSubjectsInDepartments, GetClassDescriptionAndAll, GetAllProfessorDepartments, Professors_No_Repeats
 from database_functions import *
-from TextbookDB import *
-
 import requests
 import datetime
 
@@ -16,8 +13,6 @@ Options = GetOptions()
 Sorted_Profs_No_Repeats = Professors_No_Repeats()
 Professors = GetAllProfessors()
 ProfDepartments = GetAllProfessorDepartments()
-
-
 
 
 def GetCurrentSemester():
@@ -62,7 +57,7 @@ def home():
         review[6] = convert_num_to_letter_grade(review[6])
 
 
-    return render_template('home.html',last_name = last_name, first_name = first_name,
+    return render_template("home.html",last_name = last_name, first_name = first_name,
         prof_name = prof_name, workload_rating = workload_rating, grading_rating = grading_rating,
         quality_rating = quality_rating, accessibility_rating = accessibility_rating, review_count = review_count,
         prof_names = prof_names, recent_reviews = recent_reviews, num_recent_reviews = num_recent_reviews
@@ -143,19 +138,19 @@ def DisplayClasses(term, subject, credit, attr, divs, campus):
             P = [course['Teacher_Info'][i].split('P=')[-1] for i in range(len(course['Teacher_Info']))]
             for i in range(len(profs)):
                 if profs[i] not in Professors:
-                    f = open('TeacherList.txt', 'a')
+                    f = open('./TeacherList.txt', 'a')
                     f.write('<OPTION VALUE="' + str(P[i]) + '">' + str(profs[i]) + '\n')
                     f.close()
                     didAddProf = True
                 if P[i] not in ProfDepartments and (P[i], Department) not in ProfsAdded:
-                    f = open('ProfessorDepartments.txt', 'a')
+                    f = open('./ProfessorDepartments.txt', 'a')
                     #f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
                     f.write(str(P[i]) + '; Departments:' + Department + '\n')
                     f.close()
                     didAddDept = True
                     ProfsAdded.append((P[i], Department))
                 if Department not in ProfDepartments[P[i]] and (P[i], Department) not in ProfsAdded:
-                    f = open('ProfessorDepartments.txt', 'a')
+                    f = open('./ProfessorDepartments.txt', 'a')
                     #f.write(str(profs[i]) + '; Departments:'+ Department + '\n')
                     f.write(str(P[i]) + '; Departments:' + Department + '\n')
                     f.close()
@@ -188,8 +183,11 @@ def get_textbook_info(Term, Department, Course_number, section):
     Textbooks, Required_textbook_info, Recommended_textbook_info = GetTextBookInfo(url)
     return jsonify({ "Textbooks" : Textbooks, "Required_textbook_info":Required_textbook_info, "Recommended_textbook_info":Recommended_textbook_info})
 
-@app.route('/class_info/<Class>-<CRN>-<Term>', methods = ["GET"])
+@app.route('/class_info/<Class>-<CRN>-<Term>', methods = ["GET", "POST"])
 def DisplayClassPage(Class, CRN, Term):
+    if request.method == "POST":
+        class_texter_main.create_class_opening_instance(request.form["crn"], request.form["phone_number"])
+
 
     CourseName = Class
     Descriptions = GetClassDescriptionAndAll(CRN, Term)

@@ -329,7 +329,7 @@ def GetSubjectsInDepartments():
     Colleges_with_deparments = []
     for i in Colleges:
         Colleges_with_deparments.append([])
-    f = open('SubjectsInColleges.txt', 'r')
+    f = open('./SubjectsInColleges.txt', 'r')
     department_Department_Index = 0
     for line in f.read().split('\n'):
         if line == '-----':
@@ -347,7 +347,7 @@ def GetSubjectsInDepartments():
     return sorted_Colleges_with_deparments
 
 def GetAllProfessors():
-    f = open('TeacherList.txt', 'r')
+    f = open('./TeacherList.txt', 'r')
     Professors = {}
 
     line = f.readline()
@@ -373,7 +373,7 @@ def GetAllProfessors():
     return Professors
 
 def GetAllProfessorDepartments():
-    f = open('ProfessorDepartments.txt', 'r')
+    f = open('./ProfessorDepartments.txt', 'r')
     line = f.readline()
     ProfDepartments = {}
     while line != '':
@@ -410,7 +410,7 @@ def GetCoursesTaught(Prof_ID):
             course.append(''.join(temp))
     return CoursesTaught
 def Professors_No_Repeats():
-    f = open('TeacherList.txt', 'r')
+    f = open('./TeacherList.txt', 'r')
     Professors = {}
 
     line = f.readline()

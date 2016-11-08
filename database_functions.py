@@ -3,7 +3,6 @@
 
 import sqlite3 as lite
 from class_search_web_scrapping import Sort_dict, GetAllProfessors
-from Get_Sorted_CRNs import Get_CRN_List, is_Valid
 
 database = 'reviews.sqlite'
 

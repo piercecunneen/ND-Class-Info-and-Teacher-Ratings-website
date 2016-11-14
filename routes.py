@@ -185,8 +185,8 @@ def get_textbook_info(Term, Department, Course_number, section):
 
 @app.route('/class_info/<Class>-<CRN>-<Term>', methods = ["GET", "POST"])
 def DisplayClassPage(Class, CRN, Term):
-    if request.method == "POST":
-        class_texter_main.create_class_opening_instance(request.form["crn"], request.form["phone_number"])
+    # if request.method == "POST":
+    #     class_texter_main.create_class_opening_instance(request.form["crn"], request.form["phone_number"])
 
 
     CourseName = Class
